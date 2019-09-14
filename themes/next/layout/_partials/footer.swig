@@ -45,3 +45,9 @@
   #}{{ theme.footer.custom_text }}{#
 #}</div>
 {% endif %}
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>

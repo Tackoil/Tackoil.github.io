@@ -307,19 +307,20 @@ font:
   global:
     external: true
     family: Noto Serif SC
-    size:
+    size: 17
 
   # Font settings for Headlines (h1, h2, h3, h4, h5, h6).
   # Fallback to `global` font settings.
   headings:
     external: true
     family:
-    size:
+    size: 
 
   # Font settings for posts.
   # Fallback to `global` font settings.
   posts:
     external: true
+    size: 
     family:
 
   # Font settings for Logo.
