@@ -106,3 +106,10 @@ backup:
   theme: next
   repository:
     github: git@github.com:tackoil/tackoil.github.io.git,backup
+
+math:
+  engine: 'mathjax' # or 'katex'
+  mathjax:
+    # src: custom_mathjax_source
+    config:
+      # MathJax config
