@@ -340,3 +340,135 @@ $$
 > 根据表格内容发现，仅用了8次迭代就将结果的误差下降到$0.4$左右，可见这个算法还是有一定的效果的。但是，前文我们提到**该算法无法保证所得结果为全局最小值**，我们以下面的例子说明这一点。
 > 
 > ![某个四次函数](./gd2.png "某个四次函数")
+>
+> $$y = 0.25x^4 -0.1 x^3 - 3 x^2 - x + 0.5$$
+>
+> 我们仍以$x = -3$作为初始值，迭代100次，结果如下：
+>
+> $$ x = -4.728182381361199 \quad y = -2.3879650505567143 $$
+>
+> 显然，结果落入了局部最小值，而不是全局最小值。因此也提出了很多**改善**这一问题的方法，例如*模拟退火算法*等等，但本质上无法解决落入局部极小的问题。不过在工业上，局部极小的结果往往也足以满足需求，因此目前的优化算法都大体基于梯度下降法。
+
+由此，我们根据梯度下降算法，完成对神经网络里面各种参数的优化。反正求梯度就是求偏导嘛。首先我们列出各个参数与误差的函数关系。
+
+$$
+\begin{equation}
+\begin{aligned}
+	E & = \frac{1}{2} \sum_{k}(\hat{x}^{(L)}_k - x^{(L)}_k)^2 \\\\
+	\hat{x}^{(L)}_k & = \sigma(z^{(L)}_k) \\\\
+	z^{(L)}_k & = w_{kn} x^{(L-1)}_n + \theta^{(L)}_k
+\end{aligned}
+\end{equation}
+$$
+
+然后开始求导。
+
+$$
+                      \begin{equation}
+                      \begin{aligned}
+                      \frac{\partial E}{\partial w_{kn}} &= \frac{\partial E}{\partial x^{(L)}_k} \cdot \frac{\partial
+                      x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} \\\\
+                      \frac{\partial E}{\partial \theta^{(L)}_{k}} &= \frac{\partial E}{\partial x^{(L)}_k} \cdot
+                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
+                      \theta^{(L)}_{kn}} \\\\
+                      \frac{\partial E}{\partial x^{(L-1)}_{n}} &= \sum_{k}{\frac{\partial E}{\partial x^{(L)}_k} \cdot
+                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
+                      x^{(L-1)}_{n}} }
+                      \end{aligned}
+                      \end{equation}
+$$
+
+观察上面的三个公式，发现其实就是普通的导数链式法则。但之所以拆解成这样的形式，是因为这样的形式可以被很方便的计算出来。
+
+$$
+                      \begin{equation}
+                      \begin{aligned}
+                      \frac{\partial E}{\partial w_{kn}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot \frac{\partial
+                      x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} & =
+                      \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot x^{(L-1)}_{n} \\\\
+                      \frac{\partial E}{\partial \theta^{(L)}_{k}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot
+                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
+                      \theta^{(L)}_{kn}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot 1 \\\\
+                      \frac{\partial E}{\partial x^{(L-1)}_{n}} & = \sum_{k} \frac{\partial E}{\partial x^{(L)}_k} \cdot
+                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
+                      x^{(L-1)}_{n}} & = \sum_{k} \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot
+                      w_{kn} \\\\
+                      \end{aligned}
+                      \label{eq:4}
+                      \end{equation}
+$$
+
+最后一步，将公式\eqref{eq:4}中的第三个公式代入第一个公式，就完成了第$L-1$与$L-2$层的误差传递。从而修改每一层的每一个参数，大功告成。
+
+笔者根据以上的算法，完成了简单的二分类问题。基于Python的源码可以参见这个链接。
+
+> [https://github.com/Tackoil/mlp_example](https://github.com/Tackoil/mlp_example) 
+
+![简单二分类问题的实验结果](./eb.png "简单二分类问题的实验结果")
+
+不过，这些算法最后都被TensorFlow或者pyTorch等等模块内置了，使用的时候只需要一句话就完成所有参数的调整，还是很方便的。
+
+## 相关技术
+
+可喜可贺，最复杂的部分已经介绍完了，后面是一些现今针对这个简单的前馈神经网络的问题进行调整，得到一些新的性能更好的网络。
+
+### 多层前馈神经网络的不足
+
+虽然这个模型可以解决很多很多复杂的无法提取特征的分类问题，但在应用过程中，发现还是有很多不足，也提出了很多针对某一个问题对该模型进行改进。
+
+#### 运算量大
+
+以我们刚刚得到的二分类问题这个模型为例，发现该模型一共使用了$92$个变量。需要计算$78$次浮点数乘法。这远比计算$4$次浮点数加法要复杂得多。再加上上万的训练数据，无疑是一个巨大的负担。
+
+针对这一问题，人们提出了很多模型简化的方案，提高系统的效率。目前最常见的方案称作**权值共享**。当然不能随意选择哪些部分权值相等，通常人们将具有一定相关性的节点选择相同的权值。这也是**卷积神经网络**的一个出发点。
+
+#### 输入节点固定
+
+可以发现，这个系统输入点数是固定的。训练好的系统无法对与输入长度不符的数据进行分类。另外，即使在末位补零与输入长度匹配效果也不是很理想。于是提出**循环神经网络**，将时间参数引入神经元模型，这样就可以输入不定长的数据，解决序列相关的问题。
+
+#### 梯度弥散与梯度爆炸
+
+首先，我们简单计算一下各层对权重的偏导$\frac{\partial E}{\partial w}$
+
+$$
+                      \begin{equation}
+                      \begin{aligned}
+                      \frac{\partial E}{\partial w_{kn}} &= \frac{\partial E}{\partial x_k^{(L)}} \cdot \sigma'
+                      (z_k^{(L)}) \cdot x_n^{(L-1)} \\\\
+                      \frac{\partial E}{\partial w_{nj}} &= \sum_k \left( \frac{\partial E}{\partial x_k^{(L)}} \cdot
+                      \sigma' (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma' (z_n^{(L-1)}) \cdot x_j^{(L-2)} \\\\
+                      \frac{\partial E}{\partial w_{ji}} &= \sum_n \left( \sum_k \left( \frac{\partial E}{\partial
+                      x_k^{(L)}} \cdot \sigma' (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma' (z_n^{(L-1)}) \cdot w_{nj}
+                      \right) \cdot \sigma' (z_j^{(L-2)}) \cdot x_i^{(L-3)} \\\\
+                      \end{aligned}
+                      \end{equation}
+$$
+
+可以发现，这个偏导数里面有激活函数导数的三次幂。可见当层数越多时，激活函数的导数对系统的影响越大。那我们来看一下$\mathrm{Sigmoid}(x)$的导数，可见其函数值最大值在$0.25$左右。随着系统层数的增加，梯度值会越来越小，导致首层的神经元基本无法得到优化。我们把这种现象称作**梯度弥散**。相对的，导数值基本大于$1$，从而使首层收到的梯度值异常的大，把这种称作**梯度爆炸**。
+
+![Sigmoid(x)的导数](./dv.png "Sigmoid(x)的导数")
+
+### 卷积神经网络与模型压缩
+
+卷积神经网络主要使用了权值共享从而大步幅降低运算量。当然，也充分利用了图像数据的相关性，使相邻的一部分像素共享相同的权值。为了使权值共享带来的负效应尽可能的小，这个网络也对神经网络的运算做了适当的修改，但也基本符合之前的结论。该模型被广泛的使用在计算机视觉领域。（多半也是因为视觉相关的图像数据内相关性很高）
+
+卷积神经网络主要有两种比较特殊的层。通常我们把他们称作**卷积层**与**池化层**。
+
+卷积层所做的如下图所示，对原始数据进行窗口滑动，与权值矩阵对应位置相乘再相加，得到一个数据，作为输出结果。下面这个图比较生动的说明了卷积层的功能。也推荐这个网页关于卷积层的动态展示。（不过这哪里卷积了x）
+
+> [http://cs231n.github.io/assets/conv-demo/index.html](http://cs231n.github.io/assets/conv-demo/index.html) 
+
+![卷积层](./conv.gif "卷积层")
+
+![池化层](./pool.png "池化层")
+
+为了简化说明，我们把卷积层与池化层作为一个神经元。以这个著名的手写数字识别的模型为例，发现其功能神经元的第一层只使用了6个神经元，第二层使用了10个神经元。每两个神经元的连接由原来的乘法变成了卷积+池化。从而大幅度的减少系统的运算量。
+
+![卷积神经网络与另一种表示方式](./cnn.png "卷积神经网络与另一种表示方式")
+
+但为了满足移动设备的需要，当前的模型仍然过于复杂。Google的相关团队 与 旷视的Face++团队分别提出了MobileNets和ShuffleNet进行进一步的模型压缩。
+
+> MobileNets：[https://arxiv.org/abs/1704.04861v1](https://arxiv.org/abs/1704.04861v1) 
+> ShuffleNet：[https://arxiv.org/abs/1707.01083v2](https://arxiv.org/abs/1707.01083v2)
+
+### 循环神经网络与长短期记忆网络
