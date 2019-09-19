@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这个原本是通信网理论与应用这门课的一个调研型的大作业。（不过这个和通信网有什么关系）就当是笔者从零开始学习深度学习吧。 本篇BLOG含有大量的公式，用来阐明最基本的神经网络在优化问题的基本算法。此外根据查到的各种资料，本篇也会简单说明基于神经网络而发展的典型网络结构以及使用这些网络结构的领域。虽说含有大量的公式，不过用到的原理也只是最基本的高等数学。为了比较美观的展现公式和算法，还会使用一些基本的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工神经网络的基本知识">
+<meta property="og:url" content="http://yoursite.com/2019/09/12/nn0/index.html">
+<meta property="og:site_name" content="Tackoil&#39;s WebSite">
+<meta property="og:description" content="这个原本是通信网理论与应用这门课的一个调研型的大作业。（不过这个和通信网有什么关系）就当是笔者从零开始学习深度学习吧。 本篇BLOG含有大量的公式，用来阐明最基本的神经网络在优化问题的基本算法。此外根据查到的各种资料，本篇也会简单说明基于神经网络而发展的典型网络结构以及使用这些网络结构的领域。虽说含有大量的公式，不过用到的原理也只是最基本的高等数学。为了比较美观的展现公式和算法，还会使用一些基本的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/mp_model.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/activfuc.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/mlp.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/sp.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/classify.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/xorq.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/2class.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/mnist.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/PER.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/andrst.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/andrst2.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/2class.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/gd1.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/gd2.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/eb.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/dv.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/conv.gif">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/pool.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/cnn.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/rnn.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/rnnlstm.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/nn0/resnet.png">
+<meta property="og:updated_time" content="2019-09-19T05:24:57.371Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="人工神经网络的基本知识">
+<meta name="twitter:description" content="这个原本是通信网理论与应用这门课的一个调研型的大作业。（不过这个和通信网有什么关系）就当是笔者从零开始学习深度学习吧。 本篇BLOG含有大量的公式，用来阐明最基本的神经网络在优化问题的基本算法。此外根据查到的各种资料，本篇也会简单说明基于神经网络而发展的典型网络结构以及使用这些网络结构的领域。虽说含有大量的公式，不过用到的原理也只是最基本的高等数学。为了比较美观的展现公式和算法，还会使用一些基本的">
+<meta name="twitter:image" content="http://yoursite.com/2019/09/12/nn0/mp_model.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/12/nn0/">
+
+
+
+
+
+  <title>人工神经网络的基本知识 | Tackoil's WebSite</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tackoil's WebSite</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/12/nn0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tackoil">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tackoil's WebSite">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">人工神经网络的基本知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-12T16:03:42+08:00">
+                2019-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  24
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这个原本是通信网理论与应用这门课的一个调研型的大作业。（不过这个和通信网有什么关系）就当是笔者从零开始学习深度学习吧。</p>
+<p>本篇BLOG含有大量的公式，用来阐明最基本的神经网络在优化问题的基本算法。此外根据查到的各种资料，本篇也会简单说明基于神经网络而发展的典型网络结构以及使用这些网络结构的领域。虽说含有大量的公式，不过用到的原理也只是最基本的高等数学。为了比较美观的展现公式和算法，还会使用一些基本的线性代数运算。</p>
+<p>不过，毕竟初来乍到，可能有很多漏洞和疏忽之处，恳请理解指正。</p>
+<a id="more"></a>
+
+<p id="symbol"></p>
+
+<h2 id="符号声明"><a href="#符号声明" class="headerlink" title="符号声明"></a>符号声明</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$x_k^{(L)}$</td>
+<td>第$L$层的第$k$个神经元的值</td>
+</tr>
+<tr>
+<td>$w_{kn}^{(L)}$</td>
+<td>第$L$层的第$k$个神经元与第$L-1$层的第$n$个神经元的连接权重</td>
+</tr>
+<tr>
+<td>$\theta_k^{(L)}$</td>
+<td>第$L$层的第$k$个神经元的输入偏置</td>
+</tr>
+<tr>
+<td>$z_k^{(L)}$</td>
+<td>第$L$层的第$k$个神经元通过激活函数之前的值</td>
+</tr>
+<tr>
+<td>$E$</td>
+<td>误差</td>
+</tr>
+<tr>
+<td>$\hat{x}_k^{(L)}$</td>
+<td>第$L$层的第$k$个神经元的估计值（通常指最后一层）</td>
+</tr>
+<tr>
+<td>$N^{(L)}$</td>
+<td>第$L$层的神经元的个数</td>
+</tr>
+</tbody></table>
+<h2 id="参考与推荐阅读"><a href="#参考与推荐阅读" class="headerlink" title="参考与推荐阅读"></a>参考与推荐阅读</h2><p>本篇大部分内容参考自周志华的《机器学习》（西瓜书）和3Blue1Brown关于神经网络的视频。私心推荐一下3Blue1Brown这位作者的视频。</p>
+<p>3Blue1Brown: <a href="https://youtu.be/aircAruvnKk" target="_blank" rel="noopener">YouTube</a> <a href="https://space.bilibili.com/88461692" target="_blank" rel="noopener">Bilibili</a></p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><blockquote>
+<p>神经网络是由具有适应性的简单单元组成的广泛并行互联的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。</p>
+</blockquote>
+<p>上述概念来源于周志华在《机器学习》这本书中的对原论文的翻译。神经网络是由多个进行特定运算的单元组成的网络。</p>
+<h3 id="m-p神经元模型"><a href="#m-p神经元模型" class="headerlink" title="m-p神经元模型"></a>m-p神经元模型</h3><p>上文提到论文中的神经元模型是含有<strong>时间</strong>这个参数的。在下面这张图中，忽略时间的影响得到神经元的结构。</p>
+<p><img src="./mp_model.jpg" alt="M-P 神经元模型" title="M-P 神经元模型"></p>
+<p>M-P神经元的数学模型为：</p>
+<p>$$<br>\begin{equation}<br>    y = f(\sum_{k = 1}^{n} w_k x_k + \theta)<br>\label{eq1}<br>\end{equation}<br>$$</p>
+<p>关于这张图上的模型，仍需几点特殊说明：</p>
+<ul>
+<li>对于一个神经元而言，这里$x$表示输入，$y$表示输出。而在多级神经网络中，$y$将表示下一级神经元的一个输入。</li>
+<li>为了便于理解，在这里我们将输入和输出人为规定成0和1之间的数。在实际应用中不存在这样的限制。</li>
+</ul>
+<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>激活函数的出发点是将各个神经元的值限制在0到1之间，于是有<strong>单位阶跃函数</strong>和<strong>Sigmoid函数</strong>。随着这个限制的消失，追求更高收敛速度和性能的激活函数得以出现。例如<strong>ReLU函数</strong>、<strong>Softplus函数</strong>。</p>
+<p>单位阶跃函数：<br>$$<br>\begin{equation}<br>    H(x) = \begin{cases}<br>    1, &amp; x \geq 0 \\<br>    0, &amp; x &lt; 0 \end{cases}<br>\end{equation}<br>$$</p>
+<p>Sigmoid函数：<br>$$<br> \begin{equation}<br>    \mathrm{Sigmoid}(x) = \frac{1}{1 + \mathrm{e}^{-x}}<br>\end{equation}<br>$$</p>
+<p>ReLU函数：<br>$$<br>                      \begin{equation}<br>                      \mathrm{ReLU}(x) = \begin{cases}<br>                      x, &amp; x &gt; 0 \\<br>                      0, &amp; x \leq 0<br>                      \end{cases}<br>                      \end{equation}<br>$$</p>
+<p>Softplus函数：<br>$$<br>\begin{equation}<br>                      \mathrm{Softplus}(x) = \ln{(1 + \mathrm{e}^{x})}<br>                      \end{equation}<br>$$</p>
+<p><img src="./activfuc.jpg" alt="激活函数" title="激活函数"></p>
+<h3 id="多层前馈神经网络"><a href="#多层前馈神经网络" class="headerlink" title="多层前馈神经网络"></a>多层前馈神经网络</h3><p>这部分的公式会开始复杂起来，可以参考<a href="#symbol">符号声明</a>回顾各个符号的含义。</p>
+<p>通常来说，一个基本的神经网络不会只有一层，而是由很多层构成的。我们把每个圆圈都当作可以存放数值的一个神经元，上一层神经元的数值会通过连线影响到下一层的数值。大概就像下面的这张图一样。通常我们把不是输入输出层的神经元称作<strong>隐含层</strong>。而<strong>输入层</strong>的值由输入向量完全决定，所以该层是所有层中最特殊的一层。我们把隐含层和输出层的神经元称作<strong>功能神经元</strong>。</p>
+<p><img src="./mlp.png" alt="多层感知机" title="多层感知机"></p>
+<p>我们参考公式\eqref{eq1}，更换符号和角标使得更加符合多层感知机的应用情况。</p>
+<p>$$<br>\begin{equation}<br>                      x_{k}^{(L)} = f(\sum_{n=0}^{N^{(L-1)}} w_{kn}^{(L-1)} x_n^{(L-1)} + \theta_k^{(L)})<br>                      \end{equation}<br>$$</p>
+<p>由此我们可以写出从第$L-1$层的各神经元的值计算第$L$层各神经元的值的公式。</p>
+<p>$$<br>\begin{equation}<br>\left[ \begin{matrix}<br>        x_0^{(L)} \\<br>        x_1^{(L)} \\<br>        \vdots \\<br>        x_k^{(L)}<br>        \end{matrix}<br>\right] = f \left(<br>                \left[ \begin{matrix}<br>                      w_{0,0}^{(L-1)} &amp; w_{0,1}^{(L-1)} &amp; \cdots &amp; w_{0,n}^{(L-1)}\\<br>                      w_{1,0}^{(L-1)} &amp; w_{1,1}^{(L-1)} &amp; \cdots &amp; w_{1,n}^{(L-1)}\\<br>                      \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>                      w_{k,0}^{(L-1)} &amp; w_{k,1}^{(L-1)} &amp; \cdots &amp; w_{k,n}^{(L-1)}\\<br>                      \end{matrix}<br>                \right]<br>                \left[ \begin{matrix}<br>                      x_0^{(L-1)} \\<br>                      x_1^{(L-1)} \\<br>                      \vdots \\<br>                      x_n^{(L-1)}<br>                        \end{matrix}<br>                \right]<br>                +<br>                \left[ \begin{matrix}<br>                      \theta_0^{(L)} \\<br>                      \theta_1^{(L)} \\<br>                      \vdots \\<br>                      \theta_k^{(L)}<br>                      \end{matrix}<br>                \right]<br>            \right)<br>    \label{eq2}<br>\end{equation}<br>$$</p>
+<p>简化后就是:</p>
+<p>$$<br>                    \begin{equation}<br>                      \boldsymbol{x}^{(L)} = \boldsymbol{f} \left(<br>                      \mathbf{W}^{(L-1)} \boldsymbol{x}^{(L-1)} + \boldsymbol{\theta}^{(L)}<br>                      \right)<br>                      \end{equation}<br>$$</p>
+<p>这个公式看起来就要美观不少。此外，该形式也比较容易使用<strong>numpy</strong>这种支持矩阵运算的插件来实现。</p>
+<h2 id="应用环境"><a href="#应用环境" class="headerlink" title="应用环境"></a>应用环境</h2><p>我们通过一些简单的例子，简单阐述一下这种神经网络结构可以用来做什么样的事情，以及网络复杂度与所解决问题的复杂度的相关性。</p>
+<h3 id="简单的逻辑运算（与或非）"><a href="#简单的逻辑运算（与或非）" class="headerlink" title="简单的逻辑运算（与或非）"></a>简单的逻辑运算（与或非）</h3><p>先看这个非常简单的例子。我们把这样的 “最小神经网络” 称作感知机：只有两个输入神经元和一个功能神经元。我们可以发现这样的感知机就可以搭建与或非门了。通过设定权值$w$和偏置$\theta$就可以调整输出结果。（有了与或非是不是就可以用来搭计算机了x）</p>
+<p><img src="./sp.png" alt="感知机的简单逻辑实现" title="感知机的简单逻辑实现"></p>
+<h3 id="较复杂的逻辑运算（异或）"><a href="#较复杂的逻辑运算（异或）" class="headerlink" title="较复杂的逻辑运算（异或）"></a>较复杂的逻辑运算（异或）</h3><p>但在工程中，异或门使用的情况要远多于与或非门的使用情况。但实际上，异或问题无法通过上图的感知机模型实现。原因是简单的感知机在解决分类问题时，只能在二维平面画一条直线。而异或问题显然不能在二维平面内用一条线分开。</p>
+<p><img src="./classify.png" alt="四种问题的空间分布情况" title="四种问题的空间分布情况"></p>
+<p>看起来异或问题已经超出了简单的感知机的能力。那如何用神经网络实现异或问题呢？emm，再加一层。</p>
+<p><img src="./xorq.png" alt="异或问题的双层感知机" title="异或问题的双层感知机"></p>
+<p>由此得知，通常来讲，问题越复杂，必要的神经元的个数和层数越多。</p>
+<h3 id="再复杂一点的问题（简单的二分类问题）"><a href="#再复杂一点的问题（简单的二分类问题）" class="headerlink" title="再复杂一点的问题（简单的二分类问题）"></a>再复杂一点的问题（简单的二分类问题）</h3><p><img src="./2class.png" alt="简单的二分类问题" title="简单的二分类问题"></p>
+<p>上面这个网络用来解决一个简单的二分类问题。即判断五个0~1的数字之和大于2.5还是小于2.5。（等于2.5？概率为零怕什么（不是））由于2.5这个结果分在任意一组均可，在之后描述该问题时，暂忽略该值。上面这个网络虽然可能不是最精简的网络，但可以完成这个分类问题，最简规模也应比异或问题要大很多。</p>
+<h3 id="更复杂一点的问题（MNIST数据集识别）"><a href="#更复杂一点的问题（MNIST数据集识别）" class="headerlink" title="更复杂一点的问题（MNIST数据集识别）"></a>更复杂一点的问题（MNIST数据集识别）</h3><p>这个就是很出名的有关于手写数字的数据集了。虽然目前有更好的解决办法，但这种普通的神经网络也可以解决这个问题。这个数据集中每一个数字都是由28*28像素构成的。图中这个网络结构由3Blue1Brown提出，不是最简单的方案但也可以完成数字分类的工作。但显然，这个更复杂的问题的解决方案，也需要更复杂的模型才可以解决。</p>
+<p>MNIST数据集：<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a></p>
+<p><img src="./mnist.png" alt="MNIST分类问题" title="MNIST分类问题"></p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p>这部分会详细解释一下神经网络解决分类问题的基本流程，以及神经网络优化问题的数学模型以及解法。这部分会有大量的公式，但基本原理来自于高等数学<strong>导数的链式法则</strong>。</p>
+<h3 id="神经网络优化问题的基本流程"><a href="#神经网络优化问题的基本流程" class="headerlink" title="神经网络优化问题的基本流程"></a>神经网络优化问题的基本流程</h3><p>感知机虽然只有一个功能神经元，不过也算是某种意义上的神经网络。先以感知机实现的<strong>与问题</strong>为例介绍下神经网络的优化问题是什么样子的。</p>
+<p><img src="./PER.png" alt="感知机" title="感知机"></p>
+<p>我们把感知机的模型再放在这里便于查看。然后定义模型:</p>
+<p>$$<br>\begin{equation}<br>                      x_1 \wedge x_2 \quad y = f \left( w_0 x_0 + w_1 x_1 + \theta \right) \quad f(x) = \mathrm{sgn}(x)<br>                      \end{equation}<br>$$</p>
+<p>我们的将按照下面的步骤完成这个优化问题：</p>
+<ol>
+<li>初始化$w_0$、$w_1$、$\theta$</li>
+<li>输入一组训练数据$x_0$、$x_1$得到输出$\hat{y}$</li>
+<li>根据该训练数据的标签计算，得到误差$E(y, \hat{y})$</li>
+<li>根据误差$E$调整$w_0$、$w_1$、$\theta$</li>
+</ol>
+<h4 id="1-初始化-w-0-、-w-1-、-theta"><a href="#1-初始化-w-0-、-w-1-、-theta" class="headerlink" title="1.初始化$w_0$、$w_1$、$\theta$"></a>1.初始化$w_0$、$w_1$、$\theta$</h4><p>虽然说初始化对最终收敛得到的结果应该会有些影响，不过通常我们使用随机数据进行初始化。</p>
+<p>$$w_0 = 0.3898 \quad w_1 = 0.4950 \quad \theta = 0.8115$$</p>
+<h4 id="2-输入一组训练数据-x-0-、-x-1-得到输出-hat-y"><a href="#2-输入一组训练数据-x-0-、-x-1-得到输出-hat-y" class="headerlink" title="2.输入一组训练数据$x_0$、$x_1$得到输出$\hat{y}$"></a>2.输入一组训练数据$x_0$、$x_1$得到输出$\hat{y}$</h4><p>我们先选一组测试数据，比如：</p>
+<p>$$(x_0, x_1), y = (1, 0), 0$$</p>
+<p>然后根据公式\eqref{eq1}计算得到估计值$\hat{y}$。</p>
+<p>$$<br>\begin{aligned}<br>                                    \hat{y} &amp; = \mathrm{sgn} (0.3898 x_0 + 0.4950 x_1 + 0.8115) \\<br>                                    \hat{y} &amp; = \mathrm{sgn} (0.3898 \times 1 + 0.4950 \times 0 + 0.8115) \\<br>                                    &amp; = \mathrm{sgn} (1.2013) \\<br>                                    &amp; = 1<br>                                    \end{aligned}<br>$$</p>
+<h4 id="3-根据该训练数据的标签计算，得到误差-E-y-hat-y"><a href="#3-根据该训练数据的标签计算，得到误差-E-y-hat-y" class="headerlink" title="3.根据该训练数据的标签计算，得到误差$E(y, \hat{y})$"></a>3.根据该训练数据的标签计算，得到误差$E(y, \hat{y})$</h4><p>接下来我们评价一下这个网络的输出结果。emm，显然与预期结果不符。这种不符合的程度，我们通过定义误差函数计算出实际结果与预期结果的差距。</p>
+<p>$$<br> E(y, \hat{y}) = y - \hat{y} = 0 - 1 = -1<br>$$</p>
+<h4 id="4-根据误差-E-调整-w-0-、-w-1-、-theta"><a href="#4-根据误差-E-调整-w-0-、-w-1-、-theta" class="headerlink" title="4.根据误差$E$调整$w_0$、$w_1$、$\theta$"></a>4.根据误差$E$调整$w_0$、$w_1$、$\theta$</h4><p>之后，我们根据这个误差，通过一定的方法更新我们的三个参数$w_0$、$w_1$、$\theta$。通常，我们会控制一次学习改变的程度，从而使系统慢慢接近想要的结果。这里我们使用下面这种方法进行调整。</p>
+<p>$$<br>w_i \leftarrow w_i + \eta E x_i \quad \eta<br>                                    \in (0, 1)<br>$$</p>
+<p>我们把这里的$\eta$称作学习率。因此我们按照这个公式完成对数据的调整。（关于$\theta$的调整方式我们在后文详述。）</p>
+<p>$$<br>\begin{aligned}<br>    w_0 &amp; \leftarrow 0.3898 + 0.1 \times (-1) \times 1 &amp; = 0.2898 \\<br>    w_1 &amp; \leftarrow 0.4950 + 0.1 \times (-1) \times 0 &amp; = 0.4950 \\<br>    \theta &amp; \leftarrow 0.8115 + 0.1 \times (-1) &amp; = 0.7115<br>\end{aligned}<br>$$</p>
+<p>调整之后，我们就可以再返回步骤2，导入新的训练数据，对各个变量进行调整。下面这张图是笔者按照这种方式训练出来的结果，看起来还是很完美的实现了与门的功能。</p>
+<p>$$<br>y = \mathrm{sgn} ( 0.2898 x_0 + 0.1950 x_1 -<br>                                    0.3885)<br>$$</p>
+<p><img src="./andrst.png" alt="与门的训练结果1" title="与门的训练结果1"><br><img src="./andrst2.png" alt="与门的训练结果2" title="与门的训练结果2"></p>
+<h3 id="神经网络优化问题的数学建模与算法"><a href="#神经网络优化问题的数学建模与算法" class="headerlink" title="神经网络优化问题的数学建模与算法"></a>神经网络优化问题的数学建模与算法</h3><p>介绍完基本的流程，接下来的部分会详细的的介绍神经网络优化问题的数学模型，并如何对这个模型进行求解。当然，毕竟这是一个非常复杂的问题，可能无法准确的找到最优解，不过对于工业需求而言，总能在不断尝试中获得一个符合要求的结果。</p>
+<p>我们以前面提到的简单的二分类问题为例，来进行下面的推导。首先，我们把前面这个问题的网络结构放在这里。</p>
+<p><img src="./2class.png" alt="简单的二分类问题" title="简单的二分类问题"></p>
+<p>我们希望在所有的训练例中，输出结果与预期结果尽可能的一致，也就是误差尽可能的小。所以这个问题的目标函数为：</p>
+<p>$$<br>\begin{equation}<br>\min_{w, \theta}{E}<br>\label{eq:3}<br>\end{equation}<br>$$</p>
+<p>当然，定义$E$的方法各有不同，这里我们使用最常见的均方误差，所以公式\eqref{eq:3}改写成：</p>
+<p>$$<br>\begin{equation}<br>\min_{w, \theta}{E} = \frac{1}{N} \sum_{m=0}^{N - 1}{ \left[ \frac{1}{2} \sum_{k}{\left( \hat{y}_k - y_k \right)^2 } \right]_m }<br>\end{equation}<br>$$</p>
+<p>这里的$m$指的是某一个训练例，$N$表示训练例的个数。</p>
+<p>那接下来的问题就是，如何调整$w$，$\theta$，使误差$E$最小。看起来这是一个<strong>无约束最小值问题</strong>。因此，这里可以求助于数学模型的相关知识，使用<strong>梯度下降法</strong>。</p>
+<blockquote>
+<h4 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h4><p>梯度下降法是一个比较常见的用来解决无约束最小值问题的算法，<strong>但该算法无法保证所得结果为全局最小值</strong>。我们用下面这个简单的二次函数图像来说明梯度下降法。<br><img src="./gd1.png" alt="某个二次函数" title="某个二次函数"><br>图中的曲线上的颜色表示该点出梯度的绝对值。梯度用来表征该点数值变化的最大值以及方向。因此利用梯度的这个性质，我们每次以梯度为参考，不断的向变化最大的方向<strong>下降</strong>，梯度的绝对值越大，下降的速度越大。当然这些都是比较定性的描述，下面我们用公式来描述这个算法。</p>
+<p>首先确定目标函数:<br>$$\min_{x}{y} = x^2$$<br>随机一个初始值，然后按照下面的策略不断更新参数$x$，使目标函数$y$达到最小。<br>$$ x \leftarrow x + \Delta x \quad \Delta x =  - \eta \nabla y = - \eta 2 x $$</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>$x$</th>
+<th>$y$</th>
+<th>$\delta x$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>$-3$</td>
+<td>$9$</td>
+<td>$0.6$</td>
+</tr>
+<tr>
+<td>2</td>
+<td>$-2.4$</td>
+<td>$5.76$</td>
+<td>$0.48$</td>
+</tr>
+<tr>
+<td>3</td>
+<td>$-1.92$</td>
+<td>$3.686$</td>
+<td>$0.384$</td>
+</tr>
+<tr>
+<td>4</td>
+<td>$-1.536$</td>
+<td>$2.359$</td>
+<td>$0.3072$</td>
+</tr>
+<tr>
+<td>5</td>
+<td>$-1.229$</td>
+<td>$1.510$</td>
+<td>$0.2458$</td>
+</tr>
+<tr>
+<td>6</td>
+<td>$-0.983$</td>
+<td>$0.966$</td>
+<td>$0.1966$</td>
+</tr>
+<tr>
+<td>7</td>
+<td>$-0.786$</td>
+<td>$0.618$</td>
+<td>$0.1258$</td>
+</tr>
+<tr>
+<td>8</td>
+<td>$-0.629$</td>
+<td>$0.396$</td>
+<td>$0.1006$</td>
+</tr>
+<tr>
+<td>9</td>
+<td>$\cdots$</td>
+<td>$\cdots$</td>
+<td>$\cdots$</td>
+</tr>
+</tbody></table>
+<p>根据表格内容发现，仅用了8次迭代就将结果的误差下降到$0.4$左右，可见这个算法还是有一定的效果的。但是，前文我们提到<strong>该算法无法保证所得结果为全局最小值</strong>，我们以下面的例子说明这一点。</p>
+<p><img src="./gd2.png" alt="某个四次函数" title="某个四次函数"></p>
+<p>$$y = 0.25x^4 -0.1 x^3 - 3 x^2 - x + 0.5$$</p>
+<p>我们仍以$x = -3$作为初始值，迭代100次，结果如下：</p>
+<p>$$ x = -4.728182381361199 \quad y = -2.3879650505567143 $$</p>
+<p>显然，结果落入了局部最小值，而不是全局最小值。因此也提出了很多<strong>改善</strong>这一问题的方法，例如<em>模拟退火算法</em>等等，但本质上无法解决落入局部极小的问题。不过在工业上，局部极小的结果往往也足以满足需求，因此目前的优化算法都大体基于梯度下降法。</p>
+</blockquote>
+<p>由此，我们根据梯度下降算法，完成对神经网络里面各种参数的优化。反正求梯度就是求偏导嘛。首先我们列出各个参数与误差的函数关系。</p>
+<p>$$<br>\begin{equation}<br>\begin{aligned}<br>    E &amp; = \frac{1}{2} \sum_{k}(\hat{x}^{(L)}_k - x^{(L)}_k)^2 \\<br>    \hat{x}^{(L)}_k &amp; = \sigma(z^{(L)}_k) \\<br>    z^{(L)}_k &amp; = w_{kn} x^{(L-1)}_n + \theta^{(L)}_k<br>\end{aligned}<br>\end{equation}<br>$$</p>
+<p>然后开始求导。</p>
+<p>$$<br>                      \begin{equation}<br>                      \begin{aligned}<br>                      \frac{\partial E}{\partial w_{kn}} &amp;= \frac{\partial E}{\partial x^{(L)}_k} \cdot \frac{\partial<br>                      x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} \\<br>                      \frac{\partial E}{\partial \theta^{(L)}_{k}} &amp;= \frac{\partial E}{\partial x^{(L)}_k} \cdot<br>                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial<br>                      \theta^{(L)}_{kn}} \\<br>                      \frac{\partial E}{\partial x^{(L-1)}_{n}} &amp;= \sum_{k}{\frac{\partial E}{\partial x^{(L)}_k} \cdot<br>                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial<br>                      x^{(L-1)}_{n}} }<br>                      \end{aligned}<br>                      \end{equation}<br>$$</p>
+<p>观察上面的三个公式，发现其实就是普通的导数链式法则。但之所以拆解成这样的形式，是因为这样的形式可以被很方便的计算出来。</p>
+<p>$$<br>                      \begin{equation}<br>                      \begin{aligned}<br>                      \frac{\partial E}{\partial w_{kn}} &amp; = \frac{\partial E}{\partial x^{(L)}_k} \cdot \frac{\partial<br>                      x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} &amp; =<br>                      \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma’(z^{(L)}_k) \cdot x^{(L-1)}_{n} \\<br>                      \frac{\partial E}{\partial \theta^{(L)}_{k}} &amp; = \frac{\partial E}{\partial x^{(L)}_k} \cdot<br>                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial<br>                      \theta^{(L)}_{kn}} &amp; = \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma’(z^{(L)}_k) \cdot 1 \\<br>                      \frac{\partial E}{\partial x^{(L-1)}_{n}} &amp; = \sum_{k} \frac{\partial E}{\partial x^{(L)}_k} \cdot<br>                      \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial<br>                      x^{(L-1)}_{n}} &amp; = \sum_{k} \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma’(z^{(L)}_k) \cdot<br>                      w_{kn} \\<br>                      \end{aligned}<br>                      \label{eq:4}<br>                      \end{equation}<br>$$</p>
+<p>最后一步，将公式\eqref{eq:4}中的第三个公式代入第一个公式，就完成了第$L-1$与$L-2$层的误差传递。从而修改每一层的每一个参数，大功告成。</p>
+<p>笔者根据以上的算法，完成了简单的二分类问题。基于Python的源码可以参见这个链接。</p>
+<blockquote>
+<p><a href="https://github.com/Tackoil/mlp_example" target="_blank" rel="noopener">https://github.com/Tackoil/mlp_example</a> </p>
+</blockquote>
+<p><img src="./eb.png" alt="简单二分类问题的实验结果" title="简单二分类问题的实验结果"></p>
+<p>不过，这些算法最后都被TensorFlow或者pyTorch等等模块内置了，使用的时候只需要一句话就完成所有参数的调整，还是很方便的。</p>
+<h2 id="相关技术"><a href="#相关技术" class="headerlink" title="相关技术"></a>相关技术</h2><p>可喜可贺，最复杂的部分已经介绍完了，后面是一些现今针对这个简单的前馈神经网络的问题进行调整，得到一些新的性能更好的网络。</p>
+<h3 id="多层前馈神经网络的不足"><a href="#多层前馈神经网络的不足" class="headerlink" title="多层前馈神经网络的不足"></a>多层前馈神经网络的不足</h3><p>虽然这个模型可以解决很多很多复杂的无法提取特征的分类问题，但在应用过程中，发现还是有很多不足，也提出了很多针对某一个问题对该模型进行改进。</p>
+<h4 id="运算量大"><a href="#运算量大" class="headerlink" title="运算量大"></a>运算量大</h4><p>以我们刚刚得到的二分类问题这个模型为例，发现该模型一共使用了$92$个变量。需要计算$78$次浮点数乘法。这远比计算$4$次浮点数加法要复杂得多。再加上上万的训练数据，无疑是一个巨大的负担。</p>
+<p>针对这一问题，人们提出了很多模型简化的方案，提高系统的效率。目前最常见的方案称作<strong>权值共享</strong>。当然不能随意选择哪些部分权值相等，通常人们将具有一定相关性的节点选择相同的权值。这也是<strong>卷积神经网络</strong>的一个出发点。</p>
+<h4 id="输入节点固定"><a href="#输入节点固定" class="headerlink" title="输入节点固定"></a>输入节点固定</h4><p>可以发现，这个系统输入点数是固定的。训练好的系统无法对与输入长度不符的数据进行分类。另外，即使在末位补零与输入长度匹配效果也不是很理想。于是提出<strong>循环神经网络</strong>，将时间参数引入神经元模型，这样就可以输入不定长的数据，解决序列相关的问题。</p>
+<h4 id="梯度弥散与梯度爆炸"><a href="#梯度弥散与梯度爆炸" class="headerlink" title="梯度弥散与梯度爆炸"></a>梯度弥散与梯度爆炸</h4><p>首先，我们简单计算一下各层对权重的偏导$\frac{\partial E}{\partial w}$</p>
+<p>$$<br>                      \begin{equation}<br>                      \begin{aligned}<br>                      \frac{\partial E}{\partial w_{kn}} &amp;= \frac{\partial E}{\partial x_k^{(L)}} \cdot \sigma’<br>                      (z_k^{(L)}) \cdot x_n^{(L-1)} \\<br>                      \frac{\partial E}{\partial w_{nj}} &amp;= \sum_k \left( \frac{\partial E}{\partial x_k^{(L)}} \cdot<br>                      \sigma’ (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma’ (z_n^{(L-1)}) \cdot x_j^{(L-2)} \\<br>                      \frac{\partial E}{\partial w_{ji}} &amp;= \sum_n \left( \sum_k \left( \frac{\partial E}{\partial<br>                      x_k^{(L)}} \cdot \sigma’ (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma’ (z_n^{(L-1)}) \cdot w_{nj}<br>                      \right) \cdot \sigma’ (z_j^{(L-2)}) \cdot x_i^{(L-3)} \\<br>                      \end{aligned}<br>                      \end{equation}<br>$$</p>
+<p>可以发现，这个偏导数里面有激活函数导数的三次幂。可见当层数越多时，激活函数的导数对系统的影响越大。那我们来看一下$\mathrm{Sigmoid}(x)$的导数，可见其函数值最大值在$0.25$左右。随着系统层数的增加，梯度值会越来越小，导致首层的神经元基本无法得到优化。我们把这种现象称作<strong>梯度弥散</strong>。相对的，导数值基本大于$1$，从而使首层收到的梯度值异常的大，把这种称作<strong>梯度爆炸</strong>。</p>
+<p><img src="./dv.png" alt="Sigmoid(x)的导数" title="Sigmoid(x)的导数"></p>
+<h3 id="卷积神经网络与模型压缩"><a href="#卷积神经网络与模型压缩" class="headerlink" title="卷积神经网络与模型压缩"></a>卷积神经网络与模型压缩</h3><p>卷积神经网络主要使用了权值共享从而大步幅降低运算量。当然，也充分利用了图像数据的相关性，使相邻的一部分像素共享相同的权值。为了使权值共享带来的负效应尽可能的小，这个网络也对神经网络的运算做了适当的修改，但也基本符合之前的结论。该模型被广泛的使用在计算机视觉领域。（多半也是因为视觉相关的图像数据内相关性很高）</p>
+<p>卷积神经网络主要有两种比较特殊的层。通常我们把他们称作<strong>卷积层</strong>与<strong>池化层</strong>。</p>
+<p>卷积层所做的如下图所示，对原始数据进行窗口滑动，与权值矩阵对应位置相乘再相加，得到一个数据，作为输出结果。下面这个图比较生动的说明了卷积层的功能。也推荐这个网页关于卷积层的动态展示。（不过这哪里卷积了x）</p>
+<blockquote>
+<p><a href="http://cs231n.github.io/assets/conv-demo/index.html" target="_blank" rel="noopener">http://cs231n.github.io/assets/conv-demo/index.html</a> </p>
+</blockquote>
+<p><img src="./conv.gif" alt="卷积层" title="卷积层"></p>
+<p><img src="./pool.png" alt="池化层" title="池化层"></p>
+<p>为了简化说明，我们把卷积层与池化层作为一个神经元。以这个著名的手写数字识别的模型为例，发现其功能神经元的第一层只使用了6个神经元，第二层使用了10个神经元。每两个神经元的连接由原来的乘法变成了卷积+池化。从而大幅度的减少系统的运算量。</p>
+<p><img src="./cnn.png" alt="卷积神经网络与另一种表示方式" title="卷积神经网络与另一种表示方式"></p>
+<p>但为了满足移动设备的需要，当前的模型仍然过于复杂。Google的相关团队 与 旷视的Face++团队分别提出了MobileNets和ShuffleNet进行进一步的模型压缩。</p>
+<blockquote>
+<p>MobileNets：<a href="https://arxiv.org/abs/1704.04861v1" target="_blank" rel="noopener">https://arxiv.org/abs/1704.04861v1</a><br>ShuffleNet：<a href="https://arxiv.org/abs/1707.01083v2" target="_blank" rel="noopener">https://arxiv.org/abs/1707.01083v2</a></p>
+</blockquote>
+<h3 id="循环神经网络与长短期记忆网络"><a href="#循环神经网络与长短期记忆网络" class="headerlink" title="循环神经网络与长短期记忆网络"></a>循环神经网络与长短期记忆网络</h3><p>为了解决输入数据无法改变长度问题，于是引入循环神经网络。一般来说，对于输入到循环神经网络的一个元素而言，其输入到输出只有三层。但网络隐含层的状态会随着循环次数不断变化。这样就被称作循环神经网络了。该网络经常使用在语音处理，自然语音处理等等。</p>
+<p><img src="./rnn.png" alt="循环神经网络" title="循环神经网络"></p>
+<p>不过，这个模型的梯度弥散问题非常严重。于是进一步引入每个神经元的遗忘系统，得到长短期记忆网络。因为变量增多，系统也看着更加复杂起来。</p>
+<p><img src="./rnnlstm.png" alt="循环神经网络与长短期记忆网络" title="循环神经网络与长短期记忆网络"></p>
+<h3 id="残差神经网络"><a href="#残差神经网络" class="headerlink" title="残差神经网络"></a>残差神经网络</h3><p>为了解决梯度弥散与梯度爆炸的问题，这个模型只做了一点点简单的修改，却得到了出乎意料的效果。详情可以参考这篇提出残差神经网络的论文。</p>
+<blockquote>
+<p>ResNet: <a href="https://arxiv.org/abs/1512.03385v1" target="_blank" rel="noopener">https://arxiv.org/abs/1512.03385v1l</a> </p>
+</blockquote>
+<p><img src="./resnet.png" alt="残差神经网络" title="残差神经网络"></p>
+<h2 id="Special-Thanks"><a href="#Special-Thanks" class="headerlink" title="Special Thanks"></a>Special Thanks</h2><p>在此感谢为这次调研提供帮助的各位。也感谢オレンジ提供的帮助与校对<del>~</del></p>
+<ul>
+<li>Johntheuser</li>
+<li>オレンジ</li>
+<li>Tab</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>Kohonen, Teuvo . An introduction to neural computing. Neural Networks 1.1(1988):3-16</li>
+<li>But what _is_ a Neural Network? | Deep learning, Part 1 3Blue1Brown <a href="https://youtu.be/aircAruvnKk" target="_blank" rel="noopener">https://youtu.be/aircAruvnKk</a> </li>
+<li>THE MNIST DATABASE of handwritten digits Yann LeCun, Corinna Cortes, Christopher J.C. Burges <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a> </li>
+<li>使用Python将MNIST数据集转化为图片 name_s_Jimmy <a href="https://blog.csdn.net/qq_32166627/article/details/52640730" target="_blank" rel="noopener">https://blog.csdn.net/qq_32166627/article/details/52640730</a></li>
+<li>Lécun, Y., Bottou, L., Bengio, Y., &amp; Haffner, P. (1998). learning applied to document recognition. Proceedings of the IEEE, 86(11), 2278-2324. Gradient-based</li>
+<li>刘建平Pinard, 卷积神经网络(CNN)模型结构 <a href="https://www.cnblogs.com/pinard/p/6483207.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6483207.html</a></li>
+<li>蒋竺波, CNN入门讲解：什么是采样层（pooling） <a href="https://zhuanlan.zhihu.com/p/32299939" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32299939</a></li>
+<li>刘建平Pinard,循环神经网络(RNN)模型与前向反向传播算法 <a href="https://www.cnblogs.com/pinard/p/6509630.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6509630.html</a></li>
+<li>刘建平Pinard, LSTM模型与前向反向传播算法 <a href="https://www.cnblogs.com/pinard/p/6519110.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6519110.html</a></li>
+<li>Howard, A. G. , Zhu, M. , Chen, B. , Kalenichenko, D. , Wang, W. , &amp; Weyand, T. , et al.  (2017). Mobilenets: efficient convolutional neural networks for mobile vision applications.</li>
+<li>Zhang, X. , Zhou, X. , Lin, M. , &amp; Sun, J. . (2017). Shufflenet: an extremely efficient convolutional neural network for mobile devices.</li>
+<li>He, K. , Zhang, X. , Ren, S. , &amp; Sun, J. . (2015). Deep residual learning for image recognition.</li>
+<li>周志华. (2016). 机器学习. 清华大学出版社.</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  <div>
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ END ------</div>
+    
+</div>
+    
+ </div>
+  
+  
+  
+  </article>
+
+
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Tackoil">
+            
+              <p class="site-author-name" itemprop="name">Tackoil</p>
+              <p class="site-description motion-element" itemprop="description">收集 | 分享</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tackoil" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:tackoil@bupt.icu" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#符号声明"><span class="nav-number">1.</span> <span class="nav-text">符号声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考与推荐阅读"><span class="nav-number">2.</span> <span class="nav-text">参考与推荐阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">3.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络"><span class="nav-number">3.1.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#m-p神经元模型"><span class="nav-number">3.2.</span> <span class="nav-text">m-p神经元模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#激活函数"><span class="nav-number">3.3.</span> <span class="nav-text">激活函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多层前馈神经网络"><span class="nav-number">3.4.</span> <span class="nav-text">多层前馈神经网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用环境"><span class="nav-number">4.</span> <span class="nav-text">应用环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的逻辑运算（与或非）"><span class="nav-number">4.1.</span> <span class="nav-text">简单的逻辑运算（与或非）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#较复杂的逻辑运算（异或）"><span class="nav-number">4.2.</span> <span class="nav-text">较复杂的逻辑运算（异或）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再复杂一点的问题（简单的二分类问题）"><span class="nav-number">4.3.</span> <span class="nav-text">再复杂一点的问题（简单的二分类问题）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更复杂一点的问题（MNIST数据集识别）"><span class="nav-number">4.4.</span> <span class="nav-text">更复杂一点的问题（MNIST数据集识别）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方法"><span class="nav-number">5.</span> <span class="nav-text">实现方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络优化问题的基本流程"><span class="nav-number">5.1.</span> <span class="nav-text">神经网络优化问题的基本流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-初始化-w-0-、-w-1-、-theta"><span class="nav-number">5.1.1.</span> <span class="nav-text">1.初始化$w_0$、$w_1$、$\theta$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-输入一组训练数据-x-0-、-x-1-得到输出-hat-y"><span class="nav-number">5.1.2.</span> <span class="nav-text">2.输入一组训练数据$x_0$、$x_1$得到输出$\hat{y}$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-根据该训练数据的标签计算，得到误差-E-y-hat-y"><span class="nav-number">5.1.3.</span> <span class="nav-text">3.根据该训练数据的标签计算，得到误差$E(y, \hat{y})$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-根据误差-E-调整-w-0-、-w-1-、-theta"><span class="nav-number">5.1.4.</span> <span class="nav-text">4.根据误差$E$调整$w_0$、$w_1$、$\theta$</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络优化问题的数学建模与算法"><span class="nav-number">5.2.</span> <span class="nav-text">神经网络优化问题的数学建模与算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度下降法"><span class="nav-number">5.2.1.</span> <span class="nav-text">梯度下降法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关技术"><span class="nav-number">6.</span> <span class="nav-text">相关技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多层前馈神经网络的不足"><span class="nav-number">6.1.</span> <span class="nav-text">多层前馈神经网络的不足</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运算量大"><span class="nav-number">6.1.1.</span> <span class="nav-text">运算量大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入节点固定"><span class="nav-number">6.1.2.</span> <span class="nav-text">输入节点固定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度弥散与梯度爆炸"><span class="nav-number">6.1.3.</span> <span class="nav-text">梯度弥散与梯度爆炸</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积神经网络与模型压缩"><span class="nav-number">6.2.</span> <span class="nav-text">卷积神经网络与模型压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环神经网络与长短期记忆网络"><span class="nav-number">6.3.</span> <span class="nav-text">循环神经网络与长短期记忆网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#残差神经网络"><span class="nav-number">6.4.</span> <span class="nav-text">残差神经网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Special-Thanks"><span class="nav-number">7.</span> <span class="nav-text">Special Thanks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">8.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tackoil</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">Theme by NexT | Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
