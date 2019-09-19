@@ -472,3 +472,43 @@ $$
 > ShuffleNet：[https://arxiv.org/abs/1707.01083v2](https://arxiv.org/abs/1707.01083v2)
 
 ### 循环神经网络与长短期记忆网络
+
+为了解决输入数据无法改变长度问题，于是引入循环神经网络。一般来说，对于输入到循环神经网络的一个元素而言，其输入到输出只有三层。但网络隐含层的状态会随着循环次数不断变化。这样就被称作循环神经网络了。该网络经常使用在语音处理，自然语音处理等等。
+
+![循环神经网络](./rnn.png "循环神经网络")
+
+不过，这个模型的梯度弥散问题非常严重。于是进一步引入每个神经元的遗忘系统，得到长短期记忆网络。因为变量增多，系统也看着更加复杂起来。
+
+![循环神经网络与长短期记忆网络](./rnnlstm.png "循环神经网络与长短期记忆网络")
+
+### 残差神经网络
+
+为了解决梯度弥散与梯度爆炸的问题，这个模型只做了一点点简单的修改，却得到了出乎意料的效果。详情可以参考这篇提出残差神经网络的论文。
+
+> ResNet: [https://arxiv.org/abs/1512.03385v1l](https://arxiv.org/abs/1512.03385v1) 
+
+![残差神经网络](./resnet.png "残差神经网络")
+
+## Special Thanks
+
+在此感谢为这次调研提供帮助的各位。也感谢オレンジ提供的帮助与校对~~~
+
+- Johntheuser
+- オレンジ
+- Tab
+
+## 参考文献
+
+- Kohonen, Teuvo . An introduction to neural computing. Neural Networks 1.1(1988):3-16
+- But what _is_ a Neural Network? | Deep learning, Part 1 3Blue1Brown [https://youtu.be/aircAruvnKk](https://youtu.be/aircAruvnKk) 
+- THE MNIST DATABASE of handwritten digits Yann LeCun, Corinna Cortes, Christopher J.C. Burges [http://yann.lecun.com/exdb/mnist/](http://yann.lecun.com/exdb/mnist/) 
+- 使用Python将MNIST数据集转化为图片 name_s_Jimmy [https://blog.csdn.net/qq_32166627/article/details/52640730](https://blog.csdn.net/qq_32166627/article/details/52640730)
+- Lécun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). learning applied to document recognition. Proceedings of the IEEE, 86(11), 2278-2324. Gradient-based
+- 刘建平Pinard, 卷积神经网络(CNN)模型结构 [https://www.cnblogs.com/pinard/p/6483207.html](https://www.cnblogs.com/pinard/p/6483207.html)
+- 蒋竺波, CNN入门讲解：什么是采样层（pooling） [https://zhuanlan.zhihu.com/p/32299939](https://zhuanlan.zhihu.com/p/32299939)
+- 刘建平Pinard,循环神经网络(RNN)模型与前向反向传播算法 [https://www.cnblogs.com/pinard/p/6509630.html](https://www.cnblogs.com/pinard/p/6509630.html)
+- 刘建平Pinard, LSTM模型与前向反向传播算法 [https://www.cnblogs.com/pinard/p/6519110.html](https://www.cnblogs.com/pinard/p/6519110.html)
+- Howard, A. G. , Zhu, M. , Chen, B. , Kalenichenko, D. , Wang, W. , & Weyand, T. , et al.  (2017). Mobilenets: efficient convolutional neural networks for mobile vision applications.
+- Zhang, X. , Zhou, X. , Lin, M. , & Sun, J. . (2017). Shufflenet: an extremely efficient convolutional neural network for mobile devices.
+- He, K. , Zhang, X. , Ren, S. , & Sun, J. . (2015). Deep residual learning for image recognition.
+- 周志华. (2016). 机器学习. 清华大学出版社.
