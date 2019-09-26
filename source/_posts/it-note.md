@@ -11,6 +11,8 @@ mathjax: true
 
 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。
 
+　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x
+
 <!-- more -->
 
 ## 2. 熵、相对熵与互信息
@@ -24,9 +26,9 @@ mathjax: true
 > \tag{2-99}
 > \end{equation}
 > $$
-> 
+>
 > 当且仅当$\frac{a_i}{b_i} = \mathrm{常数}$，等号成立。
-> 
+>
 > **证明：** 不失一般性，假定$a_i > 0, b_i > 0$。由于对任意的正数$t$有$f''(t) = \frac{1}{t} \log{\mathrm{e}} > 0$，可知函数 $f(x) = t \log{t}$ **严格凸**。因而，由Jensen不等式，有
 >
 > $$ \begin{equation}
@@ -35,7 +37,7 @@ mathjax: true
 > \label{eq:2-100}
 > \end{equation}
 > $$
-> 
+>
 > 其中$\alpha_i \geq 1, \sum_i \alpha_i = 1$。令$\alpha_i = \frac{b_i}{\sum_{j = 1}^n b_j}, t_i = \frac{a_i}{b_i}$，可得
 >
 > $$\begin{equation}
@@ -50,18 +52,18 @@ mathjax: true
 
 　　但上述公式\eqref{eq:2-101}中的所有求和符号缺少角标，题设中的$\alpha_i$的分子书写有误（本文已改正）。因此重新解释这部分证明。
 
-> **证明2.7.1：** 
+> **证明2.7.1：**
 >
 > 前略
-> 
+>
 > 公式\eqref{eq:2-100}，其中$\alpha_i \geq 1, \sum_i \alpha_i = 1$。为满足第二个条件，构造$\alpha_i = \frac{b_i}{B}$，其中$B = \sum_{j=1}^n b_j$， 也就是$b_i$的和。再构造$t_i = \frac{a_i}{b_i}$，可得
 >
 > $$\begin{equation}
->   \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \log{\frac{a_i}{b_i}} \geq \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \cdot \log{\sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i}} 
+>   \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \log{\frac{a_i}{b_i}} \geq \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \cdot \log{\sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i}}
 > \tag{2-101'}
 > \end{equation}
 > $$
-> 
+>
 > 右侧$\log{}$中的求和，由于分母$B = \sum_{j=1}^n b_j$与$i$无关，可将求和符号移动至分子，不等式两侧约去$B$最后可证。$\square$
 >
 
