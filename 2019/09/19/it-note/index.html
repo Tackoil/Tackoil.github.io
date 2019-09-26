@@ -105,17 +105,17 @@
 
 
 
-<meta name="description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。">
+<meta name="description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="信息论基础笔记">
 <meta property="og:url" content="http://yoursite.com/2019/09/19/it-note/index.html">
 <meta property="og:site_name" content="Tackoil&#39;s WebSite">
-<meta property="og:description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。">
+<meta property="og:description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-22T15:46:44.976Z">
+<meta property="og:updated_time" content="2019-09-25T07:09:38.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信息论基础笔记">
-<meta name="twitter:description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。">
+<meta name="twitter:description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
 
 
 
@@ -378,6 +378,7 @@
         <hr>
 <p>　　本篇为 <strong>机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译</strong> 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。</p>
 <p>　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。</p>
+<p>　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x</p>
 <a id="more"></a>
 
 <h2 id="2-熵、相对熵与互信息"><a href="#2-熵、相对熵与互信息" class="headerlink" title="2. 熵、相对熵与互信息"></a>2. 熵、相对熵与互信息</h2><h3 id="2-7-对数和不等式及其应用"><a href="#2-7-对数和不等式及其应用" class="headerlink" title="2.7 对数和不等式及其应用"></a>2.7 对数和不等式及其应用</h3><blockquote>
@@ -391,7 +392,7 @@
 </blockquote>
 <p>　　但上述公式\eqref{eq:2-101}中的所有求和符号缺少角标，题设中的$\alpha_i$的分子书写有误（本文已改正）。因此重新解释这部分证明。</p>
 <blockquote>
-<p><strong>证明2.7.1：</strong> </p>
+<p><strong>证明2.7.1：</strong></p>
 <p>前略</p>
 <p>公式\eqref{eq:2-100}，其中$\alpha_i \geq 1, \sum_i \alpha_i = 1$。为满足第二个条件，构造$\alpha_i = \frac{b_i}{B}$，其中$B = \sum_{j=1}^n b_j$， 也就是$b_i$的和。再构造$t_i = \frac{a_i}{b_i}$，可得</p>
 <p>$$\begin{equation}<br>  \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \log{\frac{a_i}{b_i}} \geq \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \cdot \log{\sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i}}<br>\tag{2-101’}<br>\end{equation}<br>$$</p>
@@ -444,8 +445,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/19/docs/" rel="next" title="个人常用工具文档收集">
-                <i class="fa fa-chevron-left"></i> 个人常用工具文档收集
+              <a href="/2019/09/19/algorithm/" rel="next" title="算法笔记">
+                <i class="fa fa-chevron-left"></i> 算法笔记
               </a>
             
           </div>
@@ -534,7 +535,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
