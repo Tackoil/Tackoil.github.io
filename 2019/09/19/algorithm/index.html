@@ -117,7 +117,9 @@
 <meta property="og:image" content="http://yoursite.com/2019/09/19/algorithm/mrc_common.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/19/algorithm/mrc_var.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/19/algorithm/mrc_cases.png">
-<meta property="og:updated_time" content="2019-09-26T03:34:04.910Z">
+<meta property="og:image" content="http://yoursite.com/2019/09/19/algorithm/ed_idp.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/19/algorithm/ed_ops.png">
+<meta property="og:updated_time" content="2019-09-28T09:03:40.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法笔记">
 <meta name="twitter:description" content="本篇为算法学习过程的笔记，但和数值方法的那种算法略有不同。倒不如说是在重新学习一下数据结构（？） 　　本篇的内容都来自与leetcode刷题学习到的各种算法等等。总之学到什么就写在这里了。虽然不确定这些知识对以后从事的领域会不会有很大的帮助，多学一点也是好事。（大概">
@@ -360,7 +362,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  8
                 </span>
               
             </div>
@@ -389,6 +391,7 @@
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><ul>
 <li>ver0.1 2019/9/25 创建文档</li>
 <li>ver0.2 2019/9/26 Manacher算法编写</li>
+<li>ver0.3 2019/9/28 编辑距离算法编写</li>
 </ul>
 <h2 id="动态规划-Dynamic-Programming"><a href="#动态规划-Dynamic-Programming" class="headerlink" title="动态规划 Dynamic Programming"></a>动态规划 Dynamic Programming</h2><h3 id="Manacher-算法"><a href="#Manacher-算法" class="headerlink" title="Manacher 算法"></a>Manacher 算法</h3><blockquote>
 <p>解决的问题：最长回文子串 -&gt; <a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">Leetcode:Q5 最长回文子串</a></p>
@@ -418,7 +421,51 @@
 <p>　　总结以上的情况，并考虑一些边界情况，即可以写出Manacher算法的编码。显然这是一个时间复杂度为$O(n)$的算法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestPalindrome</span><span class="params">(self, s: str)</span> -&gt; str:</span></span><br><span class="line">        s_new = []</span><br><span class="line">        <span class="keyword">for</span> s_item <span class="keyword">in</span> s:</span><br><span class="line">            s_new.append(<span class="string">'#'</span>)</span><br><span class="line">            s_new.append(s_item)</span><br><span class="line">        s_new.append(<span class="string">'#'</span>)</span><br><span class="line">        r = []</span><br><span class="line">        k = <span class="number">0</span></span><br><span class="line">        b = <span class="number">-1</span></span><br><span class="line">        c = <span class="number">-1</span></span><br><span class="line">        s_length = len(s_new)</span><br><span class="line">        r_max = <span class="number">-1</span></span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, s_length):</span><br><span class="line">            kr = <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> p &gt; k:</span><br><span class="line">                <span class="keyword">while</span> k - kr &gt;= <span class="number">0</span> <span class="keyword">and</span> k + kr &lt; s_length <span class="keyword">and</span> s_new[k - kr] == s_new[k + kr]:</span><br><span class="line">                    kr += <span class="number">1</span></span><br><span class="line">                r.append(kr)</span><br><span class="line">                b = k + kr - <span class="number">1</span></span><br><span class="line">                c = k</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                k2 = <span class="number">2</span> * c - k</span><br><span class="line">                kl = k2 - r[k2] + <span class="number">1</span></span><br><span class="line">                bl = <span class="number">2</span> * c - b</span><br><span class="line">                <span class="keyword">if</span> bl &lt; kl:</span><br><span class="line">                    kr = r[k2]</span><br><span class="line">                <span class="keyword">elif</span> bl &gt; kl:</span><br><span class="line">                    kr = b - k + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    kr = b - k + <span class="number">1</span></span><br><span class="line">                    <span class="keyword">while</span> k - kr &gt;= <span class="number">0</span> <span class="keyword">and</span> k + kr &lt; s_length <span class="keyword">and</span> s_new[k - kr] == s_new[k + kr]:</span><br><span class="line">                        kr += <span class="number">1</span></span><br><span class="line">                    b = k + kr - <span class="number">1</span></span><br><span class="line">                    c = k</span><br><span class="line">                r.append(kr)</span><br><span class="line">            <span class="keyword">if</span> r_max == <span class="number">-1</span>:</span><br><span class="line">                r_max = k</span><br><span class="line">            <span class="keyword">elif</span> r[r_max] &lt; kr:</span><br><span class="line">                r_max = k</span><br><span class="line">        kcl = int((r_max - r[r_max] + <span class="number">1</span>) / <span class="number">2</span>)</span><br><span class="line">        kcr = pcl + r[r_max] - <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> s[kcl : kcr]</span><br></pre></td></tr></table></figure>
 
-<h3 id="编辑距离"><a href="#编辑距离" class="headerlink" title="编辑距离"></a>编辑距离</h3>
+<h3 id="编辑距离-Levenshtein-距离"><a href="#编辑距离-Levenshtein-距离" class="headerlink" title="编辑距离 (Levenshtein 距离)"></a>编辑距离 (Levenshtein 距离)</h3><blockquote>
+<p>解决的问题：编辑距离 -&gt; <a href="https://leetcode-cn.com/problems/edit-distance/" target="_blank" rel="noopener">Leetcode:Q72 编辑距离</a></p>
+<p>算法复杂度：$O(mn)$</p>
+<p>空间复杂度：$O(n)$</p>
+</blockquote>
+<p>　　给定两个字符串$s_1$及$s_2$，两者的<strong>编辑距离</strong>定义为将$s_1$转换成$s_2$的最小<strong>编辑操作</strong>数。通常，这样的编辑操作包括：</p>
+<ol>
+<li>将一个字符插入字符串</li>
+<li>从字符串中删除一个字符</li>
+<li>将字符串中的一个字符替换成另外一个字符</li>
+</ol>
+<p>　　关于该编辑距离是否可以满足距离的三定义（非负性，对称性，三角不等式）只查到已被证明，但没有查询到相关的证明过程。在维基百科的 <a href="https://en.wikipedia.org/wiki/Edit_distance" target="_blank" rel="noopener">编辑距离</a> 词条中，简单的说明了该编辑距离满足距离定义。简略翻译如下：</p>
+<blockquote>
+<p>　　具有非负成本(non-negative cost)的编辑距离满足距离公理(the axioms of a metric)。当满足以下条件时，该编辑距离生成一个距离空间(metric space)：</p>
+<ul>
+<li>每一个编辑操作都具有正成本。</li>
+<li>对于每一个编辑操作，都有相同成本的逆操作(inverse operation)。</li>
+</ul>
+<p>具有以上这些属性，将满足如下的距离公理：</p>
+<ul>
+<li>$d(a,b) = 0$当且仅当$a = b$，因为每一个字符串都可以通过0个操作转换成自身。</li>
+<li>$d(a,b) &gt; 0$当$a \neq b$，因为这将至少需要一个操作。</li>
+<li>$d(a,b) = d(b,a)$，每一个操作的成本与其逆操作的成本是相同的。</li>
+<li>$d(a,c) \leq d(a,b) + d(b,c)$，三角不等式。</li>
+</ul>
+<p>　　Levenshtein distance 和 LCS distance 具有单元成本并满足以上条件，因此满足距离公理。一些编辑距离的变体即使不是真正的(proper)距离，也被在一些文献中使用。</p>
+</blockquote>
+<p>　　对于这个问题而言，该问题的子问题是：</p>
+<blockquote>
+<p>已知$s_1[0:i’]$与$s_2[0:j’]$的编辑距离为$d(i’,j’)$，其中$i’ &lt; i, j’ &lt; j$，求$d(i,j)$</p>
+</blockquote>
+<p>　　不过这样的描述过于抽象，可以简单的举一个例子。假设我们要计算<code>horse</code>和<code>rost</code>的编辑距离，并且已知<code>horse</code>与<code>ros</code>，<code>hors</code>与<code>rost</code>,<code>hors</code>与<code>ros</code>的编辑距离。为了方便说明，我们假设从<code>horse</code>转换成<code>rost</code>。经过观察可知：</p>
+<ul>
+<li>如果已知<code>horse</code>与<code>ros</code>需要$d(i, j-1)$次操作，那么只需要在<code>ros</code>后插入<code>t</code>就可以获得目标字符串，因此$d_\mathrm{Insert}(i, j) = d(i, j-1) + 1$。</li>
+<li>如果已知<code>hors</code>与<code>rost</code>需要$d(i-1, j)$次操作，那么只需要将<code>horse</code>删除<code>e</code>就可以获得<code>hors</code>从而得到目标字符串，因此$d_\mathrm{Delete}(i, j) = d(i-1, j) + 1$。</li>
+<li>如果已知<code>hors</code>与<code>ros</code>需要$d(i-1, j-1)$次操作，那么只需要将<code>horse</code>中的<code>e</code>改成<code>t</code>，就可以获得目标字符串，因此$d_\mathrm{Replace}(i, j) = d(i-1, j-1) + 1$。</li>
+</ul>
+<p><img src="./ed_idp.png" alt="三种编辑方式" title="三种编辑方式"></p>
+<p>　　上述最后一种情况，如果最后一个字母相同，显然不需要进行操作，那么就不需要加一。上述三种操作的最小值就是我们要求的$d(i, j)$。</p>
+<p>　　我们从<strong>空字符串</strong>开始遍历全部情况，即可获得$s_1$与$s_2$的编辑距离。</p>
+<p><img src="./ed_ops.png" alt="距离表格" title="距离表格"></p>
+<p>　　显然，我们遍历了全部元素，所以时间复杂度为$O(mn)$。但空间复杂度可以通过只记录一行零两个元素的方式进行简化。具体参见下面的代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDistance</span><span class="params">(self, word1: str, word2: str)</span> -&gt; int:</span></span><br><span class="line">        memo = list(range(len(word1)+<span class="number">1</span>))</span><br><span class="line">        upleft = <span class="number">0</span></span><br><span class="line">        up = <span class="number">0</span></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; len(word2):</span><br><span class="line">            i = <span class="number">0</span></span><br><span class="line">            <span class="keyword">while</span> i &lt; len(word1) + <span class="number">1</span>:</span><br><span class="line">                upleft, up = up, memo[i]</span><br><span class="line">                <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                    memo[i] = memo[i] + <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> word1[i<span class="number">-1</span>] == word2[j]:</span><br><span class="line">                    memo[i] = min(upleft, memo[i<span class="number">-1</span>]+<span class="number">1</span>, memo[i]+<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    memo[i] = min(upleft+<span class="number">1</span>, memo[i<span class="number">-1</span>]+<span class="number">1</span>, memo[i]+<span class="number">1</span>)</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> memo.pop()</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
 
@@ -606,7 +653,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Version"><span class="nav-number">1.</span> <span class="nav-text">Version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划-Dynamic-Programming"><span class="nav-number">2.</span> <span class="nav-text">动态规划 Dynamic Programming</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Manacher-算法"><span class="nav-number">2.1.</span> <span class="nav-text">Manacher 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑距离"><span class="nav-number">2.2.</span> <span class="nav-text">编辑距离</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Version"><span class="nav-number">1.</span> <span class="nav-text">Version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划-Dynamic-Programming"><span class="nav-number">2.</span> <span class="nav-text">动态规划 Dynamic Programming</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Manacher-算法"><span class="nav-number">2.1.</span> <span class="nav-text">Manacher 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑距离-Levenshtein-距离"><span class="nav-number">2.2.</span> <span class="nav-text">编辑距离 (Levenshtein 距离)</span></a></li></ol></li></ol></div>
             
 
           </div>
