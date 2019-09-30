@@ -18,6 +18,7 @@ mathjax: true
 - ver0.1 2019/9/25 创建文档
 - ver0.2 2019/9/26 Manacher算法编写
 - ver0.3 2019/9/28 编辑距离算法编写
+- ver0.4 2019/9/30 合并k个链表算法编写
 
 ## 动态规划 Dynamic Programming
 
@@ -183,4 +184,61 @@ class Solution:
                 i += 1
             j += 1
         return memo.pop()
+```
+
+## 分治 Divide and Conquer
+
+### 合并K个排序链表
+
+> 解决的问题：合并K个排序链表 -> [Leetcode:Q23 合并K个排序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/)
+>
+> 算法复杂度：$O(N\log k)$
+>
+> 空间复杂度：$O(1)$
+
+　　分治需要将问题拆分，然后交给一个小机器进行处理，并不断合并机器产生的结果。如何拆分和合并问题是分治中比较重要的内容。
+
+　　该问题做如下拆分与合并：
+
+> 拆分：每2个链表一组
+>
+> 合并：合并2个链表
+
+　　分组可以每两个一组交给合并器，合并器可以使用最普通的**双指针**方案，也是常见的合并链表的方案。在考虑一些简单的边界条件就可以完成合并。
+
+　　双指针方法最终也会遍历完成两个链表，因此每一轮合并时，所有链表都将被遍历一次。设$k$个链表的总节点数为$N$，因此每一轮的时间复杂度为$O(N)$。由于使用2的幂次递减待合并的链表，因此共循环$\log k$次，总时间复杂度为$O(N \log k)$。
+
+　　以下代码为[leetcode官方题解](https://leetcode-cn.com/problems/merge-k-sorted-lists/solution/he-bing-kge-pai-xu-lian-biao-by-leetcode/)的代码。
+
+```python
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        amount = len(lists)
+        interval = 1
+        while interval < amount:
+            for i in range(0, amount - interval, interval * 2):
+                lists[i] = self.merge2Lists(lists[i], lists[i + interval])
+            interval *= 2
+        return lists[0] if amount > 0 else lists
+
+    def merge2Lists(self, l1, l2):
+        head = point = ListNode(0)
+        while l1 and l2:
+            if l1.val <= l2.val:
+                point.next = l1
+                l1 = l1.next
+            else:
+                point.next = l2
+                l2 = l1
+                l1 = point.next.next
+            point = point.next
+        if not l1:
+            point.next=l2
+        else:
+            point.next=l1
+        return head.next
 ```
