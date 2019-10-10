@@ -44,9 +44,9 @@ mathjax: true
 
 　　这里对比一下三种组合(combination)的区别与联系：
 
-> - affine combination: $\theta_1 x_1 + \cdots \theta_k x_k$ where $\theta_1 + \cdots + \theta_k = 1$
-> - convex combination: $\theta_1 x_1 + \cdots \theta_k x_k$ where $\theta_1 + \cdots + \theta_k = 1, \theta_i \geq 0$
-> - conic combination: $\theta_1 x_1 + \cdots \theta_k x_k$ where $\theta_i \geq 0$
+> - affine combination: $\theta_1 x_1 + \cdots + \theta_k x_k$ where $\theta_1 + \cdots + \theta_k = 1$
+> - convex combination: $\theta_1 x_1 + \cdots + \theta_k x_k$ where $\theta_1 + \cdots + \theta_k = 1, \theta_i \geq 0$
+> - conic combination: $\theta_1 x_1 + \cdots + \theta_k x_k$ where $\theta_i \geq 0$
 
 　　可以发现，**锥组合(conic combination)**和**仿射组合(affine combination)**的要求相对于**凸组合(convex combination)的要求更小**。
 
