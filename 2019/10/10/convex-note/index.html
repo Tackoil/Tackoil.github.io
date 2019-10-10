@@ -113,7 +113,7 @@
 <meta property="og:description" content="这篇是 《Convex Optimization》 | Stephen Boyd, Lieven Vandenberghe | Cambridge University Press 一书的笔记。第一次尝试阅读英文原版书籍，可能会有些不好理解的内容，整理在这篇笔记中。另外，一部分英文术语与中文术语的对照也会放在本文中。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/10/10/convex-note/linear_frac_Pfunc.png">
-<meta property="og:updated_time" content="2019-10-10T05:40:57.122Z">
+<meta property="og:updated_time" content="2019-10-10T05:44:45.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="凸优化笔记">
 <meta name="twitter:description" content="这篇是 《Convex Optimization》 | Stephen Boyd, Lieven Vandenberghe | Cambridge University Press 一书的笔记。第一次尝试阅读英文原版书籍，可能会有些不好理解的内容，整理在这篇笔记中。另外，一部分英文术语与中文术语的对照也会放在本文中。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
@@ -435,7 +435,7 @@
 </blockquote>
 <blockquote>
 <h5 id="Example-2-10"><a href="#Example-2-10" class="headerlink" title="Example 2.10"></a>Example 2.10</h5><p>$$  \lbrace x \ | \  A(x) \preceq B \rbrace = \lbrace x \ | \ f(x) \in \mathbb{S}^m_{+} \rbrace$$</p>
-<p>其中 $f(x) = B - A(x) = B - x_1 A_1 - \cdots \ x_n A_n, \text{where}\ A_i , B \in \mathbb{S}^m$</p>
+<p>其中 $f(x) = B - A(x) = B - x_1 A_1 - \cdots - x_n A_n, \text{where}\ A_i , B \in \mathbb{S}^m$</p>
 <p>　　由于$A_i, B$都是对称矩阵，且$x_i$为标量，因此$f(x)$的值域也是对称矩阵。但为了满足不等式，我们要求值域是半正定对称矩阵。由于半正定对称矩阵是凸锥，因此定义域是凸集。</p>
 </blockquote>
 <blockquote>
@@ -453,7 +453,7 @@
 <p>　　我们再定义一个函数$\mathcal{P}(v)$</p>
 <p>$$ \mathcal{P}(v) = \lbrace t (v, 1) \ | \ t \geq 0 \rbrace $$</p>
 <p>　　该函数将一个向量$v \in \mathbb{R}^n$映射成高维的一条射线$\lbrace t (v, 1) \ | \ t \geq 0 \rbrace \in \mathbb{R}^{(n+1)}$。因此，该函数构造了一个<strong>$n$维实数域</strong>到<strong>$n+1$维实数域的半空间</strong>之间的映射。因此，该函数保持了集合的凸性。</p>
-<p><img src="./linear_frac_Pfunc.png" alt="$\mathcal{P}$函数" title="P函数"></p>
+<p><img src="./linear_frac_Pfunc.png" alt="P函数" title="$\mathcal{P}$函数"></p>
 <p>　　最后，我们将线性分式函数表示成：</p>
 <p>$$ f(x) = \mathcal{P}^{-1} (Q \mathcal{P}(x)) $$</p>
 <p>从而推知该函数也将保持集合的凸性。</p>
