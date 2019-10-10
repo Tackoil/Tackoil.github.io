@@ -92,7 +92,7 @@ mathjax: true
 >
 > $$  \lbrace x \ | \  A(x) \preceq B \rbrace = \lbrace x \ | \ f(x) \in \mathbb{S}^m_{+} \rbrace$$
 >
-> 其中 $f(x) = B - A(x) = B - x_1 A_1 - \cdots \ x_n A_n, \text{where}\ A_i , B \in \mathbb{S}^m$
+> 其中 $f(x) = B - A(x) = B - x_1 A_1 - \cdots - x_n A_n, \text{where}\ A_i , B \in \mathbb{S}^m$
 >
 > 　　由于$A_i, B$都是对称矩阵，且$x_i$为标量，因此$f(x)$的值域也是对称矩阵。但为了满足不等式，我们要求值域是半正定对称矩阵。由于半正定对称矩阵是凸锥，因此定义域是凸集。
 
@@ -136,7 +136,7 @@ $$ f(x) = (Ax + b) / (c^\mathrm{T}x + d), \qquad \mathrm{dom} f = \lbrace x \ | 
 >
 > 　　该函数将一个向量$v \in \mathbb{R}^n$映射成高维的一条射线$\lbrace t (v, 1) \ | \ t \geq 0 \rbrace \in \mathbb{R}^{(n+1)}$。因此，该函数构造了一个**$n$维实数域**到**$n+1$维实数域的半空间**之间的映射。因此，该函数保持了集合的凸性。
 >
-> ![$\mathcal{P}$函数](./linear_frac_Pfunc.png "P函数")
+> ![P函数](./linear_frac_Pfunc.png "$\mathcal{P}$函数")
 >
 > 　　最后，我们将线性分式函数表示成：
 >
