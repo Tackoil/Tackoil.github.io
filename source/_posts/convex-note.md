@@ -143,3 +143,207 @@ $$ f(x) = (Ax + b) / (c^\mathrm{T}x + d), \qquad \mathrm{dom} f = \lbrace x \ | 
 > $$ f(x) = \mathcal{P}^{-1} (Q \mathcal{P}(x)) $$
 >
 > 从而推知该函数也将保持集合的凸性。
+
+#### 2.3.3 Linear-fractional and perspective functions
+
+> ##### example 2.1.3
+>
+> $$f_{ij} = \frac{p_{ij}}{\sum_{k=1}^n p_{kj}}$$
+>
+> 我们将该公式与原定义$f(x) = (Ax + b) / (c^{\mathrm{T}}x + d)$进行比对。将上式表示成：
+>
+> $$ f_{ij} = \frac{\left[ \begin{matrix}
+> 0 & \quad & \quad & \quad & \quad \\\\
+> \quad & \ddots & \quad & \quad & \quad \\\\
+> \quad & \quad & 1 & \quad & \quad  \\\\
+> \quad & \quad & \quad & \ddots & \quad \\\\
+> \quad & \quad & \quad & \quad & 0
+> \end{matrix} \right] p_j + 0}{\left[ \begin{matrix} 
+> 1 & 1 & 1 & \cdots & 1 \end{matrix}
+> \right] p_j + 0}$$
+>
+> 其中，$A$矩阵中的元素$1$为第$i$行，第$i$列，$p_j$表示给定$v = j$，$u$在各个$i$上的条件概率组成的列向量。
+
+### 2.4 Generalized inequalities
+
+#### 2.4.1 Proper cones and generalized inequalities
+
+内部：点集$E$的所有内点组成的集合。
+
+proper cone : 真锥
+
+#### 2.4.2 Minimum and minimal elements
+
+minimum: 最小元、minimal:极小元
+
+### 2.5 Separating and supporting hyperplanes
+
+#### 2.5.1 Separating hyperplane theorem
+
+inf: 最大下界、sup：最小上界
+
+##### Proof of separating hyperplane theorem
+
+　　我们构造一个点$u \in D$，那么在集合$D$中与集合$C$最近的的点$d$所构成的线段为$d+t(u-d), \ 0 <  t \leq 1$。那么，这个点与在集合$C$中与集合$D$最近的点$c$的距离
+
+$$
+\begin{aligned}
+g(t) = \Vert d + t(u-d) - c \Vert_2 &= [d + t(u-d) - c]^{\mathrm{T}} [d + t(u-d) - c] \\\\
+&=  d^{\mathrm{T}}d + td^{\mathrm{T}}(u-d) - d^{\mathrm{T}}c \\\\
+&+ t(u^{\mathrm{T}} - d^{\mathrm{T}})d + t^2 \Vert u - d \Vert^2_2 - t(u^{\mathrm{T}} \\\\
+&- d^{\mathrm{T}})c - c^{\mathrm{T}}d - tc^{T}(u-d) + c^{\mathrm{T}}c
+\end{aligned}
+$$ 
+
+$$
+\begin{aligned}
+\frac{\mathrm{d} \Vert d + t(u-d) - c \Vert_2 }{\mathrm{d}t} \arrowvert_{t = 0} &= d^{\mathrm{T}} (u-d) + (u^{\mathrm{T}} - d^{\mathrm{T}})d - (u^{\mathrm{T}} - d^{\mathrm{T}})c - c^{T}(u-d) \\\\
+&= 2 (d-c)^{\mathrm{T}} (u-d) < 0
+\end{aligned}
+$$
+
+　　由此，我们求出了$g(t)$在$t=0$处的导数小于0，所以一定存在某一点，使得$g(t) < g(0) = \Vert d-c \Vert^2_2$，从而找到一个点比点$d$更接近点$c$。这就与关于$d$的假设矛盾，从而不存在点$u$使得$f(u)<0$。
+
+### 2.6 Dual cones and generalized inequalities
+
+#### 2.6.1 Dual cones
+
+$$ y \in K^{*} \Leftrightarrow -y \text{是位于远点的} K \text{的支撑超平面的法线}$$
+
+　　支撑超平面的要求是：如果$a \neq 0$，并且对于所有$x \in C$，有$a^{\mathrm{T}}x \leq a^{\mathrm{T}}x_0$成立。显然，这里的$x_0$是原点。因此$a^{\mathrm{T}}x \leq 0$。因此，当法线为$-y$时，$y^{\mathrm{T}}x \geq 0$，因此y在对偶锥中。
+
+
+## 3 Convex functions
+
+### 3.1 Basic properties and examples
+
+#### 3.1.9 Inequalities
+
+　　简单说明一下Holder’s inequality的最后一句：
+
+> Summing over $i$ then yields Holder’s inequality.
+
+$$
+\begin{aligned}
+\sum_i \left( \frac{ | x_i | ^ p}{ \sum_{j=1}^n |x_j|^p} \right)^{1/p} \left( \frac{ | y_i | ^ q}{ \sum_{j=1}^n |y_j|^q} \right)^{1/q} &\leq \sum_i \frac{|x_i|^p}{p \sum_{j=1}^n |x_j| ^ p} + \sum_i \frac{|y_i|^q}{q \sum_{j=1}^n |y_j| ^ q} \\\\
+\frac{\sum_i |x_i| \cdot |y_i|}{X^{1/p}Y^{1/q}} &\leq \frac{\sum_i |x_i|^p}{pX} + \frac{\sum_i |y_i|^q}{qY} = \frac{X}{pX} + \frac{Y}{qY} = \frac{1}{p} + \frac{1}{q} = 1 \\\\
+\sum_i |x_i| \cdot |y_i| &\leq X^{1/p}Y^{1/q} \\\\
+\end{aligned}
+$$
+
+### 3.2 Operations that preserve convexity
+
+#### 3.2.1 Nonnegative weighted sums
+
+$$
+\mathrm{epi}(wf) = \left[ \begin{matrix} 
+I & 0 \\\\
+0 & w \\\\
+\end{matrix} \right] 
+\left[\begin{matrix} 
+x \\\\
+t \\\\
+\end{matrix}
+\right]
+=
+\left[\begin{matrix} 
+x \\\\
+wt \\\\
+\end{matrix}
+\right]
+$$
+
+### 3.3 The conjugate functio
+
+#### 3.3.1 Deﬁnition and examples 
+
+> ##### Example 3.23 
+>
+> 当$Y \prec 0$时：
+> $$\begin{aligned}
+> f^{*}(Y) &= \mathrm{tr}(Y(-Y)^{-1}) + \log \det (-Y)^{-1} \\\\
+> &= \mathrm{tr}(-I) + \log \det (-Y)^{-1} \\\\
+> &= -n + \log \det (-Y)^{-1} \\\\
+> \end{aligned}$$
+
+> ##### Example 3.25
+>
+> By substituting the expression for $y_i$ into $y^{\mathrm{T}}x−f(x)$ we obtain $f^{*}(y) = \sum_{i=1}^n y_i \log(y_i)$
+
+ref:[https://math.stackexchange.com/questions/2614316/conjugate-function-of-log-sum-exp](https://math.stackexchange.com/questions/2614316/conjugate-function-of-log-sum-exp)
+
+### A.1 Norms
+
+#### A.1.5  Operator norms
+
+　　对于2范数而言，算子范数为：
+
+$$
+\begin{aligned}
+\Vert X \Vert_2 &= \mathrm{sup} \lbrace \Vert Xu \Vert_2  \ | \  \Vert u \Vert_2 \leq 1 \rbrace　\\\\
+&= \mathrm{sup} \lbrace \left[ (Xu)^{\mathrm{T}} (Xu) \right] ^{\frac{1}{2}}  \ | \  (u^{\mathrm{T}} u)^{\frac{1}{2}} \leq 1 \rbrace \\\\
+&= \mathrm{sup} \lbrace \left[ u^{\mathrm{T}}X^{\mathrm{T}}Xu \right]^{\frac{1}{2}}  \ | \  u^{\mathrm{T}} u \leq 1 \rbrace \\\\
+&= \mathrm{sup} \lbrace \left[ \lambda_{\mathrm{max}}(X^{\mathrm{T}}X) u^{\mathrm{T}} u \right] ^{\frac{1}{2}}  \ | \  u^{\mathrm{T}} u \leq 1 \rbrace \\\\
+&= \lambda_{\mathrm{max}}(X^{\mathrm{T}}X) \\\\
+\end{aligned}
+$$
+
+### A.3 Functions
+
+#### A.3.3 Closed functions
+
+##### Example A.1
+
+$[0, +\infty]$ 是闭集。
+
+### A.5 Linear algebra
+
+#### A.5.5 Schur complement
+
+由$Ax + By = u$推出：
+
+$$ x = A^{-1} (u- By)$$
+
+带入$B^{\mathrm{T}}x + Cy = v$中得到：
+
+$$
+\begin{aligned}
+B^{\mathrm{T}}A^{-1}u - B^{\mathrm{T}}A^{-1}y + Cy &= v \\\\
+B^{\mathrm{T}}A^{-1}u + Sy &= v \\\\
+y &= S^{-1}(v - B^{\mathrm{T}}A^{-1}u) \\\\
+\end{aligned}
+$$ 
+
+然后将$y$带入得到$x$：
+
+$$
+\begin{aligned}
+x &= A^{-1} [u - BS^{-1}(v-B^{\mathrm{T}}A^{-1}u)] \\\\
+&= (A^{-1} - A^{-1}BS^{-1}B^{\mathrm{T}}A^{-1})u - A^{-1}BS^{-1}v \\\\
+\end{aligned}
+$$
+
+然后，根据：
+
+$$
+\begin{equation}
+\left[ \begin{matrix}
+x \\\\
+y \\\\
+\end{matrix}
+\right] = \left[ \begin{matrix}
+A & B \\\\
+B^{\mathrm{T}} & C \\\\
+\end{matrix}
+\right]^{-1}
+\left[ \begin{matrix}
+u \\\\
+v \\\\
+\end{matrix}
+\right]
+\end{equation}
+$$
+
+从而可以得到那个神必逆矩阵。
+
+
