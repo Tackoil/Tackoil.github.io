@@ -272,6 +272,45 @@ $$
 
 ref:[https://math.stackexchange.com/questions/2614316/conjugate-function-of-log-sum-exp](https://math.stackexchange.com/questions/2614316/conjugate-function-of-log-sum-exp)
 
+## 4 Convex optimization problems
+
+### 4.4 Quadratic optimization problems
+
+#### 4.4.1 Examples
+
+##### Linear program with random cost
+
+$$\mathrm{var}(c^{\mathrm{T}}x) = \mathrm{E}(c^{\mathrm{T}}x - \mathrm{E}c^{\mathrm{T}}x)^2 = \mathrm{E}(c^{\mathrm{T}}x - \bar{c}^{\mathrm{T}}x)^2 = x^{\mathrm{T}} \mathrm{E}(c - \bar{c})(c - \bar{c})^{\mathrm{T}}x$$
+
+### 4.6 Generalized inequality constraints
+
+#### 4.6.3 Examples
+
+##### Matrix norm minimization 
+
+　　根据A.5.5的知识，设$S$是$X$的Schur补。如果$A \succ 0$，那么$X \succeq 0$等价于$S \succeq 0$
+
+　　那么，
+
+$$
+\begin{aligned}
+A^{\mathrm{T}}A &\preceq t^2 I \\\\
+t^2 I - A^{\mathrm{T}} A &\succeq 0 \\\\
+t I - A^{\mathrm{T}} \frac{1}{t} I A &\succeq 0  \Leftrightarrow \left[ \begin{matrix}
+tI & A \\\\
+A^{\mathrm{T}} & tI \\\\
+\end{matrix}
+\right] \succeq 0 \\\\
+C - B^{\mathrm{T}} A^{-1} B &\succeq 0 \Leftrightarrow \left[ \begin{matrix}
+A & B \\\\
+B^{\mathrm{T}} & C \\\\
+\end{matrix}
+\right] \succeq 0 \\\\
+\end{aligned}
+$$
+
+## Appendices
+
 ### A.1 Norms
 
 #### A.1.5  Operator norms
