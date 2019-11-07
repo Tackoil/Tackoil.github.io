@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="Tackoil&#39;s WebSite">
 <meta property="og:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-07T14:26:43.369Z">
+<meta property="og:updated_time" content="2019-11-07T14:38:07.891Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="距离整理笔记">
 <meta name="twitter:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
@@ -408,7 +408,7 @@
 <p>　　Levenshtein distance 和 LCS distance 具有单元成本并满足以上条件，因此满足距离公理。一些编辑距离的变体即使不是真正的(proper)距离，也被在一些文献中使用。</p>
 </blockquote>
 <p>　　该距离由递推式定义：</p>
-<p>$$<br>d(x[0:i], y[0:j]) = \begin{cases}<br>\max (i, j) &amp; \text{if} \min(i, j) = 0 \\<br>\min \left[ d(x[0:i-1], y[0:j]) +1 , d(x[0:i],y[0:j-1]) +1 , d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)} \right] \\<br>\end{cases}<br>$$</p>
+<p>$$<br>d(x[0:i], y[0:j]) = \begin{cases}<br>\max (i, j) &amp; \text{if} \min(i, j) = 0 \\<br>\min \begin{cases} d(x[0:i-1], y[0:j]) +1 \\<br>d(x[0:i],y[0:j-1]) +1 \\<br>d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)}<br>\end{cases}<br>&amp; \text{otherwise}<br>\end{cases}<br>$$</p>
 <h3 id="Max-Match-M-2-Evaluation"><a href="#Max-Match-M-2-Evaluation" class="headerlink" title="Max-Match($M^2$) Evaluation"></a>Max-Match($M^2$) Evaluation</h3><p><a href="https://www.aclweb.org/anthology/N12-1067/" target="_blank" rel="noopener">Paper: Better Evaluation for Grammatical Error Correction</a></p>
 <p>　　我们这里提到的评估，有以下的限制与使用环境。</p>
 <ul>
