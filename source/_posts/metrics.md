@@ -60,7 +60,11 @@ $$
 $$
 d(x[0:i], y[0:j]) = \begin{cases}
 \max (i, j) & \text{if} \min(i, j) = 0 \\\\
-\min \left[ d(x[0:i-1], y[0:j]) +1 , d(x[0:i],y[0:j-1]) +1 , d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)} \right] \\\\
+\min \begin{cases} d(x[0:i-1], y[0:j]) +1 \\\\
+d(x[0:i],y[0:j-1]) +1 \\\\
+d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)}  
+\end{cases}
+& \text{otherwise}
 \end{cases}
 $$
 
