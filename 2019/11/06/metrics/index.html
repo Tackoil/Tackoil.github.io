@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="Tackoil&#39;s WebSite">
 <meta property="og:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-08T12:48:25.021Z">
+<meta property="og:updated_time" content="2019-11-08T12:49:48.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="距离整理笔记">
 <meta name="twitter:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
@@ -494,7 +494,7 @@
 <li>评估的最小粒度为单词（词条）。</li>
 <li>我们希望这个评估可以对接近$R$的$C$给予<strong>较高</strong>的分数，对接近$S$的$C$给予<strong>较低</strong>的分数。</li>
 </ul>
-<p>　　　该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：<br>$$<br>\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^{<em>}_n\right) \<br>p^{</em>}_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}’ \in c} \mathrm{Count}_c (n\text{-gram}’)} \<br>\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \<br>\mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}’ \in A} I(n\text{-gram}, n\text{-gram}’)<br>$$</p>
+<p>　　　该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：<br>$$<br>\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^{<em>}_n\right) \\<br>p^{</em>}_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}’ \in c} \mathrm{Count}_c (n\text{-gram}’)} \\<br>\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \\<br>\mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}’ \in A} I(n\text{-gram}, n\text{-gram}’)<br>$$</p>
 <h2 id="向量度量"><a href="#向量度量" class="headerlink" title="向量度量"></a>向量度量</h2><h3 id="p-范数"><a href="#p-范数" class="headerlink" title="$p$-范数"></a>$p$-范数</h3><p>　　各个领域都很常用的范数，用来度量向量应该是比较成熟的理论了。<br>$$<br>\Vert x \Vert_p = \left( \vert x_1 \vert^p + \vert x_2 \vert^p + \cdots + \vert x_n \vert^p \right)^{1/p}<br>$$</p>
 <h4 id="1-范数"><a href="#1-范数" class="headerlink" title="$1$-范数"></a>$1$-范数</h4><p>$$<br>\Vert x \Vert_1 = \vert x_1 \vert + \vert x_2 \vert + \cdots + \vert x_n \vert<br>$$</p>
 <p>　　1-范数有比较好的鲁棒性，根据罚函数的理论，其在大的$x_i$上，罚函数上升较慢。</p>
