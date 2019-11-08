@@ -108,18 +108,18 @@ $$
 
 　　公式直接列举在下面了，感觉下面的定义足够的详细。
 $$
-\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right) \\
+\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right) \\\\
 \mathrm{BP}(c;R) = \begin{cases}
-1 \quad &\text{if}\ \mathrm{len}(c) > \mathrm{len}(r^*)\\
-\exp(1-\frac{\mathrm{len}(r^*)}{\mathrm{len}(c)}) &\text{if}\  \mathrm{len}(c) \leq \mathrm{len}(r^*)
-\end{cases} \\
-r^* = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|\\
-w_N = \frac{1}{N} \\
-p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}' \in c} \mathrm{Count}(n\text{-gram}')} \\
-\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)})) \\
-\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}' \in w} I(n\text{-gram}, n\text{-gram}') \\
+1 \quad &\text{if}\ \mathrm{len}(c) > \mathrm{len}(r^\star)\\\\
+\exp(1-\frac{\mathrm{len}(r^\star)}{\mathrm{len}(c)}) &\text{if}\  \mathrm{len}(c) \leq \mathrm{len}(r^\star)
+\end{cases} \\\\
+r^\star = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|\\\\
+w_N = \frac{1}{N} \\\\
+p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}' \in c} \mathrm{Count}(n\text{-gram}')} \\\\
+\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)})) \\\\
+\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}' \in w} I(n\text{-gram}, n\text{-gram}') \\\\
 I(a,b) = \begin{cases}
-1 & \text{if}\ a = b \\
+1 & \text{if}\ a = b \\\\
 0 & \text{else}
 \end{cases}
 $$
@@ -189,9 +189,9 @@ $$
 
 　　　该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：
 $$
-\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^{*}_n\right) \\
-p^{*}_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}' \in c} \mathrm{Count}_c (n\text{-gram}')} \\
-\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \\
+\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^\star_n\right) \\\\
+p^\star_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}' \in c} \mathrm{Count}_c (n\text{-gram}')} \\\\
+\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \\\\
 \mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}' \in A} I(n\text{-gram}, n\text{-gram}')
 $$
 
@@ -220,10 +220,10 @@ $$
 
 　　这个就是大家都很常用的欧氏距离了。也是最小二乘法所使用的范数。
 
-#### $\infin$-范数
+#### $\infty$-范数
 
 $$
-\Vert x \Vert_\infin = \max \left( \vert x_1 \vert , \vert x_2 \vert , \cdots , \vert x_n \vert \right)
+\Vert x \Vert_\infty = \max \left( \vert x_1 \vert , \vert x_2 \vert , \cdots , \vert x_n \vert \right)
 $$
 
 　　 总之也能有用的上的地方吧。（比如说对数据的上下界有极为严格的定义，之类的。）
