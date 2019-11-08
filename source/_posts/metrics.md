@@ -98,6 +98,42 @@ $$
 \mathrm{match}(e,g) \Leftrightarrow (e.a = g.a) \land (e.b = g,b) \land (e.C \in g.C)
 $$
 
+## 二元素度量
+
+### BLEU
+
+[Paper: BLEU: a Method for Automatic Evaluation of Machine Translation](https://www.aclweb.org/anthology/P02-1040.pdf)
+
+　　BLEU是为**机器翻译**准备的评估方法。以单词（词条）为单位，计算候选句$C$与参考句$R$的距离。原论文可以计算多个候选句与多个参考句之间的距离，这里我们将其简化为一个候选句与多个参考句的距离（当然也可以一对一）。
+
+　　公式直接列举在下面了，感觉下面的定义足够的详细。
+$$
+\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right) \\
+\mathrm{BP}(c;R) = \begin{cases}
+1 \quad &\text{if}\ \mathrm{len}(c) > \mathrm{len}(r^*)\\
+\exp(1-\frac{\mathrm{len}(r^*)}{\mathrm{len}(c)}) &\text{if}\  \mathrm{len}(c) \leq \mathrm{len}(r^*)
+\end{cases} \\
+r^* = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|\\
+w_N = \frac{1}{N} \\
+p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}' \in c} \mathrm{Count}(n\text{-gram}')} \\
+\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)})) \\
+\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}' \in w} I(n\text{-gram}, n\text{-gram}') \\
+I(a,b) = \begin{cases}
+1 & \text{if}\ a = b \\
+0 & \text{else}
+\end{cases}
+$$
+　　简单概括下，主要分为以下步骤。
+
+- 计算截断数量$\mathrm{Count}_\mathrm{clip}$
+- 计算准确度$p_n$
+- 计算长度惩罚系数$\mathrm{BP}(c;R)$
+- 最终得出$\mathrm{BLEU}(c;R)$
+
+
+
+## 三元素度量
+
 ### I-measure Evaluation
 
 [Paper: Towards a standard evaluation method for grammatical error detection and correction](https://www.aclweb.org/anthology/N15-1060/)
@@ -136,3 +172,87 @@ I = \begin{cases}
 \frac{\mathrm{WAcc}_\text{sys}}{\mathrm{WAcc}_\text{base}} - 1 & \text{otherwise}
 \end{cases}
 $$
+
+### GLEU
+
+[Paper: Ground Truth for Grammatical Error Correction Metrics](https://www.aclweb.org/anthology/P15-2097/)
+
+[Paper: GLEU Without Tuning](https://arxiv.org/abs/1605.02592)
+
+　　本文将主要介绍升级版的GLEU，他们称之为$\mathrm{GLEU^+}$。更新版的GLEU+相对于原始版本的GLEU，不仅去掉了一个需要特殊训练的参数$\lambda$，计算公式也更加合理易懂，所以我们将主要介绍这个。
+
+　　我们这里提到的评估，有以下的限制与使用环境。
+
+- 我们对三个句子$C$，$S$，$R$进行评估。
+- 评估的最小粒度为单词（词条）。
+- 我们希望这个评估可以对接近$R$的$C$给予**较高**的分数，对接近$S$的$C$给予**较低**的分数。
+
+　　　该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：
+$$
+\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^{*}_n\right) \\
+p^{*}_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}' \in c} \mathrm{Count}_c (n\text{-gram}')} \\
+\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \\
+\mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}' \in A} I(n\text{-gram}, n\text{-gram}')
+$$
+
+## 向量度量
+
+### $p$-范数
+
+　　各个领域都很常用的范数，用来度量向量应该是比较成熟的理论了。
+$$
+\Vert x \Vert_p = \left( \vert x_1 \vert^p + \vert x_2 \vert^p + \cdots + \vert x_n \vert^p \right)^{1/p}
+$$
+
+#### $1$-范数
+
+$$
+\Vert x \Vert_1 = \vert x_1 \vert + \vert x_2 \vert + \cdots + \vert x_n \vert
+$$
+
+　　1-范数有比较好的鲁棒性，根据罚函数的理论，其在大的$x_i$上，罚函数上升较慢。
+
+#### $2$-范数
+
+$$
+\Vert x \Vert_2 = \left( \vert x_1 \vert^2 + \vert x_2 \vert^2 + \cdots + \vert x_n \vert^2 \right)^{1/2}
+$$
+
+　　这个就是大家都很常用的欧氏距离了。也是最小二乘法所使用的范数。
+
+#### $\infin$-范数
+
+$$
+\Vert x \Vert_\infin = \max \left( \vert x_1 \vert , \vert x_2 \vert , \cdots , \vert x_n \vert \right)
+$$
+
+　　 总之也能有用的上的地方吧。（比如说对数据的上下界有极为严格的定义，之类的。）
+
+## 概率分布度量
+
+　　如果要认为这个也是向量度量的话，也不是不可以。这里就将对概率化的向量的度量单独列出来了。
+
+### 相对熵（Kullback-Leibler散度）
+
+　　源自信息论理论中的一个度量。用来度量两个概率分布的差异。
+
+　　**注意：这是一个非对称的度量，换句话说，这个度量不符合标准的距离定义。**
+$$
+\mathrm{KL}(p \Vert q) = \sum p(x) \log \frac{p(x)}{q(x)}
+$$
+
+### 交叉熵
+
+　　很不幸的是，交叉熵也不具有对称性。通常我们认为某一个分布是已知的，我们用q去逼近p，在这种情况下，相对熵可以表示为：
+$$
+\begin{aligned}
+\mathrm{KL}(p \Vert q ) &= \sum p(x) \log p(x) - \sum p(x) \log q(x) \\\\
+&= -H(p) + H(p \Vert q)
+\end{aligned}
+$$
+　　我们称$H(p \Vert q)$为交叉熵，定义为：
+$$
+H(p \Vert q) = - \sum p(x) \log q(x)
+$$
+　　这里使用了可能和大多数博客不一样的符号。为了区别联合熵$H(p,q)$，因此没有使用逗号。为了区别条件熵$H(p \vert q)$，因此没有使用单竖线。为了看起来保持了相对熵不对称的性质，因此使用了双竖线。
+
