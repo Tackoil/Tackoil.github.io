@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="Tackoil&#39;s WebSite">
 <meta property="og:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-07T14:38:07.891Z">
+<meta property="og:updated_time" content="2019-11-08T12:44:21.178Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="距离整理笔记">
 <meta name="twitter:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
@@ -354,7 +354,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7
+                  12
                 </span>
               
             </div>
@@ -424,7 +424,16 @@
 <li>我们对所有的单位操作赋予权值$1$，对于合并的操作赋予被合并的权值之和。此外，我们将黄金标准中的编辑操作赋予权值$-(u+1) \times |E|$，其中$|E|$是这张图中的边的总数。也就是含有黄金标准的路径将<strong>一定</strong>会获得一个负数的权值。这样，我们就得到了一个<strong>编辑晶格</strong>。</li>
 </ol>
 <p>　　之后计算$M^2$距离时，仅需要先计算$C$，$S$的最小权值路径所对应的编辑操作$e$。对于所有的测试句子的编辑操作组成一个集合$\lbrace e_1, \cdots, e_n \rbrace$，与其对应的黄金标准集合为$\lbrace g_1, \cdots , g_n \rbrace$。之后计算两个集合的准确率、召回率和$F_1$分数即可。<br>$$<br>\begin{aligned}<br>P &amp;= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n | e_i | } \\<br>R &amp;= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n |g_i|} \\<br>F_1 &amp;=  2 \times \frac{P \times R}{P + R}<br>\end{aligned}<br>$$<br>　　这里的$|e_i \cap g_i |$表示的是$e_i$操作是否与$g_i$操作match。<br>$$<br>\mathrm{match}(e,g) \Leftrightarrow (e.a = g.a) \land (e.b = g,b) \land (e.C \in g.C)<br>$$</p>
-<h3 id="I-measure-Evaluation"><a href="#I-measure-Evaluation" class="headerlink" title="I-measure Evaluation"></a>I-measure Evaluation</h3><p><a href="https://www.aclweb.org/anthology/N15-1060/" target="_blank" rel="noopener">Paper: Towards a standard evaluation method for grammatical error detection and correction</a></p>
+<h2 id="二元素度量"><a href="#二元素度量" class="headerlink" title="二元素度量"></a>二元素度量</h2><h3 id="BLEU"><a href="#BLEU" class="headerlink" title="BLEU"></a>BLEU</h3><p><a href="https://www.aclweb.org/anthology/P02-1040.pdf" target="_blank" rel="noopener">Paper: BLEU: a Method for Automatic Evaluation of Machine Translation</a></p>
+<p>　　BLEU是为<strong>机器翻译</strong>准备的评估方法。以单词（词条）为单位，计算候选句$C$与参考句$R$的距离。原论文可以计算多个候选句与多个参考句之间的距离，这里我们将其简化为一个候选句与多个参考句的距离（当然也可以一对一）。</p>
+<p>　　公式直接列举在下面了，感觉下面的定义足够的详细。<br>$$<br>\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right) \<br>\mathrm{BP}(c;R) = \begin{cases}<br>1 \quad &amp;\text{if}\ \mathrm{len}(c) &gt; \mathrm{len}(r^<em>)\<br>\exp(1-\frac{\mathrm{len}(r^</em>)}{\mathrm{len}(c)}) &amp;\text{if}\  \mathrm{len}(c) \leq \mathrm{len}(r^<em>)<br>\end{cases} \<br>r^</em> = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|\<br>w_N = \frac{1}{N} \<br>p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}’ \in c} \mathrm{Count}(n\text{-gram}’)} \<br>\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)})) \<br>\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}’ \in w} I(n\text{-gram}, n\text{-gram}’) \<br>I(a,b) = \begin{cases}<br>1 &amp; \text{if}\ a = b \<br>0 &amp; \text{else}<br>\end{cases}<br>$$<br>　　简单概括下，主要分为以下步骤。</p>
+<ul>
+<li>计算截断数量$\mathrm{Count}_\mathrm{clip}$</li>
+<li>计算准确度$p_n$</li>
+<li>计算长度惩罚系数$\mathrm{BP}(c;R)$</li>
+<li>最终得出$\mathrm{BLEU}(c;R)$</li>
+</ul>
+<h2 id="三元素度量"><a href="#三元素度量" class="headerlink" title="三元素度量"></a>三元素度量</h2><h3 id="I-measure-Evaluation"><a href="#I-measure-Evaluation" class="headerlink" title="I-measure Evaluation"></a>I-measure Evaluation</h3><p><a href="https://www.aclweb.org/anthology/N15-1060/" target="_blank" rel="noopener">Paper: Towards a standard evaluation method for grammatical error detection and correction</a></p>
 <p>　　我们这里提到的评估，有以下的限制与使用环境。</p>
 <ul>
 <li>我们对三个句子$C$，$S$，$R$进行评估。</li>
@@ -476,6 +485,27 @@
 </tbody></table>
 <p>　　简单解释，我们将W与A是否匹配分成两类：不匹配（即需要更改）【P】、匹配（即不需要更改）【N】。由此我们可以将S的预测分为TP、TN、FP、FN四类。因为在本次计算中，我们还会遇到最后一种情况，此时我们将其定义为FPN类。这样，我们得出加权准确性指标。<br>$$<br>\mathrm{WAcc} = \frac{w \cdot \mathrm{TP} + \mathrm{TN}}{w \cdot \mathrm{TP} + \mathrm{TN} + w \cdot (\mathrm{FP} - \frac{\mathrm{FPN}}{2}) + (\mathrm{FN} - \frac{\mathrm{FPN}}{2})}<br>$$<br>　　我们希望给予$\mathrm{TP}$多于$\mathrm{TN}$的奖励（即正确的更改好于不更改）；我们希望基于$\mathrm{FP}$多于$\mathrm{FN}$的惩罚（即错误的更改不如不更改），因此这里$w \geq 1$。通常$w = 2$。</p>
 <p>　　最后为了对比在不同数据集下的模型情况，我们构建了每个数据集格子的基线标准，即：将Reference直接作为Candidate，计算加权准确性指标$\mathrm{WAcc}_{\text{base}}$，然后我们得到I-measure<br>$$<br>I = \begin{cases}<br>\lfloor \mathrm{WAcc}_{\text{sys}} \rfloor &amp; \text{if}\  \mathrm{WAcc}_{\text{sys}} = \mathrm{WAcc}_{\text{base}} \\<br>\frac{\mathrm{WAcc}_{\text{sys}} - \mathrm{WAcc}_{\text{base}}}{1 - \mathrm{WAcc}_{\text{base}}} &amp; \text{if}\ \mathrm{WAcc}_{\text{sys}} &gt; \mathrm{WAcc}_{\text{base}} \\<br>\frac{\mathrm{WAcc}_\text{sys}}{\mathrm{WAcc}_\text{base}} - 1 &amp; \text{otherwise}<br>\end{cases}<br>$$</p>
+<h3 id="GLEU"><a href="#GLEU" class="headerlink" title="GLEU"></a>GLEU</h3><p><a href="https://www.aclweb.org/anthology/P15-2097/" target="_blank" rel="noopener">Paper: Ground Truth for Grammatical Error Correction Metrics</a></p>
+<p><a href="https://arxiv.org/abs/1605.02592" target="_blank" rel="noopener">Paper: GLEU Without Tuning</a></p>
+<p>　　本文将主要介绍升级版的GLEU，他们称之为$\mathrm{GLEU^+}$。更新版的GLEU+相对于原始版本的GLEU，不仅去掉了一个需要特殊训练的参数$\lambda$，计算公式也更加合理易懂，所以我们将主要介绍这个。</p>
+<p>　　我们这里提到的评估，有以下的限制与使用环境。</p>
+<ul>
+<li>我们对三个句子$C$，$S$，$R$进行评估。</li>
+<li>评估的最小粒度为单词（词条）。</li>
+<li>我们希望这个评估可以对接近$R$的$C$给予<strong>较高</strong>的分数，对接近$S$的$C$给予<strong>较低</strong>的分数。</li>
+</ul>
+<p>　　　该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：<br>$$<br>\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^{<em>}_n\right) \<br>p^{</em>}_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}’ \in c} \mathrm{Count}_c (n\text{-gram}’)} \<br>\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \<br>\mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}’ \in A} I(n\text{-gram}, n\text{-gram}’)<br>$$</p>
+<h2 id="向量度量"><a href="#向量度量" class="headerlink" title="向量度量"></a>向量度量</h2><h3 id="p-范数"><a href="#p-范数" class="headerlink" title="$p$-范数"></a>$p$-范数</h3><p>　　各个领域都很常用的范数，用来度量向量应该是比较成熟的理论了。<br>$$<br>\Vert x \Vert_p = \left( \vert x_1 \vert^p + \vert x_2 \vert^p + \cdots + \vert x_n \vert^p \right)^{1/p}<br>$$</p>
+<h4 id="1-范数"><a href="#1-范数" class="headerlink" title="$1$-范数"></a>$1$-范数</h4><p>$$<br>\Vert x \Vert_1 = \vert x_1 \vert + \vert x_2 \vert + \cdots + \vert x_n \vert<br>$$</p>
+<p>　　1-范数有比较好的鲁棒性，根据罚函数的理论，其在大的$x_i$上，罚函数上升较慢。</p>
+<h4 id="2-范数"><a href="#2-范数" class="headerlink" title="$2$-范数"></a>$2$-范数</h4><p>$$<br>\Vert x \Vert_2 = \left( \vert x_1 \vert^2 + \vert x_2 \vert^2 + \cdots + \vert x_n \vert^2 \right)^{1/2}<br>$$</p>
+<p>　　这个就是大家都很常用的欧氏距离了。也是最小二乘法所使用的范数。</p>
+<h4 id="infin-范数"><a href="#infin-范数" class="headerlink" title="$\infin$-范数"></a>$\infin$-范数</h4><p>$$<br>\Vert x \Vert_\infin = \max \left( \vert x_1 \vert , \vert x_2 \vert , \cdots , \vert x_n \vert \right)<br>$$</p>
+<p>　　 总之也能有用的上的地方吧。（比如说对数据的上下界有极为严格的定义，之类的。）</p>
+<h2 id="概率分布度量"><a href="#概率分布度量" class="headerlink" title="概率分布度量"></a>概率分布度量</h2><p>　　如果要认为这个也是向量度量的话，也不是不可以。这里就将对概率化的向量的度量单独列出来了。</p>
+<h3 id="相对熵（Kullback-Leibler散度）"><a href="#相对熵（Kullback-Leibler散度）" class="headerlink" title="相对熵（Kullback-Leibler散度）"></a>相对熵（Kullback-Leibler散度）</h3><p>　　源自信息论理论中的一个度量。用来度量两个概率分布的差异。</p>
+<p>　　<strong>注意：这是一个非对称的度量，换句话说，这个度量不符合标准的距离定义。</strong><br>$$<br>\mathrm{KL}(p \Vert q) = \sum p(x) \log \frac{p(x)}{q(x)}<br>$$</p>
+<h3 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h3><p>　　很不幸的是，交叉熵也不具有对称性。通常我们认为某一个分布是已知的，我们用q去逼近p，在这种情况下，相对熵可以表示为：<br>$$<br>\begin{aligned}<br>\mathrm{KL}(p \Vert q ) &amp;= \sum p(x) \log p(x) - \sum p(x) \log q(x) \\<br>&amp;= -H(p) + H(p \Vert q)<br>\end{aligned}<br>$$<br>　　我们称$H(p \Vert q)$为交叉熵，定义为：<br>$$<br>H(p \Vert q) = - \sum p(x) \log q(x)<br>$$<br>　　这里使用了可能和大多数博客不一样的符号。为了区别联合熵$H(p,q)$，因此没有使用逗号。为了区别条件熵$H(p \vert q)$，因此没有使用单竖线。为了看起来保持了相对熵不对称的性质，因此使用了双竖线。</p>
 
       
     </div>
@@ -664,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Version"><span class="nav-text">Version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑距离"><span class="nav-text">编辑距离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#汉明距离"><span class="nav-text">汉明距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Levenshtein距离"><span class="nav-text">Levenshtein距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Max-Match-M-2-Evaluation"><span class="nav-text">Max-Match($M^2$) Evaluation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-measure-Evaluation"><span class="nav-text">I-measure Evaluation</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Version"><span class="nav-text">Version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑距离"><span class="nav-text">编辑距离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#汉明距离"><span class="nav-text">汉明距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Levenshtein距离"><span class="nav-text">Levenshtein距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Max-Match-M-2-Evaluation"><span class="nav-text">Max-Match($M^2$) Evaluation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二元素度量"><span class="nav-text">二元素度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BLEU"><span class="nav-text">BLEU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三元素度量"><span class="nav-text">三元素度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-measure-Evaluation"><span class="nav-text">I-measure Evaluation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GLEU"><span class="nav-text">GLEU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量度量"><span class="nav-text">向量度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#p-范数"><span class="nav-text">$p$-范数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-范数"><span class="nav-text">$1$-范数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-范数"><span class="nav-text">$2$-范数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#infin-范数"><span class="nav-text">$\infin$-范数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概率分布度量"><span class="nav-text">概率分布度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相对熵（Kullback-Leibler散度）"><span class="nav-text">相对熵（Kullback-Leibler散度）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵"><span class="nav-text">交叉熵</span></a></li></ol></li></ol></div>
             
 
           </div>
