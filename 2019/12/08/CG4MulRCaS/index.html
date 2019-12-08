@@ -105,17 +105,17 @@
 
 
 
-<meta name="description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
+<meta name="description" content="本文是 ACL 2019 Cognitive Graph for Multi-Hop Reading Comprehension at Scale 的阅读笔记，说是笔记，应该会大量翻译原文的内容。为了强迫自己把某些不知道什么原因每次看到一半就不想看了以至于需要重新看的论文看完，会简单写一个笔记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="信息论基础笔记">
-<meta property="og:url" content="http://yoursite.com/2019/09/19/it-note/index.html">
+<meta property="og:title" content="Note of CG4MulRCaS">
+<meta property="og:url" content="http://yoursite.com/2019/12/08/CG4MulRCaS/index.html">
 <meta property="og:site_name" content="Tackoil&#39;s WebSite">
-<meta property="og:description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
+<meta property="og:description" content="本文是 ACL 2019 Cognitive Graph for Multi-Hop Reading Comprehension at Scale 的阅读笔记，说是笔记，应该会大量翻译原文的内容。为了强迫自己把某些不知道什么原因每次看到一半就不想看了以至于需要重新看的论文看完，会简单写一个笔记。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-25T07:09:38.933Z">
+<meta property="og:updated_time" content="2019-12-08T07:57:21.184Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="信息论基础笔记">
-<meta name="twitter:description" content="本篇为 机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。 　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。 　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x">
+<meta name="twitter:title" content="Note of CG4MulRCaS">
+<meta name="twitter:description" content="本文是 ACL 2019 Cognitive Graph for Multi-Hop Reading Comprehension at Scale 的阅读笔记，说是笔记，应该会大量翻译原文的内容。为了强迫自己把某些不知道什么原因每次看到一半就不想看了以至于需要重新看的论文看完，会简单写一个笔记。">
 
 
 
@@ -145,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/09/19/it-note/">
+  <link rel="canonical" href="http://yoursite.com/2019/12/08/CG4MulRCaS/">
 
 
 
 
 
-  <title>信息论基础笔记 | Tackoil's WebSite</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Note of CG4MulRCaS | Tackoil's WebSite</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -268,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/19/it-note/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/08/CG4MulRCaS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tackoil">
@@ -285,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">信息论基础笔记</h1>
+          <h1 class="post-title" itemprop="name headline">Note of CG4MulRCaS</h1>
         
 
         <div class="post-meta">
@@ -297,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-19T15:33:53+08:00">
-                2019-09-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-08T14:14:29+08:00">
+                2019-12-08
               </time>
             
 
@@ -354,7 +354,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  2
                 </span>
               
             </div>
@@ -376,39 +376,47 @@
 
       
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><hr>
-<p>　　本篇为 <strong>机械工业出版社 |《信息论基础》| Thomas M. Cover  Joy A. Thomas 著 | 阮吉寿 张华 译</strong> 的笔记。虽然大部分笔记都随手记在书上了，不过由于笔者难以理解书上的部分证明过程，因此单独整理出来以便查阅。</p>
-<p>　　由于这里大部分对原书的补充说明是由笔者自己完成的，如有疏漏请多指教。</p>
-<p>　　本篇编号系统与原书一致。（但右边栏的BUG不太想修了x</p>
+<hr>
+<p>　　本文是 ACL 2019 <strong>Cognitive Graph for Multi-Hop Reading Comprehension at Scale</strong> 的阅读笔记，说是笔记，应该会大量翻译原文的内容。为了强迫自己把某些不知道什么原因每次看到一半就不想看了以至于需要重新看的论文看完，会简单写一个笔记。</p>
 <a id="more"></a>
 
-<h2 id="2-熵、相对熵与互信息"><a href="#2-熵、相对熵与互信息" class="headerlink" title="2. 熵、相对熵与互信息"></a>2. 熵、相对熵与互信息</h2><h3 id="2-7-对数和不等式及其应用"><a href="#2-7-对数和不等式及其应用" class="headerlink" title="2.7 对数和不等式及其应用"></a>2.7 对数和不等式及其应用</h3><blockquote>
-<p><strong>定理2.7.1</strong>（对数和不等式）  对于非负数$a_1, a_2, \cdots, a_n$和$b_a, b_2, \cdots, b_n$，<br>$$<br>\begin{equation}<br> \sum_{i=1}^n a_i \log{\frac{a_i}{b_i}} \geq \left( \sum_{i = 1}^n a_i \right) \log{ \frac{ \sum_{i = 1}^n a_i}{ \sum_{i = 1}^n b_i} }<br>\tag{2-99}<br>\end{equation}<br>$$</p>
-<p>当且仅当$\frac{a_i}{b_i} = \mathrm{常数}$，等号成立。</p>
-<p><strong>证明：</strong> 不失一般性，假定$a_i &gt; 0, b_i &gt; 0$。由于对任意的正数$t$有$f’’(t) = \frac{1}{t} \log{\mathrm{e}} &gt; 0$，可知函数 $f(x) = t \log{t}$ <strong>严格凸</strong>。因而，由Jensen不等式，有</p>
-<p>$$ \begin{equation}<br> \sum \alpha_i f(t_i) \geq f \left( \sum \alpha_i t_i \right)<br>\tag{2-100}<br>\label{eq:2-100}<br>\end{equation}<br>$$</p>
-<p>其中$\alpha_i \geq 1, \sum_i \alpha_i = 1$。令$\alpha_i = \frac{b_i}{\sum_{j = 1}^n b_j}, t_i = \frac{a_i}{b_i}$，可得</p>
-<p>$$\begin{equation}<br>  \sum \frac{a_i}{\sum b_j} \log{\frac{a_i}{b_i}} \geq \sum \frac{a_i}{\sum b_j} \log{\sum \frac{a_i}{\sum b_j}}<br>\tag{2-101}<br>\label{eq:2-101}<br>\end{equation}<br>$$</p>
-<p>这就是对数和不等式。 $\square$</p>
-</blockquote>
-<p>　　但上述公式\eqref{eq:2-101}中的所有求和符号缺少角标，题设中的$\alpha_i$的分子书写有误（本文已改正）。因此重新解释这部分证明。</p>
-<blockquote>
-<p><strong>证明2.7.1：</strong></p>
-<p>前略</p>
-<p>公式\eqref{eq:2-100}，其中$\alpha_i \geq 1, \sum_i \alpha_i = 1$。为满足第二个条件，构造$\alpha_i = \frac{b_i}{B}$，其中$B = \sum_{j=1}^n b_j$， 也就是$b_i$的和。再构造$t_i = \frac{a_i}{b_i}$，可得</p>
-<p>$$\begin{equation}<br>  \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \log{\frac{a_i}{b_i}} \geq \sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i} \cdot \log{\sum_i \frac{b_i}{B} \cdot \frac{a_i}{b_i}}<br>\tag{2-101’}<br>\end{equation}<br>$$</p>
-<p>右侧$\log{}$中的求和，由于分母$B = \sum_{j=1}^n b_j$与$i$无关，可将求和符号移动至分子，不等式两侧约去$B$最后可证。$\square$</p>
-</blockquote>
-<h3 id="2-8-数据处理不等式"><a href="#2-8-数据处理不等式" class="headerlink" title="2.8 数据处理不等式"></a>2.8 数据处理不等式</h3><blockquote>
-<p>　　<strong>定义</strong>　如果$Z$的条件分布仅依赖于$Y$的分布，而与$X$是条件独立的，则称随机变量$X,Y,Z$依序构成马尔可夫(Markov)链(记为$X \to Y \to Z$)。具体讲，若$X,Y,Z$的联合概率密度函数可以写为</p>
-<p>$$\begin{equation}<br>p(x,y,z) = p(x)p(y|x)p(z|y)<br>\tag{2-117}<br>\label{eq:2-117}<br>\end{equation}<br>$$</p>
-<p>则$X,Y,Z$构成马尔可夫链$X \to Y \to Z$</p>
-<p>　　一些简单的结果如下：</p>
+<h2 id="Author-amp-Abstract"><a href="#Author-amp-Abstract" class="headerlink" title="Author &amp; Abstract"></a>Author &amp; Abstract</h2><blockquote>
 <ul>
-<li>$X \to Y \to Z$，当且仅当在给定$Y$时，$X$与$Z$是条件独立的。马尔可夫性蕴含条件独立性是因为</li>
+<li><p>Author:  MingDing, ChangZhou, QibinChen ,HongxiaYang, JieTang</p>
+<p>Department of Computer Science and Technology, Tsinghua University</p>
+<p>DAMO Academy, Alibaba Group </p>
+</li>
+<li><p>Link: <a href="https://arxiv.org/abs/1905.05460" target="_blank" rel="noopener">arXiv: 1905.05460</a></p>
+</li>
 </ul>
-<p>$$\begin{equation}<br>p(x,z|y) = \frac{p(x,y,z)}{p(y)} = \frac{p(x,y)p(z|y)}{p(y)} = p(x|y)p(z|y)<br>\tag{2-118}<br>\label{eq:2-118}<br>\end{equation}<br>$$<br>马尔可夫链的这个特性可以推广到定义$n$维随机过程的马尔可夫场，它的马尔可夫性为：当给定边界值时，内部和外部相互独立。</p>
 </blockquote>
-<p>　　上述公式\eqref{eq:2-118}中间使用了马尔可夫性，即公式\eqref{eq:2-117}。其中<br>$$ p(x)p(y|x) = p(x,y) $$</p>
+<p>　　我们在互联网规模的文档的多跳问答 (Multi-hop question answering) 方面，提出了一个新的 CogQA 框架。基于认知科学的双过程理论，该框架在<strong>隐含抽取模块</strong> (System 1) 和<strong>具体抽取模块</strong> (System 2) 的相互作用的迭代过程中，逐渐建立一个 <em>认知图</em> 。除了提供准确的答案，我们的框架进一步提供可解释的推理路线。具体的说，我们的实现<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="在 [https://github.com/ THUDM/CogQA](https://github.com/ THUDM/CogQA) 上获取代码
+">[1]</span></a></sup>基于 BERT 和 图神经网络 (GNN) 有效地解决了在 HotpotQA 全维基数据集中，百万计的多跳推理问题，获得了排行榜中最高的联合 $F_1$ 分数：34.9，最高竞争者的分数是23.6。<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="[https://hotpotqa.github.io](https://hotpotqa.github.io) 2019年3月4日">[2]</span></a></sup></p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><blockquote>
+<p>这里就写一些要点了 = = 全篇翻译可能也没有太大用处。</p>
+</blockquote>
+<ul>
+<li>在单文章的问答方面，深度学习模型取得了超过人类水平的成绩。</li>
+<li>但我们还面临以下三大挑战：推理能力、可解释性、可扩展性<ul>
+<li>推理能力：多跳问答</li>
+<li>可解释性：HotpotQA 要求 <em>无序<em>、</em>句子级别</em> 的可解释性，而人类可以做到<em>有序<em>、</em>实体级别</em> 的可解释性</li>
+<li>可扩展性：与人类通过大容量内存中的知识进行推理的能力相比，该框架是单段问题解答和可伸缩信息检索之间的简单折衷。（长难句翻译？）</li>
+</ul>
+</li>
+<li>参考人类的认知过程：<em>双过程理论</em> ，构建两个系统。</li>
+<li>我们构建的 CogQA 也分为两个系统：<ul>
+<li>System 1 在多个段落中抽取与问题相关的<strong>实体</strong>与<strong>候选答案</strong>，并对其语义信息进行编码。</li>
+<li>System 2 对实体图进行推理，收集线索并指导 System 1 更好地提取下一跳的实体。</li>
+</ul>
+</li>
+<li>两系统迭代工作，直到<strong>所有</strong>的可能答案被发现。</li>
+</ul>
+<h2 id="2-Cognitive-Graph-QA-Framework"><a href="#2-Cognitive-Graph-QA-Framework" class="headerlink" title="2 Cognitive Graph QA Framework"></a>2 Cognitive Graph QA Framework</h2><blockquote>
+<p>这里加上那个算法有点没看懂，所以就翻译全文了。</p>
+<p>（u1s1，谷歌翻译得比我好多了。）</p>
+</blockquote>
+<p>　　人类的推理能力严格依靠信息的关系结构。我们直观地采用<strong>有向图</strong>结构，在多条问答的认知过程中一步步的推理和探索。在我们的阅读理解设置中，认知图 $\mathcal{G}$ 的每一个节点与一个<strong>实体</strong>或一个<strong>可能的答案</strong> $x$ 相关，也可以互换的表示成节点 $x$[^a]。  抽取模块 System 1 阅读实体 $x$ 的介绍性</p>
+<p>[^a]: 我觉得这里的 $x$ 即指的是<strong>实体</strong>，又指的是<strong>可能的答案</strong>。大概是这两个东西共用了一个符号。<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">在 [<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a> THUDM/CogQA](<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a> THUDM/CogQA) 上获取代码<a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"><a href="https://hotpotqa.github.io" target="_blank" rel="noopener">https://hotpotqa.github.io</a> 2019年3月4日<a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div></p>
 
       
     </div>
@@ -445,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/19/algorithm/" rel="next" title="算法笔记">
-                <i class="fa fa-chevron-left"></i> 算法笔记
+              <a href="/2019/11/06/metrics/" rel="next" title="距离整理笔记">
+                <i class="fa fa-chevron-left"></i> 距离整理笔记
               </a>
             
           </div>
@@ -454,10 +462,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/10/convex-note/" rel="prev" title="凸优化笔记">
-                凸优化笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -601,7 +605,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-熵、相对熵与互信息"><span class="nav-text">2. 熵、相对熵与互信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-对数和不等式及其应用"><span class="nav-text">2.7 对数和不等式及其应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-数据处理不等式"><span class="nav-text">2.8 数据处理不等式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author-amp-Abstract"><span class="nav-text">Author &amp; Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Introduction"><span class="nav-text">1 Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Cognitive-Graph-QA-Framework"><span class="nav-text">2 Cognitive Graph QA Framework</span></a></li></ol></div>
             
 
           </div>
