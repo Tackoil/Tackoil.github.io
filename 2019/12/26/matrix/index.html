@@ -105,19 +105,17 @@
 
 
 
-<meta name="description" content="这是一个关于页面。虽然说这样翻译 about 很怪异，不过我觉得用“简介”，“个人介绍”这样的词有些过于正式，所以就用这个词代替了。 　　本站主要记录学习过程中的笔记、想法，收集整理一些自己比较喜欢的知识，或者发表一点抱怨与感想。本站使用Hexo架构，主题为NexT。个人选择Hexo主要是可以不用操心HTML的问题。可以很方便的使用Markdown做记录。当然LaTeX的支持也必不可少。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="矩阵代数基础矩阵代数的基本运算幂等矩阵 $\bold A^2 = \bold A \bold A = \bold A$  $$f(s \bold I + t \bold A) = (\bold I - \bold A) f(s) + \bold A f(s+t)$$ 证明：Zhihu$$\begin{aligned}f(s\bold I +t \bold A) &amp;amp;= \sum_{n=0}^">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matrix">
+<meta property="og:url" content="http://yoursite.com/2019/12/26/matrix/index.html">
 <meta property="og:site_name" content="Tackoil&#39;s WebSite">
-<meta property="og:description" content="这是一个关于页面。虽然说这样翻译 about 很怪异，不过我觉得用“简介”，“个人介绍”这样的词有些过于正式，所以就用这个词代替了。 　　本站主要记录学习过程中的笔记、想法，收集整理一些自己比较喜欢的知识，或者发表一点抱怨与感想。本站使用Hexo架构，主题为NexT。个人选择Hexo主要是可以不用操心HTML的问题。可以很方便的使用Markdown做记录。当然LaTeX的支持也必不可少。">
+<meta property="og:description" content="矩阵代数基础矩阵代数的基本运算幂等矩阵 $\bold A^2 = \bold A \bold A = \bold A$  $$f(s \bold I + t \bold A) = (\bold I - \bold A) f(s) + \bold A f(s+t)$$ 证明：Zhihu$$\begin{aligned}f(s\bold I +t \bold A) &amp;amp;= \sum_{n=0}^">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/about/index/natsumi2.3.jpg">
-<meta property="og:updated_time" content="2019-11-08T14:45:40.389Z">
+<meta property="og:updated_time" content="2019-12-31T07:57:12.033Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于">
-<meta name="twitter:description" content="这是一个关于页面。虽然说这样翻译 about 很怪异，不过我觉得用“简介”，“个人介绍”这样的词有些过于正式，所以就用这个词代替了。 　　本站主要记录学习过程中的笔记、想法，收集整理一些自己比较喜欢的知识，或者发表一点抱怨与感想。本站使用Hexo架构，主题为NexT。个人选择Hexo主要是可以不用操心HTML的问题。可以很方便的使用Markdown做记录。当然LaTeX的支持也必不可少。">
-<meta name="twitter:image" content="http://yoursite.com/about/index/natsumi2.3.jpg">
+<meta name="twitter:title" content="matrix">
+<meta name="twitter:description" content="矩阵代数基础矩阵代数的基本运算幂等矩阵 $\bold A^2 = \bold A \bold A = \bold A$  $$f(s \bold I + t \bold A) = (\bold I - \bold A) f(s) + \bold A f(s+t)$$ 证明：Zhihu$$\begin{aligned}f(s\bold I +t \bold A) &amp;amp;= \sum_{n=0}^">
 
 
 
@@ -147,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/">
+  <link rel="canonical" href="http://yoursite.com/2019/12/26/matrix/">
 
 
 
 
 
-  <title>关于 | Tackoil's WebSite</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>matrix | Tackoil's WebSite</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -258,55 +256,193 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/26/matrix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tackoil">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tackoil's WebSite">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">关于</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><img src="/about/index/natsumi2.3.jpg" alt></p>
+          <h1 class="post-title" itemprop="name headline">matrix</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-26T09:30:54+08:00">
+                2019-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="矩阵代数基础"><a href="#矩阵代数基础" class="headerlink" title="矩阵代数基础"></a>矩阵代数基础</h2><h3 id="矩阵代数的基本运算"><a href="#矩阵代数的基本运算" class="headerlink" title="矩阵代数的基本运算"></a>矩阵代数的基本运算</h3><h4 id="幂等矩阵"><a href="#幂等矩阵" class="headerlink" title="幂等矩阵"></a>幂等矩阵</h4><blockquote>
+<p>$\bold A^2 = \bold A \bold A = \bold A$</p>
+</blockquote>
+<p>$$<br>f(s \bold I + t \bold A) = (\bold I - \bold A) f(s) + \bold A f(s+t)<br>$$</p>
+<p>证明：<a href="https://www.zhihu.com/question/64391808" target="_blank" rel="noopener">Zhihu</a><br>$$<br>\begin{aligned}<br>f(s\bold I +t \bold A) &amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!}(s \bold I + t\bold A)^n \\<br>&amp;= \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} (\sum_{i=0}^n \mathrm{C}_n^i (s \bold I)^{n-i}(t \bold A)^i)\\<br>&amp;= \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} (\underbrace {s^n \bold I}_{i=0} +  \bold A \sum_{i=1}^n\mathrm{C}_n^i s^{n-i}t^i) \\<br>&amp;= \sum_{n=0}^\infty  \frac{f^{(n)}(0)}{n!} \lbrace s^n \bold I + \bold A[(s+t)^n - s^n] \rbrace \\<br>&amp;= \sum_{n=0} \frac{f^{(n)}(0)}{n!} [(\bold I - \bold A)s^n + \bold A(s+t)^n] \\<br>&amp;= (\bold I - \bold A) \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}s^n + \bold A \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!}(s+t)^n \\<br>&amp;= (\bold I - \bold A)f(s) + \bold A f(s+t)<br>\end{aligned}<br>$$</p>
 <hr>
-<p>　　这是一个关于页面。虽然说这样翻译 about 很怪异，不过我觉得用“简介”，“个人介绍”这样的词有些过于正式，所以就用这个词代替了。</p>
-<p>　　本站主要记录学习过程中的笔记、想法，收集整理一些自己比较喜欢的知识，或者发表一点抱怨与感想。本站使用<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>架构，主题为<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT</a>。个人选择Hexo主要是可以不用操心HTML的问题。可以很方便的使用Markdown做记录。当然LaTeX的支持也必不可少。</p>
-<p>　　不过需要特殊提示的事情是，hexo无法将publish的html反解析成md，所以请做好source文件夹的<strong>备份</strong>。</p>
-<h2 id="教育经历"><a href="#教育经历" class="headerlink" title="教育经历"></a>教育经历</h2><ul>
-<li>2016.9 至今，北京邮电大学 电子工程学院 在读</li>
-</ul>
-<h2 id="研究方向"><a href="#研究方向" class="headerlink" title="研究方向"></a>研究方向</h2><p>（如果说还在摸索中会不会有点丢人。）</p>
-<ul>
-<li>自然语言处理： 机器阅读理解（MRC）</li>
-</ul>
-<h2 id="实践经历"><a href="#实践经历" class="headerlink" title="实践经历"></a>实践经历</h2><p>　　大学目前的生活更多受限于课程教学中，所以自己的实践经历少得可怜。（就是因为懒，嗯。）简单地把自己的实践经历分为两部分：一部分是嵌入式开发，包括FPGA和MCU；另一部分是软件及算法，包括大创项目和自己目前所学习的内容。</p>
-<h3 id="嵌入式开发"><a href="#嵌入式开发" class="headerlink" title="嵌入式开发"></a>嵌入式开发</h3><h4 id="全国电子设计大赛"><a href="#全国电子设计大赛" class="headerlink" title="全国电子设计大赛"></a>全国电子设计大赛</h4><p>　　全国电设所带来的，更多的是对身边所有电子器件的一种敬仰吧。从PCB的设计、转印腐蚀、焊接、嵌入式程序的设计。一点点微小的改变都会很大程度上影响最终的结果。（所以说电设是玄学嘛~）感觉在队友和我的手里做出各种各样的实体物品，还是很令人兴奋的一件事情。虽然会经常有焊错电路，接错管脚，甚至各种“大小电容去噪声”、“焊小电阻治接触不良”等等。</p>
-<p>　　不过说正经的，在电设比赛中，本人完成了简易高速示波器的设计，完成了FM、AM调制解调系统的构建，较熟练使用FPGA的部分IP核完成程序设计，等等。了解到了很多巧妙有趣的方法解决问题。</p>
-<h4 id="数字电路与逻辑设计实验"><a href="#数字电路与逻辑设计实验" class="headerlink" title="数字电路与逻辑设计实验"></a>数字电路与逻辑设计实验</h4><p>　　在这次实验中，完成了两个小游戏。第一个是关灯游戏。每按下一个按钮会反转按键及周围四个小灯的亮灭情况。熄灭所有小灯及游戏胜利。（所以我还写了一个马里奥过关的音效x</p>
-<p>　　第二个是拼图游戏，前五秒展示目标图形，后面选定拼图块移动，直到拼成目标图形。这个题目的最大难点在于判断的逻辑过于复杂，容易出现逻辑单元不够的情况，可能应该转移一部分到硬件存储当中。</p>
-<h3 id="软件及算法"><a href="#软件及算法" class="headerlink" title="软件及算法"></a>软件及算法</h3><p>　　= =太丢人了，就当没有吧。</p>
-<h2 id="兴趣爱好"><a href="#兴趣爱好" class="headerlink" title="兴趣爱好"></a>兴趣爱好</h2><p>　　这部分大概是比较好写的部分了。兴趣爱好大概就是做视频了。在校动漫社：<strong>檐枫动漫社</strong>视频制作组完成了多部视频并在晚会上播放。还有一部分应邀请制作，剩下的就是自己的兴趣爱好了。与本人相关的作品都在下面这个bilibili的收藏夹里。</p>
-<p><a href="https://space.bilibili.com/1760844/favlist?fid=47192744" target="_blank" rel="noopener">Link: Bilibili</a></p>
-<p>　　视频制作部分，侧重于MG动画的制作。希望可以在简象的画面之中，包含一个细节丰富的故事。不过这个也只是理想而已，还远远不够。</p>
-<h2 id="目标与规划"><a href="#目标与规划" class="headerlink" title="目标与规划"></a>目标与规划</h2><p>　　emmm 先找到研究方向再说。不过最近阅读完一篇微软的MRC的文章，还挺有趣的。</p>
+<h4 id="对合矩阵"><a href="#对合矩阵" class="headerlink" title="对合矩阵"></a>对合矩阵</h4><blockquote>
+<p>$\bold A^2 = \bold A \bold A = \bold I$</p>
+</blockquote>
+<p>$$<br>f(s \bold I + t \bold A) = \frac{1}{2} [(\bold I + \bold A)f(s+t) + (\bold I - \bold A)f(s-t)]<br>$$</p>
+<p>证明： by 六叔<br>$$<br>\begin{aligned}<br>f(s\bold I + t \bold A) &amp;= \sum_{n=0}^\infty  \frac{f^{(n)}(0)}{n!} \left[ \sum_{i=0}^n \mathrm{C}_n^i (s\bold I )^{n-i}(t \bold A)^{i} \right] \\<br>&amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} \left[ \sum_{i = \text{odd}} \mathrm{C}_n^i (s \bold I)^{n-i} (t \bold A)^i  + \sum_{i=\text{even}} \mathrm{C}_n^i (s \bold I)^{n-i} (t \bold A)^i\right] \\<br>&amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} \left(  \bold A \sum_{i = \text{odd}} s^{n-i}t^i + \bold I  \sum_{i = \text{even}} \mathrm{C}_n^i s^{n-i}t^i \right) \\<br>&amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} \left\lbrace \bold A [\frac{1}{2} (s+t)^n - (s-t)^n ] + \bold I [\frac{1}{2} (s+t)^n + (s-t)^n]\right\rbrace \\<br>&amp;= \frac{1}{2} \left[ (\bold I + \bold A) f(s+t) + (\bold I - \bold A) f(s-t) \right]</p>
+<p>\end{aligned}<br>$$</p>
+<hr>
+<h4 id="幂等矩阵与对合矩阵的关系"><a href="#幂等矩阵与对合矩阵的关系" class="headerlink" title="幂等矩阵与对合矩阵的关系"></a>幂等矩阵与对合矩阵的关系</h4><p>若 $\bold A$ 是对合矩阵，当且仅当 $\frac{1}{2} (\bold A + \bold I)$ 是幂等矩阵。</p>
+<p>证明：<br>$$<br>\begin{aligned}<br>\frac{1}{2}(\bold A + \bold I) \cdot \frac{1}{2}(\bold A + \bold I) = \frac{1}{4}(\bold A^2 + \bold I + 2 \bold A) &amp;= \frac{1}{2}(\bold A + \bold I) \\</p>
+<p>\bold A^2 + \bold I + 2\bold A &amp;= 2\bold A + 2\bold I \\<br>\bold A^2 &amp;= \bold I<br>\end{aligned}<br>$$</p>
+<hr>
+<h3 id="内积与范数"><a href="#内积与范数" class="headerlink" title="内积与范数"></a>内积与范数</h3><h4 id="向量的内积与范数"><a href="#向量的内积与范数" class="headerlink" title="向量的内积与范数"></a>向量的内积与范数</h4><p>$$<br>\langle \boldsymbol x, \boldsymbol y \rangle = \frac{1}{4} (\Vert \boldsymbol x + \boldsymbol y \Vert^2 - \Vert \boldsymbol x - \boldsymbol y \Vert^2)<br>$$</p>
+<p>证明：</p>
+<p>​    条件：范数由内积诱导，即满足$ \Vert \boldsymbol x \Vert = \sqrt{\langle \boldsymbol x, \boldsymbol x\rangle}$<br>$$<br>\begin{aligned}<br>\Vert \boldsymbol x + \boldsymbol y \Vert^2 - \Vert \boldsymbol x - \boldsymbol y \Vert^2 &amp;= \langle \boldsymbol x + \boldsymbol y , \boldsymbol x + \boldsymbol y \rangle - \langle \boldsymbol x - \boldsymbol y, \boldsymbol x - \boldsymbol y \rangle \\<br>&amp;= \langle \boldsymbol x, \boldsymbol x + \boldsymbol y \rangle + \langle \boldsymbol y, \boldsymbol x + \boldsymbol y \rangle - \langle \boldsymbol x , \boldsymbol x - \boldsymbol y \rangle + \langle \boldsymbol y, \boldsymbol x - \boldsymbol y \rangle \\<br>&amp;= \langle \boldsymbol x, \boldsymbol x \rangle + \langle \boldsymbol x , \boldsymbol y \rangle + \langle \boldsymbol y, \boldsymbol x \rangle + \langle \boldsymbol y , \boldsymbol y \rangle - \langle \boldsymbol x, \boldsymbol x \rangle + \langle \boldsymbol x ,\boldsymbol y \rangle + \langle\boldsymbol y , \boldsymbol x \rangle - \langle \boldsymbol y, \boldsymbol y \rangle \\<br>&amp;= 4 \langle \boldsymbol x , \boldsymbol y \rangle<br>\end{aligned}<br>$$</p>
+<hr>
+<p><strong>Euclidean 范数 $\Vert \cdot \Vert_2$ 是酉不变的。</strong></p>
+<p>证明：</p>
 
-        
-      </div>
-      
-      
       
     </div>
+
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ END ------</div>
+    
+</div>
+      
+    </div>
+
+
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/08/CG4MulRCaS/" rel="next" title="Note of CG4MulRCaS">
+                <i class="fa fa-chevron-left"></i> Note of CG4MulRCaS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+
+  
+  
+  
+  </article>
+
+
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -428,7 +564,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#教育经历"><span class="nav-text">教育经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#研究方向"><span class="nav-text">研究方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践经历"><span class="nav-text">实践经历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌入式开发"><span class="nav-text">嵌入式开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#全国电子设计大赛"><span class="nav-text">全国电子设计大赛</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字电路与逻辑设计实验"><span class="nav-text">数字电路与逻辑设计实验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件及算法"><span class="nav-text">软件及算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#兴趣爱好"><span class="nav-text">兴趣爱好</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目标与规划"><span class="nav-text">目标与规划</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵代数基础"><span class="nav-text">矩阵代数基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵代数的基本运算"><span class="nav-text">矩阵代数的基本运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#幂等矩阵"><span class="nav-text">幂等矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对合矩阵"><span class="nav-text">对合矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#幂等矩阵与对合矩阵的关系"><span class="nav-text">幂等矩阵与对合矩阵的关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内积与范数"><span class="nav-text">内积与范数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#向量的内积与范数"><span class="nav-text">向量的内积与范数</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
