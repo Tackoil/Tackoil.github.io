@@ -287,7 +287,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/26/matrix/" itemprop="url">matrix</a></h1>
+                <a class="post-title-link" href="/2019/12/26/matrix/" itemprop="url">矩阵论笔记</a></h1>
         
 
         <div class="post-meta">
@@ -356,32 +356,14 @@
 
       
         
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="矩阵代数基础"><a href="#矩阵代数基础" class="headerlink" title="矩阵代数基础"></a>矩阵代数基础</h2><h3 id="矩阵代数的基本运算"><a href="#矩阵代数的基本运算" class="headerlink" title="矩阵代数的基本运算"></a>矩阵代数的基本运算</h3><h4 id="幂等矩阵"><a href="#幂等矩阵" class="headerlink" title="幂等矩阵"></a>幂等矩阵</h4><blockquote>
-<p>$\bold A^2 = \bold A \bold A = \bold A$</p>
-</blockquote>
-<p>$$<br>f(s \bold I + t \bold A) = (\bold I - \bold A) f(s) + \bold A f(s+t)<br>$$</p>
-<p>证明：<a href="https://www.zhihu.com/question/64391808" target="_blank" rel="noopener">Zhihu</a><br>$$<br>\begin{aligned}<br>f(s\bold I +t \bold A) &amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!}(s \bold I + t\bold A)^n \\<br>&amp;= \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} (\sum_{i=0}^n \mathrm{C}_n^i (s \bold I)^{n-i}(t \bold A)^i)\\<br>&amp;= \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} (\underbrace {s^n \bold I}_{i=0} +  \bold A \sum_{i=1}^n\mathrm{C}_n^i s^{n-i}t^i) \\<br>&amp;= \sum_{n=0}^\infty  \frac{f^{(n)}(0)}{n!} \lbrace s^n \bold I + \bold A[(s+t)^n - s^n] \rbrace \\<br>&amp;= \sum_{n=0} \frac{f^{(n)}(0)}{n!} [(\bold I - \bold A)s^n + \bold A(s+t)^n] \\<br>&amp;= (\bold I - \bold A) \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}s^n + \bold A \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!}(s+t)^n \\<br>&amp;= (\bold I - \bold A)f(s) + \bold A f(s+t)<br>\end{aligned}<br>$$</p>
-<hr>
-<h4 id="对合矩阵"><a href="#对合矩阵" class="headerlink" title="对合矩阵"></a>对合矩阵</h4><blockquote>
-<p>$\bold A^2 = \bold A \bold A = \bold I$</p>
-</blockquote>
-<p>$$<br>f(s \bold I + t \bold A) = \frac{1}{2} [(\bold I + \bold A)f(s+t) + (\bold I - \bold A)f(s-t)]<br>$$</p>
-<p>证明： by 六叔<br>$$<br>\begin{aligned}<br>f(s\bold I + t \bold A) &amp;= \sum_{n=0}^\infty  \frac{f^{(n)}(0)}{n!} \left[ \sum_{i=0}^n \mathrm{C}_n^i (s\bold I )^{n-i}(t \bold A)^{i} \right] \\<br>&amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} \left[ \sum_{i = \text{odd}} \mathrm{C}_n^i (s \bold I)^{n-i} (t \bold A)^i  + \sum_{i=\text{even}} \mathrm{C}_n^i (s \bold I)^{n-i} (t \bold A)^i\right] \\<br>&amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} \left(  \bold A \sum_{i = \text{odd}} s^{n-i}t^i + \bold I  \sum_{i = \text{even}} \mathrm{C}_n^i s^{n-i}t^i \right) \\<br>&amp;= \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} \left\lbrace \bold A [\frac{1}{2} (s+t)^n - (s-t)^n ] + \bold I [\frac{1}{2} (s+t)^n + (s-t)^n]\right\rbrace \\<br>&amp;= \frac{1}{2} \left[ (\bold I + \bold A) f(s+t) + (\bold I - \bold A) f(s-t) \right]</p>
-<p>\end{aligned}<br>$$</p>
-<hr>
-<h4 id="幂等矩阵与对合矩阵的关系"><a href="#幂等矩阵与对合矩阵的关系" class="headerlink" title="幂等矩阵与对合矩阵的关系"></a>幂等矩阵与对合矩阵的关系</h4><p>若 $\bold A$ 是对合矩阵，当且仅当 $\frac{1}{2} (\bold A + \bold I)$ 是幂等矩阵。</p>
-<p>证明：<br>$$<br>\begin{aligned}<br>\frac{1}{2}(\bold A + \bold I) \cdot \frac{1}{2}(\bold A + \bold I) = \frac{1}{4}(\bold A^2 + \bold I + 2 \bold A) &amp;= \frac{1}{2}(\bold A + \bold I) \\</p>
-<p>\bold A^2 + \bold I + 2\bold A &amp;= 2\bold A + 2\bold I \\<br>\bold A^2 &amp;= \bold I<br>\end{aligned}<br>$$</p>
-<hr>
-<h3 id="内积与范数"><a href="#内积与范数" class="headerlink" title="内积与范数"></a>内积与范数</h3><h4 id="向量的内积与范数"><a href="#向量的内积与范数" class="headerlink" title="向量的内积与范数"></a>向量的内积与范数</h4><p>$$<br>\langle \boldsymbol x, \boldsymbol y \rangle = \frac{1}{4} (\Vert \boldsymbol x + \boldsymbol y \Vert^2 - \Vert \boldsymbol x - \boldsymbol y \Vert^2)<br>$$</p>
-<p>证明：</p>
-<p>​    条件：范数由内积诱导，即满足$ \Vert \boldsymbol x \Vert = \sqrt{\langle \boldsymbol x, \boldsymbol x\rangle}$<br>$$<br>\begin{aligned}<br>\Vert \boldsymbol x + \boldsymbol y \Vert^2 - \Vert \boldsymbol x - \boldsymbol y \Vert^2 &amp;= \langle \boldsymbol x + \boldsymbol y , \boldsymbol x + \boldsymbol y \rangle - \langle \boldsymbol x - \boldsymbol y, \boldsymbol x - \boldsymbol y \rangle \\<br>&amp;= \langle \boldsymbol x, \boldsymbol x + \boldsymbol y \rangle + \langle \boldsymbol y, \boldsymbol x + \boldsymbol y \rangle - \langle \boldsymbol x , \boldsymbol x - \boldsymbol y \rangle + \langle \boldsymbol y, \boldsymbol x - \boldsymbol y \rangle \\<br>&amp;= \langle \boldsymbol x, \boldsymbol x \rangle + \langle \boldsymbol x , \boldsymbol y \rangle + \langle \boldsymbol y, \boldsymbol x \rangle + \langle \boldsymbol y , \boldsymbol y \rangle - \langle \boldsymbol x, \boldsymbol x \rangle + \langle \boldsymbol x ,\boldsymbol y \rangle + \langle\boldsymbol y , \boldsymbol x \rangle - \langle \boldsymbol y, \boldsymbol y \rangle \\<br>&amp;= 4 \langle \boldsymbol x , \boldsymbol y \rangle<br>\end{aligned}<br>$$</p>
-<hr>
-<p><strong>Euclidean 范数 $\Vert \cdot \Vert_2$ 是酉不变的。</strong></p>
-<p>证明：</p>
-
-          
+          <p>忘了什么时候整理的矩阵论笔记。（希望自己能想起来）</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/26/matrix/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1715,6 +1697,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
             
 
           </nav>
