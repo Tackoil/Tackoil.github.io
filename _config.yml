@@ -8,7 +8,7 @@ subtitle:
 description: 收集 | 分享
 keywords:
 author: Tackoil
-language: zh-Hans
+language: zh-CN
 timezone:
 
 # URL
@@ -32,7 +32,6 @@ skip_render:
 new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
-external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
@@ -85,13 +84,6 @@ markdown_it_plus:
   linkify: true
   typographer:
   quotes: 
-  plugins:
-    - plugin:
-        name: markdown-it-katex
-        enable: true
-    - plugin:
-        name: markdown-it-mark
-        enable: false
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -108,9 +100,16 @@ backup:
     github: git@github.com:tackoil/tackoil.github.io.git,backup
 
 
+# math
 math:
-  engine: 'mathjax'
+  katex:
+    css: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css'
+    options:
+      throwOnError: false
   mathjax:
-    # src: custom_mathjax_source
-    config:
-      # MathJax config
+    css: 'https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css'
+    options:
+      conversion:
+        display: false
+      tex:
+      svg:

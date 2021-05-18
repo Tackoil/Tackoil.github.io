@@ -1,0 +1,52 @@
+override: false
+
+footer:
+  # Specify the date when the site was setup. If not defined, current year will be used.
+  since: 2019
+  # Icon between year and copyright info.
+  icon:
+    name: fa fa-heart
+    animated: false
+    color: "#ff0000"
+  copyright:
+  powered: false
+  custom_text: Theme by NexT | Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a>
+
+# Schemes
+scheme: Mist
+darkmode: false
+
+# Menu
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  categories: /categories || fa fa-th
+
+# sidebar
+sidebar:
+  display: hide
+avatar: 
+  url: /images/avatar.png
+social:
+  GitHub: https://github.com/tackoil || fab fa-github
+  E-Mail: mailto:tackoil@bupt.icu || fa fa-envelope
+
+# font
+font:
+  enable: true
+  host: https://fonts.loli.net
+
+  global:
+    external: true
+    family: Noto Serif SC
+    size: 16
+
+math:
+  per_page: false
+
+  # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.
+  mathjax:
+    enable: true
+    # See: https://mhchem.github.io/MathJax-mhchem/
+    mhchem: false
+
