@@ -1,7 +1,7 @@
 ---
 title: 人工神经网络的基本知识
 date: 2019-09-12 16:03:42
-categories: [机器学习]
+categories: [学习]
 ---
 
 ***
