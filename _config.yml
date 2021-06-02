@@ -92,13 +92,6 @@ deploy:
   repository: git@github.com:tackoil/tackoil.github.io.git
   branch: master
 
-#backup
-backup:
-  type: git
-  theme: next
-  repository:
-    origin: git@github.com:Tackoil/Tackoil.github.io.git,backup
-
 
 # math
 math:
