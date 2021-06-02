@@ -96,8 +96,8 @@ deploy:
 backup:
   type: git
   theme: next
-  repository: git@github.com:tackoil/tackoil.github.io.git
-  branch: backup
+  repository:
+    github: git@github.com:tackoil/tackoil.github.io.git,backup
 
 
 # math
