@@ -2,7 +2,6 @@
 title: 距离整理笔记
 date: 2019-11-06 16:26:29
 categories: [笔记]
-mathjax: true
 ---
 
 ***
@@ -22,11 +21,13 @@ mathjax: true
 　　设$x$，$y$为两个长度为$n$的二进制向量，则汉明距离为
 
 $$
-d(x, y) = \sum_{i=1}^n I(x_i, y_i) \\\\
+\begin{aligned}
+d(x, y) = \sum_{i=1}^n I(x_i, y_i) \\
 I(a, b) = \begin{cases}
-1, & a = b \\\\
-0, & \text{else} \\\\
+1, & a = b \\
+0, & \text{else} \\
 \end{cases}
+\end{aligned}
 $$
 
 　　汉明距离满足**距离公理**：非负性、对称性、三角不等式。
@@ -59,9 +60,9 @@ $$
 
 $$
 d(x[0:i], y[0:j]) = \begin{cases}
-\max (i, j) & \text{if} \min(i, j) = 0 \\\\
-\min \begin{cases} d(x[0:i-1], y[0:j]) +1 \\\\
-d(x[0:i],y[0:j-1]) +1 \\\\
+\max (i, j) & \text{if} \min(i, j) = 0 \\
+\min \begin{cases} d(x[0:i-1], y[0:j]) +1 \\
+d(x[0:i],y[0:j-1]) +1 \\
 d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)}  
 \end{cases}
 & \text{otherwise}
@@ -88,8 +89,8 @@ $$
 　　之后计算$M^2$距离时，仅需要先计算$C$，$S$的最小权值路径所对应的编辑操作$e$。对于所有的测试句子的编辑操作组成一个集合$\lbrace e_1, \cdots, e_n \rbrace$，与其对应的黄金标准集合为$\lbrace g_1, \cdots , g_n \rbrace$。之后计算两个集合的准确率、召回率和$F_1$分数即可。
 $$
 \begin{aligned}
-P &= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n | e_i | } \\\\
-R &= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n |g_i|} \\\\
+P &= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n | e_i | } \\
+R &= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n |g_i|} \\
 F_1 &=  2 \times \frac{P \times R}{P + R}
 \end{aligned}
 $$
@@ -108,18 +109,18 @@ $$
 
 　　公式直接列举在下面了，感觉下面的定义足够的详细。
 $$
-\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right) \\\\
+\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right) \\
 \mathrm{BP}(c;R) = \begin{cases}
-1 \quad &\text{if}\ \mathrm{len}(c) > \mathrm{len}(r^\star)\\\\
+1 \quad &\text{if}\ \mathrm{len}(c) > \mathrm{len}(r^\star)\\
 \exp(1-\frac{\mathrm{len}(r^\star)}{\mathrm{len}(c)}) &\text{if}\  \mathrm{len}(c) \leq \mathrm{len}(r^\star)
-\end{cases} \\\\
-r^\star = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|\\\\
-w_N = \frac{1}{N} \\\\
-p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}' \in c} \mathrm{Count}(n\text{-gram}')} \\\\
-\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)})) \\\\
-\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}' \in w} I(n\text{-gram}, n\text{-gram}') \\\\
+\end{cases} \\
+r^\star = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|\\
+w_N = \frac{1}{N} \\
+p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}' \in c} \mathrm{Count}(n\text{-gram}')} \\
+\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)})) \\
+\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}' \in w} I(n\text{-gram}, n\text{-gram}') \\
 I(a,b) = \begin{cases}
-1 & \text{if}\ a = b \\\\
+1 & \text{if}\ a = b \\
 0 & \text{else}
 \end{cases}
 $$
@@ -167,8 +168,8 @@ $$
 　　最后为了对比在不同数据集下的模型情况，我们构建了每个数据集格子的基线标准，即：将Reference直接作为Candidate，计算加权准确性指标$\mathrm{WAcc}_{\text{base}}$，然后我们得到I-measure
 $$
 I = \begin{cases}
-\lfloor \mathrm{WAcc}_{\text{sys}} \rfloor & \text{if}\  \mathrm{WAcc}_{\text{sys}} = \mathrm{WAcc}_{\text{base}} \\\\
-\frac{\mathrm{WAcc}_{\text{sys}} - \mathrm{WAcc}_{\text{base}}}{1 - \mathrm{WAcc}_{\text{base}}} & \text{if}\ \mathrm{WAcc}_{\text{sys}} > \mathrm{WAcc}_{\text{base}} \\\\
+\lfloor \mathrm{WAcc}_{\text{sys}} \rfloor & \text{if}\  \mathrm{WAcc}_{\text{sys}} = \mathrm{WAcc}_{\text{base}} \\
+\frac{\mathrm{WAcc}_{\text{sys}} - \mathrm{WAcc}_{\text{base}}}{1 - \mathrm{WAcc}_{\text{base}}} & \text{if}\ \mathrm{WAcc}_{\text{sys}} > \mathrm{WAcc}_{\text{base}} \\
 \frac{\mathrm{WAcc}_\text{sys}}{\mathrm{WAcc}_\text{base}} - 1 & \text{otherwise}
 \end{cases}
 $$
@@ -189,9 +190,9 @@ $$
 
 　　　该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：
 $$
-\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^\star_n\right) \\\\
-p^\star_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}' \in c} \mathrm{Count}_c (n\text{-gram}')} \\\\
-\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \\\\
+\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^\star_n\right) \\
+p^\star_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}' \in c} \mathrm{Count}_c (n\text{-gram}')} \\
+\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right] \\
 \mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}' \in A} I(n\text{-gram}, n\text{-gram}')
 $$
 
@@ -246,7 +247,7 @@ $$
 　　很不幸的是，交叉熵也不具有对称性。通常我们认为某一个分布是已知的，我们用q去逼近p，在这种情况下，相对熵可以表示为：
 $$
 \begin{aligned}
-\mathrm{KL}(p \Vert q ) &= \sum p(x) \log p(x) - \sum p(x) \log q(x) \\\\
+\mathrm{KL}(p \Vert q ) &= \sum p(x) \log p(x) - \sum p(x) \log q(x) \\
 &= -H(p) + H(p \Vert q)
 \end{aligned}
 $$

@@ -2,7 +2,6 @@
 title: Note of CG4MulRCaS 
 date: 2019-12-08 14:14:29
 categories: [笔记]
-mathjax: true
 ---
 
 ***

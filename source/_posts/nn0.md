@@ -2,7 +2,6 @@
 title: 人工神经网络的基本知识
 date: 2019-09-12 16:03:42
 categories: [机器学习]
-mathjax: true
 ---
 
 ***
@@ -71,7 +70,7 @@ $$
 $$
 \begin{equation}
     H(x) = \begin{cases}
-    1, & x \geq 0 \\\\
+    1, & x \geq 0 \\
     0, & x < 0 \end{cases} 
 \end{equation} 
 $$
@@ -87,7 +86,7 @@ $$
 $$
                       \begin{equation}
                       \mathrm{ReLU}(x) = \begin{cases}
-                      x, & x > 0 \\\\
+                      x, & x > 0 \\
                       0, & x \leq 0
                       \end{cases}
                       \end{equation}
@@ -122,31 +121,31 @@ $$
 $$
 \begin{equation}
 \left[ \begin{matrix}
-        x_0^{(L)} \\\\
-        x_1^{(L)} \\\\
-        \vdots \\\\
+        x_0^{(L)} \\
+        x_1^{(L)} \\
+        \vdots \\
         x_k^{(L)}
         \end{matrix}
 \right] = f \left(
                 \left[ \begin{matrix}
-                      w_{0,0}^{(L-1)} & w_{0,1}^{(L-1)} & \cdots & w_{0,n}^{(L-1)}\\\\
-                      w_{1,0}^{(L-1)} & w_{1,1}^{(L-1)} & \cdots & w_{1,n}^{(L-1)}\\\\
-                      \vdots & \vdots & \ddots & \vdots \\\\
-                      w_{k,0}^{(L-1)} & w_{k,1}^{(L-1)} & \cdots & w_{k,n}^{(L-1)}\\\\
+                      w_{0,0}^{(L-1)} & w_{0,1}^{(L-1)} & \cdots & w_{0,n}^{(L-1)}\\
+                      w_{1,0}^{(L-1)} & w_{1,1}^{(L-1)} & \cdots & w_{1,n}^{(L-1)}\\
+                      \vdots & \vdots & \ddots & \vdots \\
+                      w_{k,0}^{(L-1)} & w_{k,1}^{(L-1)} & \cdots & w_{k,n}^{(L-1)}\\
                       \end{matrix}
                 \right]
                 \left[ \begin{matrix}
-                      x_0^{(L-1)} \\\\
-                      x_1^{(L-1)} \\\\
-                      \vdots \\\\
+                      x_0^{(L-1)} \\
+                      x_1^{(L-1)} \\
+                      \vdots \\
                       x_n^{(L-1)}
                         \end{matrix}
                 \right]
                 +
                 \left[ \begin{matrix}
-                      \theta_0^{(L)} \\\\
-                      \theta_1^{(L)} \\\\
-                      \vdots \\\\
+                      \theta_0^{(L)} \\
+                      \theta_1^{(L)} \\
+                      \vdots \\
                       \theta_k^{(L)}
                       \end{matrix}
                 \right]
@@ -244,9 +243,9 @@ $$(x_0, x_1), y = (1, 0), 0$$
 
 $$
 \begin{aligned}
-                                    \hat{y} & = \mathrm{sgn} (0.3898 x_0 + 0.4950 x_1 + 0.8115) \\\\
-                                    \hat{y} & = \mathrm{sgn} (0.3898 \times 1 + 0.4950 \times 0 + 0.8115) \\\\
-                                    & = \mathrm{sgn} (1.2013) \\\\
+                                    \hat{y} & = \mathrm{sgn} (0.3898 x_0 + 0.4950 x_1 + 0.8115) \\
+                                    \hat{y} & = \mathrm{sgn} (0.3898 \times 1 + 0.4950 \times 0 + 0.8115) \\
+                                    & = \mathrm{sgn} (1.2013) \\
                                     & = 1
                                     \end{aligned}
 $$
@@ -272,8 +271,8 @@ $$
 
 $$
 \begin{aligned}
-    w_0 & \leftarrow 0.3898 + 0.1 \times (-1) \times 1 & = 0.2898 \\\\
-    w_1 & \leftarrow 0.4950 + 0.1 \times (-1) \times 0 & = 0.4950 \\\\
+    w_0 & \leftarrow 0.3898 + 0.1 \times (-1) \times 1 & = 0.2898 \\
+    w_1 & \leftarrow 0.4950 + 0.1 \times (-1) \times 0 & = 0.4950 \\
     \theta & \leftarrow 0.8115 + 0.1 \times (-1) & = 0.7115
 \end{aligned}
 $$
@@ -356,8 +355,8 @@ $$
 $$
 \begin{equation}
 \begin{aligned}
-	E & = \frac{1}{2} \sum_{k}(\hat{x}^{(L)}_k - x^{(L)}_k)^2 \\\\
-	\hat{x}^{(L)}_k & = \sigma(z^{(L)}_k) \\\\
+	E & = \frac{1}{2} \sum_{k}(\hat{x}^{(L)}_k - x^{(L)}_k)^2 \\
+	\hat{x}^{(L)}_k & = \sigma(z^{(L)}_k) \\
 	z^{(L)}_k & = w_{kn} x^{(L-1)}_n + \theta^{(L)}_k
 \end{aligned}
 \end{equation}
@@ -369,10 +368,10 @@ $$
                       \begin{equation}
                       \begin{aligned}
                       \frac{\partial E}{\partial w_{kn}} &= \frac{\partial E}{\partial x^{(L)}_k} \cdot \frac{\partial
-                      x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} \\\\
+                      x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} \\
                       \frac{\partial E}{\partial \theta^{(L)}_{k}} &= \frac{\partial E}{\partial x^{(L)}_k} \cdot
                       \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
-                      \theta^{(L)}_{kn}} \\\\
+                      \theta^{(L)}_{kn}} \\
                       \frac{\partial E}{\partial x^{(L-1)}_{n}} &= \sum_{k}{\frac{\partial E}{\partial x^{(L)}_k} \cdot
                       \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
                       x^{(L-1)}_{n}} }
@@ -387,14 +386,14 @@ $$
                       \begin{aligned}
                       \frac{\partial E}{\partial w_{kn}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot \frac{\partial
                       x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial w_{kn}} & =
-                      \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot x^{(L-1)}_{n} \\\\
+                      \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot x^{(L-1)}_{n} \\
                       \frac{\partial E}{\partial \theta^{(L)}_{k}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot
                       \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
-                      \theta^{(L)}_{kn}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot 1 \\\\
+                      \theta^{(L)}_{kn}} & = \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot 1 \\
                       \frac{\partial E}{\partial x^{(L-1)}_{n}} & = \sum_{k} \frac{\partial E}{\partial x^{(L)}_k} \cdot
                       \frac{\partial x^{(L)}_k }{\partial z^{(L)}_k} \cdot \frac{\partial z^{(L)}_k}{\partial
                       x^{(L-1)}_{n}} & = \sum_{k} \frac{\partial E}{\partial x^{(L)}_k} \cdot \sigma'(z^{(L)}_k) \cdot
-                      w_{kn} \\\\
+                      w_{kn} \\
                       \end{aligned}
                       \label{eq:4}
                       \end{equation}
@@ -436,12 +435,12 @@ $$
                       \begin{equation}
                       \begin{aligned}
                       \frac{\partial E}{\partial w_{kn}} &= \frac{\partial E}{\partial x_k^{(L)}} \cdot \sigma'
-                      (z_k^{(L)}) \cdot x_n^{(L-1)} \\\\
+                      (z_k^{(L)}) \cdot x_n^{(L-1)} \\
                       \frac{\partial E}{\partial w_{nj}} &= \sum_k \left( \frac{\partial E}{\partial x_k^{(L)}} \cdot
-                      \sigma' (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma' (z_n^{(L-1)}) \cdot x_j^{(L-2)} \\\\
+                      \sigma' (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma' (z_n^{(L-1)}) \cdot x_j^{(L-2)} \\
                       \frac{\partial E}{\partial w_{ji}} &= \sum_n \left( \sum_k \left( \frac{\partial E}{\partial
                       x_k^{(L)}} \cdot \sigma' (z_k^{(L)}) \cdot w_{kn} \right) \cdot \sigma' (z_n^{(L-1)}) \cdot w_{nj}
-                      \right) \cdot \sigma' (z_j^{(L-2)}) \cdot x_i^{(L-3)} \\\\
+                      \right) \cdot \sigma' (z_j^{(L-2)}) \cdot x_i^{(L-3)} \\
                       \end{aligned}
                       \end{equation}
 $$
