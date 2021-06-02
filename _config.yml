@@ -97,7 +97,7 @@ backup:
   type: git
   theme: next
   repository:
-    github: git@github.com:tackoil/tackoil.github.io.git,backup
+    github: git@github.com:Tackoil/Tackoil.github.io.git,backup
 
 
 # math
