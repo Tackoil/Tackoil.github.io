@@ -45,7 +45,8 @@ math:
   per_page: false
 
   # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.
-  katex:
+  mathjax:
     enable: true
+
 
 
