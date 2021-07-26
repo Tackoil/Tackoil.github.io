@@ -24,12 +24,38 @@ menu:
 
 # sidebar
 sidebar:
-  display: hide
+  display: post
 avatar: 
   url: /images/avatar.png
+  rounded: true
 social:
   GitHub: https://github.com/tackoil || fab fa-github
   E-Mail: mailto:tackoil@bupt.icu || fa fa-envelope
+
+custom_file_path:
+  style: source/_data/styles.styl
+
+
+reading_progress:
+  enable: true
+  # Available values: top | bottom
+  position: top
+  color: "#3EA09E"
+  height: 3px
+
+
+# Front-matter variable (unsupport wrap expand_all).
+toc:
+  enable: true
+  # Automatically add list number to toc.
+  number: true
+  # If true, all words will placed on next lines if header width longer then sidebar width.
+  wrap: false
+  # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
+  expand_all: false
+  # Maximum heading depth of generated toc.
+  max_depth: 4
+
 
 # font
 font:
@@ -47,6 +73,8 @@ math:
   # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.
   mathjax:
     enable: true
+
+
 
 
 
