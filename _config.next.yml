@@ -1,5 +1,11 @@
 override: false
 
+favicon:
+  small: /images/natsumi2.3-1.jpg
+  medium: /images/natsumi2.3-1.jpg
+  apple_touch_icon: /images/natsumi2.3-1.jpg
+  safari_pinned_tab: /images/natsumi2.3-1.jpg
+
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
   since: 2019
@@ -74,6 +80,19 @@ math:
   mathjax:
     enable: true
 
+
+codeblock:
+  # Code Highlight theme
+  # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
+  # See: https://github.com/chriskempson/tomorrow-theme
+  highlight_theme: normal
+  # Add copy button on codeblock
+  copy_button:
+    enable: true
+    # Show text copy result.
+    show_result: false
+    # Available values: default | flat | mac
+    style: flat
 
 
 

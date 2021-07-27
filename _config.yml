@@ -40,7 +40,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
   
 # Home page setting
@@ -83,7 +83,7 @@ markdown_it_plus:
   langPrefix:
   linkify: true
   typographer:
-  quotes: 
+  quotes: true
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
