@@ -9,7 +9,7 @@ date: 2020-06-14 20:14:50
 
 　　这是一个关于页面。虽然说这样翻译 about 很怪异，不过我觉得用“简介”，“个人介绍”这样的词有些过于正式，所以就用这个词代替了。
 
-　　本站主要记录学习过程中的笔记、想法，收集整理一些自己比较喜欢的知识，或者发表一点抱怨与感想。本站使用[Hexo](https://hexo.io/zh-cn/)架构，主题为[Fuild](https://hexo.fluid-dev.com/docs/)。个人选择 Hexo 主要是可以不用操心HTML的问题。可以很方便地使用 Markdown 做记录。当然 LaTeX 的支持也必不可少。
+　　本站主要记录学习过程中的笔记、想法，收集整理一些自己比较喜欢的知识，或者发表一点抱怨与感想。本站使用[Hexo](https://hexo.io/zh-cn/)架构，主题为[Fluid](https://hexo.fluid-dev.com/docs/)。个人选择 Hexo 主要是可以不用操心HTML的问题。可以很方便地使用 Markdown 做记录。当然 LaTeX 的支持也必不可少。
 
 　　不过需要特殊提示的事情是，hexo 无法将 publish 的 html 反解析成 md，所以请做好 source 文件夹的**备份**。
 
