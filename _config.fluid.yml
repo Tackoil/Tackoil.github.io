@@ -428,6 +428,8 @@ index:
   banner_info: 
     text: "封面画师：つなこ"
 
+  indent: true
+
   # 首页副标题的独立设置
   # Independent config of home page subtitle
   slogan:
@@ -491,6 +493,8 @@ post:
   banner_img: /img/bg/natsumi23.jpg
   banner_img_height: 70
   banner_mask_alpha: 0.3
+
+  indent: true
 
   # 文章在首页的默认封面图，当没有指定 index_img 时会使用该图片，若两者都为空则不显示任何图片
   # Path of the default post cover when `index_img` is not set. If both are empty, no image will be displayed
@@ -850,6 +854,7 @@ about:
   banner_mask_alpha: 0.3
   banner_info: 
     text: "编辑：Tackoil | 原图来自《Charlotte》的 ED"
+  indent: true
   subtitle:
   avatar: /img/avatar.png
   name: "Tackoil"
