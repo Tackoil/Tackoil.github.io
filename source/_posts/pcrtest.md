@@ -2,11 +2,11 @@
 title: 从核酸检测开始
 date: 2021-09-08 15:37:21
 categories: 吐槽
-banner_img: /img/bg/illust_80228475_20210909_151642.jpg
-index_img: /img/bg/illust_80228475_20210909_151642.jpg
+banner_img: /img/bg/79306176_p0.jpg
+index_img: /img/bg/79306176_p0.jpg
 banner_info: 
-    text: 封面画师：コーラ
-    link: "https://www.pixiv.net/artworks/80228475"
+    text: 封面画师：Xeph＇s Artworks
+    link: "https://www.pixiv.net/artworks/79306176"
 ---
 
 　　仅记录道听途说的笑话，以及联想。
