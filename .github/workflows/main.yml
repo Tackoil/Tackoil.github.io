@@ -43,6 +43,13 @@ jobs:
       run: | 
         git config --global user.name 'Tackoil' 
         git config --global user.email 'santoin351@outlook.com'
+        
+    - name: Sync the theme
+      run: |
+        git clone git@github.com:Tackoil/hexo-theme-fluid.git
+        mkdir theme
+        mv hexo-theme-fluid theme/fluid
+        
     - name: Deploy Hexo 
       run: |
         npx hexo clean
