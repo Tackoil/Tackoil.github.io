@@ -18,12 +18,20 @@ jobs:
     # from: https://github.com/actions/checkout
     - name: Checkout Repository v2 branch
       uses: actions/checkout@v2 
+      with: 
+        ref: backup
+        
+    - name: Checkout Theme repo
+      uses: actions/checkout@v2
+      with:
+        repository: hexo-theme-fluid
+        path: theme/fluid
       
     # from: https://github.com/actions/setup-node  
     - name: Setup Node.js 12.x 
       uses: actions/setup-node@master
       with:
-        node-version: "12.x"
+        node-version: "14.x"
     
     - name: Setup Hexo Dependencies
       run: |
@@ -43,12 +51,6 @@ jobs:
       run: | 
         git config --global user.name 'Tackoil' 
         git config --global user.email 'santoin351@outlook.com'
-        
-    - name: Sync the theme
-      run: |
-        git clone git@github.com:Tackoil/hexo-theme-fluid.git
-        mkdir theme
-        mv hexo-theme-fluid theme/fluid
         
     - name: Deploy Hexo 
       run: |
