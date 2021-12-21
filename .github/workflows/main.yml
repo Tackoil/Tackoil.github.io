@@ -24,7 +24,7 @@ jobs:
     - name: Checkout Theme repo
       uses: actions/checkout@v2
       with:
-        repository: hexo-theme-fluid
+        repository: Tackoil/hexo-theme-fluid
         path: theme/fluid
       
     # from: https://github.com/actions/setup-node  
