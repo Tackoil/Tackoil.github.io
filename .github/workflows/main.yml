@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: Tackoil/hexo-theme-fluid
-        path: theme/fluid
+        path: themes/fluid
       
     # from: https://github.com/actions/setup-node  
     - name: Setup Node.js 12.x 
