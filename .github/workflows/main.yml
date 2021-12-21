@@ -16,8 +16,8 @@ jobs:
     steps:
     # check it to your workflow can access it
     # from: https://github.com/actions/checkout
-    - name: Checkout Repository backup branch
-      uses: actions/checkout@backup 
+    - name: Checkout Repository v2 branch
+      uses: actions/checkout@v2 
       
     # from: https://github.com/actions/setup-node  
     - name: Setup Node.js 12.x 
