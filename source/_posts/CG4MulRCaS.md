@@ -22,9 +22,6 @@ categories: [笔记]
 
 我们在互联网规模的文档的多跳问答 (Multi-hop question answering) 方面，提出了一个新的 CogQA 框架。基于认知科学的双过程理论，该框架在**隐含抽取模块** (System 1) 和**具体抽取模块** (System 2) 的相互作用的迭代过程中，逐渐建立一个 *认知图* 。除了提供准确的答案，我们的框架进一步提供可解释的推理路线。具体的说，我们的实现[^1]基于 BERT 和 图神经网络 (GNN) 有效地解决了在 HotpotQA 全维基数据集中，百万计的多跳推理问题，获得了排行榜中最高的联合 $F_1$ 分数：34.9，最高竞争者的分数是23.6。[^2]
 
-[^1]: 在 [https://github.com/THUDM/CogQA](https://github.com/THUDM/CogQA) 上获取代码
-[^2]: [https://hotpotqa.github.io](https://hotpotqa.github.io) 2019年3月4日
-
 ## 1 Introduction
 
 > 这里就写一些要点了 = = 全篇翻译可能也没有太大用处。
@@ -50,15 +47,9 @@ categories: [笔记]
 
 人类的推理能力严格依靠信息的关系结构。我们直观地采用**有向图**结构，在多条问答的认知过程中一步步的推理和探索。在我们的阅读理解设置中，认知图 $\mathcal{G}$ 的每一个节点与一个**实体**或一个**可能的答案** $x$ 相关，也可以互换的表示成节点 $x$[^51]。  抽取模块 System 1 阅读实体 $x$ 的介绍性段落 $\mathrm{para}[x]$ 并在段落中抽取 *候选答案* 与有用的 *下一跳实体*  。 然后，用这些新节点扩展 $\mathcal{G}$ ，为推理模块 System 2 提供显式结构。在这篇文章中，我们假设 System 2 由通过计算节点的隐状态 $\boldsymbol{\mathrm{X}}$ 基于深度学习的学习，而不是基于规则的推理。因此 System 1 也需要在抽取文本片段时，将 $\mathrm{para}[x]$ 归纳成语法向量作为初始隐状态。然后 System 2 基于图结构更新 $\boldsymbol{\mathrm{X}}$ ，作为下游预测的推理结果。
 
-[^51]: 我觉得这里的 $x$ 即指的是**实体**，又指的是**可能的答案**。大概是这两个东西共用了一个符号。
-
 由于认知图中有明确的推理路径，因此具有可解释性。[^52] 不仅对于简单的路径，认知图也可以清楚地显示联合或循环的推理过程，其中新的前节点可能带来关于答案的新的 $\mathrm{clues}$。 在我们的框架中，$\mathrm{clues}$ 是一个形式灵活的概念，它指的是来自前节点的信息，用来指导 System 1 更好的抽取文本片段。除了**新增加的节点**，由于有新的线索，那些具有**新的入边的节点**也需要重新访问。我们把它们都称作 *前节点*。
 
-[^52]: via 谷歌翻译
-
 可扩展性意味着问答的时间消耗不会随着文章数量的增加显著地增长。我们的框架可以自然地缩放，因为唯一参照所有文章的操作是通过他们的标题索引获得一些特定的段落。对于多跳的问题，传统的检索抽取框架可能会牺牲[^53]后续模型的潜力，因为距离问题跳跃多次的段落可能与该问题共享更少的相同词和更少的语法关系，导致检索失败。然而，在我们的框架中，通过迭代扩展 $\mathrm{clues}$ 可以发现这些文章。
-
-[^53]: sacrifice 
 
 **算法 1 **描述了我们的框架 CogQA 的流程。在初始化之后，将开始一个图扩展与推理的迭代过程。在每一步我们访问一个前节点 $x$ ，System 1 在 $\mathrm{clues}$ 和问题 $Q$ 的指导下阅读 $\mathrm{para}[x]$ ，抽取文本片段并生成语法向量 $\mathrm{sem}[x, Q, \mathrm{clues}]$。同时，System 2 更新隐状态 $\boldsymbol{\mathrm{X}}$ 并为后节点 $y$ 准备 $\mathrm{clues}[y, \mathcal{G}]$ 。最终预测将基于 $\boldsymbol{\mathrm{X}}$。
 
@@ -102,8 +93,6 @@ return argmax F（X[x]）
 
 ![图2](./figure2.png "图2")
 
-[^54]: $\mathrm{clues}[x, \mathcal{G}]$ are sentences in paragraphs of $x$'s predecessor nodes, from which $x$ is extracted.
-
 ### 3.1 System 1
 
 输入模式：
@@ -117,8 +106,6 @@ $$
 其中 $L$ 是输入**序列**的长度，$H$是隐状态的维度。
 
 但对于答案节点 $x$ 而言，$\mathrm{para}[x]$可能不存在。因此我们只使用 “Sentence A” 计算 $\mathrm{sem}[x, Q, \mathrm{clues}]$. 之后当我们抽取距离问题一跳的节点初始化 $\mathcal{G}$ 时，我们不计算语义向量，输入中只存在 $\mathrm{Question}$ 部分。[^55]
-
-[^55]: And when extracting 1-hop nodes from question to initialize $\mathcal{G}$ , we do not calculate semantic vectors and only the $\mathrm{Question}$ part exists in the input. 我也没看懂这句话它想表达什么。
 
 #### Span Extraction
 
@@ -159,8 +146,6 @@ $$
 
 - HotpotQA 分三部分：*特殊* 问题、*替代* 问题、*一般* 问题[^56]
 
-[^56]: 我觉得这个翻译不太行。原文： *special* question, *alternative* question and *general* question
-
 特殊问题是最普遍的情况。使用两层全连接网络作为预测器 $\mathcal{F}$
 $$
 \text{answer} = \underset{\text{answer node}\  x}{\arg \max} \mathcal{F}(\boldsymbol{\mathrm{X}}[x])
@@ -185,8 +170,6 @@ $$
 - 对于 answer span $(y, \text{start}, \text{end})$，使用 one hot 即 $\boldsymbol{\mathrm{gt}}_\text{ans}^\text{start}[\mathrm{start}] = 1$ [^57]
 - 对于 next-hop span，可能有多个 span ，因此概率均匀分布在所有出现的位置上，即$\boldsymbol{\mathrm{gt}}_\text{ans}^\text{start}[\text{start}_i] = 1 / k$
 - 对于负跳节点（应该就是不应该连接上的点？）使用$\boldsymbol{\mathrm{gt}}_\text{ans}^\text{start}[0] = 1$
-
-[^57]: 为什么说 answer span 只有一个？莫非是数据集定义的？
 
 #### 3.4.2 Task #2: Answer Node Prediction
 
@@ -260,3 +243,14 @@ $$
 零零散散看了好久才看完hhhhhhh，期间帮忙整理了高数和通原的知识点，也希望她能加油吧hhhhh
 
 其实这篇没怎么看懂，部分实现也不是很具体。（可能还需要补充一些其他的知识。。）
+
+[^1]: 在 [https://github.com/THUDM/CogQA](https://github.com/THUDM/CogQA) 上获取代码
+[^2]: [https://hotpotqa.github.io](https://hotpotqa.github.io) 2019年3月4日
+[^51]: 我觉得这里的 $x$ 即指的是**实体**，又指的是**可能的答案**。大概是这两个东西共用了一个符号。
+[^52]: via 谷歌翻译
+[^53]: sacrifice 
+[^54]: $\mathrm{clues}[x, \mathcal{G}]$ are sentences in paragraphs of $x$'s predecessor nodes, from which $x$ is extracted.
+[^55]: And when extracting 1-hop nodes from question to initialize $\mathcal{G}$ , we do not calculate semantic vectors and only the $\mathrm{Question}$ part exists in the input. 我也没看懂这句话它想表达什么。
+[^56]: 我觉得这个翻译不太行。原文： *special* question, *alternative* question and *general* question
+[^57]: 为什么说 answer span 只有一个？莫非是数据集定义的？
+
