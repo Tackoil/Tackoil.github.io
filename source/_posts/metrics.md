@@ -8,13 +8,13 @@ categories: [笔记]
 
 <!-- more -->
 
-## Version
+# Version
 
 - ver0.1 2019/11/6 创建文档
 
-## 编辑距离
+# 编辑距离
 
-### 汉明距离
+## 汉明距离
 
 设$x$，$y$为两个长度为$n$的二进制向量，则汉明距离为
 
@@ -30,7 +30,7 @@ $$
 
 汉明距离满足**距离公理**：非负性、对称性、三角不等式。
 
-### Levenshtein距离
+## Levenshtein距离
 
 设$x$，$y$是两个字符串。那么Levenshtein距离定义为：将$s_1$转换成$s_2$的最小**编辑操作**数。通常，这样的编辑操作包括：
 
@@ -67,7 +67,7 @@ d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)}
 \end{cases}
 $$
 
-### Max-Match($M^2$) Evaluation
+## Max-Match($M^2$) Evaluation
 
 [Paper: Better Evaluation for Grammatical Error Correction](https://www.aclweb.org/anthology/N12-1067/)
 
@@ -97,9 +97,9 @@ $$
 \mathrm{match}(e,g) \Leftrightarrow (e.a = g.a) \land (e.b = g,b) \land (e.C \in g.C)
 $$
 
-## 二元素度量
+# 二元素度量
 
-### BLEU
+## BLEU
 
 [Paper: BLEU: a Method for Automatic Evaluation of Machine Translation](https://www.aclweb.org/anthology/P02-1040.pdf)
 
@@ -152,9 +152,9 @@ $$
 
 
 
-## 三元素度量
+# 三元素度量
 
-### I-measure Evaluation
+## I-measure Evaluation
 
 [Paper: Towards a standard evaluation method for grammatical error detection and correction](https://www.aclweb.org/anthology/N15-1060/)
 
@@ -193,7 +193,7 @@ I = \begin{cases}
 \end{cases}
 $$
 
-### GLEU
+## GLEU
 
 [Paper: Ground Truth for Grammatical Error Correction Metrics](https://www.aclweb.org/anthology/P15-2097/)
 
@@ -224,16 +224,16 @@ $$
 \mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}' \in A} I(n\text{-gram}, n\text{-gram}')
 $$
 
-## 向量度量
+# 向量度量
 
-### $p$-范数
+## $p$-范数
 
 各个领域都很常用的范数，用来度量向量应该是比较成熟的理论了。
 $$
 \Vert x \Vert_p = \left( \vert x_1 \vert^p + \vert x_2 \vert^p + \cdots + \vert x_n \vert^p \right)^{1/p}
 $$
 
-#### $1$-范数
+### $1$-范数
 
 $$
 \Vert x \Vert_1 = \vert x_1 \vert + \vert x_2 \vert + \cdots + \vert x_n \vert
@@ -241,7 +241,7 @@ $$
 
 1-范数有比较好的鲁棒性，根据罚函数的理论，其在大的$x_i$上，罚函数上升较慢。
 
-#### $2$-范数
+### $2$-范数
 
 $$
 \Vert x \Vert_2 = \left( \vert x_1 \vert^2 + \vert x_2 \vert^2 + \cdots + \vert x_n \vert^2 \right)^{1/2}
@@ -249,7 +249,7 @@ $$
 
 这个就是大家都很常用的欧氏距离了。也是最小二乘法所使用的范数。
 
-#### $\infty$-范数
+### $\infty$-范数
 
 $$
 \Vert x \Vert_\infty = \max \left( \vert x_1 \vert , \vert x_2 \vert , \cdots , \vert x_n \vert \right)
@@ -257,11 +257,11 @@ $$
 
  总之也能有用的上的地方吧。（比如说对数据的上下界有极为严格的定义，之类的。）
 
-## 概率分布度量
+# 概率分布度量
 
 如果要认为这个也是向量度量的话，也不是不可以。这里就将对概率化的向量的度量单独列出来了。
 
-### 相对熵（Kullback-Leibler散度）
+## 相对熵（Kullback-Leibler散度）
 
 源自信息论理论中的一个度量。用来度量两个概率分布的差异。
 
@@ -270,7 +270,7 @@ $$
 \mathrm{KL}(p \Vert q) = \sum p(x) \log \frac{p(x)}{q(x)}
 $$
 
-### 交叉熵
+## 交叉熵
 
 很不幸的是，交叉熵也不具有对称性。通常我们认为某一个分布是已知的，我们用q去逼近p，在这种情况下，相对熵可以表示为：
 $$

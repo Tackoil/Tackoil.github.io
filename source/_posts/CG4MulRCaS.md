@@ -10,7 +10,7 @@ categories: [笔记]
 
 <!-- more -->
 
-## Author & Abstract
+# Author & Abstract
 
 > - Author:  MingDing, ChangZhou, QibinChen ,HongxiaYang, JieTang
 >
@@ -22,7 +22,7 @@ categories: [笔记]
 
 我们在互联网规模的文档的多跳问答 (Multi-hop question answering) 方面，提出了一个新的 CogQA 框架。基于认知科学的双过程理论，该框架在**隐含抽取模块** (System 1) 和**具体抽取模块** (System 2) 的相互作用的迭代过程中，逐渐建立一个 *认知图* 。除了提供准确的答案，我们的框架进一步提供可解释的推理路线。具体的说，我们的实现[^1]基于 BERT 和 图神经网络 (GNN) 有效地解决了在 HotpotQA 全维基数据集中，百万计的多跳推理问题，获得了排行榜中最高的联合 $F_1$ 分数：34.9，最高竞争者的分数是23.6。[^2]
 
-## 1 Introduction
+# 1 Introduction
 
 > 这里就写一些要点了 = = 全篇翻译可能也没有太大用处。
 
@@ -37,7 +37,7 @@ categories: [笔记]
   - System 2 对实体图进行推理，收集线索并指导 System 1 更好地提取下一跳的实体。
 - 两系统迭代工作，直到**所有**的可能答案被发现。
 
-## 2 Cognitive Graph QA Framework
+# 2 Cognitive Graph QA Framework
 
 > 这里加上那个算法有点没看懂，所以就翻译全文了。
 >
@@ -83,7 +83,7 @@ until G 中没有 "frontier nodes" or G 足够大
 return argmax F（X[x]）
 ```
 
-## 3 Implementation
+# 3 Implementation
 
 > 这部分主要 算法 + 长难句的谷歌翻译 吧。
 
@@ -93,7 +93,7 @@ return argmax F（X[x]）
 
 ![图2](./figure2.png "图2")
 
-### 3.1 System 1
+## 3.1 System 1
 
 输入模式：
 $$
@@ -107,7 +107,7 @@ $$
 
 但对于答案节点 $x$ 而言，$\mathrm{para}[x]$可能不存在。因此我们只使用 “Sentence A” 计算 $\mathrm{sem}[x, Q, \mathrm{clues}]$. 之后当我们抽取距离问题一跳的节点初始化 $\mathcal{G}$ 时，我们不计算语义向量，输入中只存在 $\mathrm{Question}$ 部分。[^55]
 
-#### Span Extraction
+### Span Extraction
 
 **答案**与**下一跳实体**有不同的属性。答案抽取很大程度上依赖于问题指出的字符。下一跳实体经常是 其描述与问题中的声明 相匹配的实体。因此计算两者的文本片段时，使用不用的可训练参数。
 
@@ -122,11 +122,11 @@ $$
 
  为了识别不相关的段落，使用负采样训练 System 1 生成负阈值。在前 $K$ 个文本片段中，起始概率小于负阈值的会被丢弃。这里使用 $\mathrm{P}_{\text{ans}}^{\text{start}}[0]$ 作为阈值。
 
-#### Semantics Generation
+### Semantics Generation
 
 使用**第三层**到**最后一层** 0 位置的隐状态作为$\mathrm{sem}[x, Q, \mathrm{clues}]$
 
-### 3.2 System 2
+## 3.2 System 2
 
 - Function 1 要为前节点准备 $\mathrm{clues}[x, \mathcal{G}]$ ，这里我们使用提及 $x$ 的原始句子。
 - Function 2 更新隐状态 $\boldsymbol{\mathrm{X}} \in \mathbb{R}^{n \times H}$。
@@ -142,7 +142,7 @@ $$
 
 在实验中，我们观察到这种“异步更新” 与 在 $\mathcal{G}$ 最终确定之后，通过多个步骤一起更新所有节点的 $\boldsymbol{\mathrm{X}}$，性能上没有表现出明显差异，后者实践中更为有效和被采用。（长难句翻译）
 
-### 3.3 Predictor
+## 3.3 Predictor
 
 - HotpotQA 分三部分：*特殊* 问题、*替代* 问题、*一般* 问题[^56]
 
@@ -152,14 +152,14 @@ $$
 $$
 替代问题与一般问题d都是比较两个特定实体，给出实体名字或者 yes or no。因此**另**使用单独的两个全连接网络作为二分类器。
 
-### 3.4 Training
+## 3.4 Training
 
 我们的模型使用**负采样监督范式**下进行训练。抽取获得文章片段。
 $$
 \mathcal{D}[x, Q] = \lbrace (y_1, \text{start}_1,\text{end}_1), \cdots, (y_n, \text{start}_n, \text{end}_n) \rbrace
 $$
 
-#### 3.4.1 Task #1: Span Extraction
+### 3.4.1 Task #1: Span Extraction
 
 损失函数如下定义：
 $$
@@ -171,7 +171,7 @@ $$
 - 对于 next-hop span，可能有多个 span ，因此概率均匀分布在所有出现的位置上，即$\boldsymbol{\mathrm{gt}}_\text{ans}^\text{start}[\text{start}_i] = 1 / k$
 - 对于负跳节点（应该就是不应该连接上的点？）使用$\boldsymbol{\mathrm{gt}}_\text{ans}^\text{start}[0] = 1$
 
-#### 3.4.2 Task #2: Answer Node Prediction
+### 3.4.2 Task #2: Answer Node Prediction
 
 为了推理能力，我们的模型必须学会在实体图中辨别正确答案节点。对于在训练集中的每一个问题，我们对这个任务构造一个训练样例。每一个训练样例是 *gold-only graph* 和负节点的组合。其中 *gold-only graph* 是所有正确推理路径的组合。负节点包括在任务一中使用的负跳节点和两个负答案节点。一个负答案节点由一个从随机选择的跳节点中随机抽取的文本片段构成。
 
@@ -181,9 +181,9 @@ $$
 $$
 对于替代问题与一般问题，我们用同样的方法使用二进制交叉熵进行优化。这个任务的损失不仅反向传播优化预测器和 System 2，而且 fine-tune System 1 通过 语义向量 $\mathrm{sem} [x, Q, \mathrm{clues}]$
 
-## 4 Experiment
+# 4 Experiment
 
-### 4.1 Dataset
+## 4.1 Dataset
 
 我们使用 full-wiki setting of HotpotQA 构建我们的实验。 根据 Wikipedia 文档的第一段收集了 112,779 个来自与群众的问题，其中84%需要多跳推理。数据分成了 90564 个问题的训练集，7405 个问题的开发集 和 7405 个问题的测试集。所有在开发集和测试集中的问题都是 困难的多跳 问题。
 
@@ -191,7 +191,7 @@ $$
 
 为了在训练中构建认知图，在 gold-only 认知图中的边通过基于 levenshtein 距离的模糊匹配与支持事实相关联。对每一个在 $\mathrm{para}[x]$ 的支持事实，如果任何标记为 $y$ 的 黄金实体 或者 答案，与支持事实中的文本片段模糊匹配，则添加边 $(x,y)$.
 
-### 4.2 Experimental Details
+## 4.2 Experimental Details
 
 我们使用预训练的 BERT-base 模型作为 System 1. 隐状态大小 $H$ 为 768， 在 GNN 和 预测器中保持不变。在我们的模型中，所有的激活函数为 $GeLU$。我们在 Task #1 上 训练一个 epoch，然后 将 Task #1 与 Task #2 合并训练一个 epoch。训练超参数如下：
 
@@ -204,19 +204,19 @@ BERT 和 GNN 用两个不同的 Adam 优化器进行优化， $\beta_1 = 0.9, \b
 
 为了选出支持事实，我们认为在图中任何节点 $\text{clues}$ 中的句子当作 支持事实。在 $\mathcal{G}$ 的初始化中，这些 1跳文本片段 存在于问题中，并且能通过与在训练集中的支持事实进行模糊匹配被发现。在我们的框架中，被抽取的1跳实体能提高其他模型的 retrieval phase，这促使我们将1跳实体抽取分离开，与其他基于 BERT 的模型，以实现重用。
 
-### 4.3 Baseline
+## 4.3 Baseline
 
 = =
 
-### 4.4 Results
+## 4.4 Results
 
 使用两种度量：EM 和 F1。联合 EM 当答案字符串和支持事实都严格正确时 为1. 联合准确率与召回率是 答案与支持事实 各自的准确率与召回率的乘积，之后计算联合 F1。这些度量在整个测试集上进行平均。实验结果展示了我们的模型在多方面的优越性。
 
-#### Overall Performance
+### Overall Performance
 
 - 认知图结构 比 检索抽取更有效
 
-#### Logical Rigor
+### Logical Rigor
 
 Logical Rigor： 逻辑严谨
 
@@ -226,19 +226,19 @@ $$
 $$
 度量严谨性。
 
-#### Multi-hop Reasoning
+### Multi-hop Reasoning
 
 在 替代问题 和 一般问题 中没有进步。
 
-#### Ablation Studies
+### Ablation Studies
 
 - BERT 不是提升的主要因素。
 
-#### Case Study
+### Case Study
 
 反正很强就是了 = =
 
-## Something else
+# Something else
 
 零零散散看了好久才看完hhhhhhh，期间帮忙整理了高数和通原的知识点，也希望她能加油吧hhhhh
 
