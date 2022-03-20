@@ -2,6 +2,7 @@
 title: Axios 中关于 Promise 的使用与理解
 date: 2022-03-19 14:37:05
 categories: [学习, JavaScript]
+mermaid: true
 ---
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -102,8 +103,36 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
 
 1. 把主请求（指除去拦截器以外的请求）与一个**空元素**放在列表中间。然后将请求拦截器列表放在前面，把响应拦截器列表放在后面。
 2. 调用 [`Promise.resolve()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve) 函数，生成一个 `Promise` 对象。
-3. 将拦截器列表中的元素两个一组，放入 then 中，并将返回的新 `Promise` 替代原始的 `Promise。`
+3. 将拦截器列表中的元素两个一组，放入 [`then`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) 中，并将返回的新 `Promise` 替代原始的 `Promise。`
 4. 返回最终得到的 `Promise` 链。
+
+将上述 Promise 链具体化，就如下图所示。
+
+```mermaid
+flowchart LR
+  resolve --> reqInter3
+  reqInter3 --> reqInter2
+  reqInter2 --> reqInter1
+  reqInter1 --> mainRequest
+  mainRequest --> resInter1
+  resInter1 --> resInter2
+  resInter2 --> FIN
+  subgraph req3
+    reqInter3 -.-> reqCatch3
+  end
+  subgraph req2
+    reqInter2 -.-> reqCatch2
+  end
+  subgraph req1
+    reqInter1 -.-> reqCatch1
+  end
+  subgraph res1
+    resInter1 -.-> resCatch1
+  end
+  subgraph res2
+    resInter2 -.-> resCatch2
+  end
+```
 
 ```JavaScript
 // core/Axios.js
