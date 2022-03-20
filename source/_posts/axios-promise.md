@@ -34,6 +34,8 @@ Axios 既然被称之为**基于Promise的网络请求库**，其对于 JavaScri
 
 # Axios 中关于拦截器的实现
 
+## Axios 中的拦截器
+
 拦截器的作用是在**发送请求前**与**收到响应后**分别对请求与响应进行处理，从而实现一些便捷操作。例如 JWT 权限验证、响应数据的分析等。拦截器使用如下方式定义：
 
 ```JavaScript
@@ -103,10 +105,10 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
 
 1. 把主请求（指除去拦截器以外的请求）与一个**空元素**放在列表中间。然后将请求拦截器列表放在前面，把响应拦截器列表放在后面。
 2. 调用 [`Promise.resolve()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve) 函数，生成一个 `Promise` 对象。
-3. 将拦截器列表中的元素两个一组，放入 [`then`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) 中，并将返回的新 `Promise` 替代原始的 `Promise。`
+3. 将拦截器列表中的元素两个一组，放入 [`then`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) 中，并将返回的新 `Promise` 替代原始的 `Promise`。
 4. 返回最终得到的 `Promise` 链。
 
-将上述 Promise 链具体化，就如下图所示。
+将上述 Promise 链具体化，如下图所示。
 
 ```mermaid
 flowchart LR
@@ -133,6 +135,7 @@ flowchart LR
     resInter2 -.-> resCatch2
   end
 ```
+> 您可能发现了，这里的行为为什么会这么诡异。是的，笔者也是写到这里才发现这个问题，现已提交 [issue](https://github.com/axios/axios/issues/4537)。
 
 ```JavaScript
 // core/Axios.js
@@ -151,6 +154,50 @@ flowchart LR
   }
 ```
 
+Promise 链中所有在主请求前的 Promise 传递修改 config，在主请求后的 Promise 传递并修改 response。这样就完成了对请求和响应的拦截。那么 `Promise.resolve()` 与 `Promise.prototype.then()` 是如何实现这个可以把同步请求也包装进 Promise 链的功能的？
+
+## Promise.resolve()
+
+参考 MDN 中关于 `Promise.resolve()` 的描述，可以发现其作用就是返回一个新的 `Promise`。但根据入参的类型不同行为有一定区别。
+1. 如果是另一个 `Promise`，则返回这个 `Promise`
+2. 如果是一个含有 `then` 方法的对象，则会尝试执行该 `then` 方法，根据执行结果返回对应状态的 `Promise`。（类似于`new Promise(then)`）
+3. 其他情况则返回一个新的 `Promise` ，并且这个 `Promise` 将处于 `fulfilled` 状态。
+
+可以发现这个函数非常适合将一个对象包装成 Promise，并作为 Promise 链的开头使用。
+
+如果对上述描述还有困惑的话，可以参考下面的简易 Polyfill。~~（不过都有 `Promise` 了，还能没有 `Promise.resolve()` 么）~~
+
+```JavaScript
+Promise.resolve = function(value){
+  if(value instanceof Promise){
+    return value; // 情况1，入参为 Promise，则直接返回该 Promise
+  }
+  if(value && Object.prototype.toString.call(null, value.then) === '[object Function]'){
+    return new Promise(then); // 情况2，入参对象含有 then 方法，则执行该 then 方法
+  }
+  return new Promise(function(resolve){
+    resolve(value); // 情况3，返回 fulfilled 的 Promise
+  })
+}
+```
+
+当然，可能还会有这样一个问题：如果这个含有 `then` 方法的对象，在 `then` 方法中传入 `resolve` 的还是一个含有 `then` 方法的对象，会发生什么？解决这个问题就需要先聊一下 `Promise.prototype.then()` 的工作方式了。
+
+```JavaScript
+p = {
+  then: function(resolve_outter){
+    resolve_outter({
+      then: function(resolve_inner){
+        resolve_inner("Fulfilled in Inner thenalbe.");
+      }
+    })
+  }
+}
+```
+
+## Promise.prototype.then()
+
+如果使用过 Axios 的话，那对于 `Promise.prototype.then()` 应该不陌生了。其作为构建 `Promise` 链的胶水，传入两个函数分别处理前一个 `Promise` 处于 `fulfilled` 或者 `rejected` 状态下的执行内容。
 
 # Axios 中关于取消的实现
 
