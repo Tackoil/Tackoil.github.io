@@ -338,7 +338,7 @@ function executor(onFulfilled, onRejected){
 
 # 结语
 
-
+本文主要还是笔者个人的想法居多，以学习的角度详细介绍了 Axios 库中两个与 Promise 应用相关的功能，从而深入理解 Promise 的工作原理和部分函数的实现。希望以后还可以产出这样的文章与各位共勉。
 
 # Reference
 
