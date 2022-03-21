@@ -110,32 +110,9 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
 
 将上述 Promise 链具体化，如下图所示。
 
-```mermaid
-flowchart LR
-  resolve --> reqInter3
-  reqInter3 --> reqInter2
-  reqInter2 --> reqInter1
-  reqInter1 --> mainRequest
-  mainRequest --> resInter1
-  resInter1 --> resInter2
-  resInter2 --> FIN
-  subgraph req3
-    reqInter3 -.-> reqCatch3
-  end
-  subgraph req2
-    reqInter2 -.-> reqCatch2
-  end
-  subgraph req1
-    reqInter1 -.-> reqCatch1
-  end
-  subgraph res1
-    resInter1 -.-> resCatch1
-  end
-  subgraph res2
-    resInter2 -.-> resCatch2
-  end
-```
-> 您可能发现了，这里的行为为什么会这么诡异。是的，笔者也是写到这里才发现这个问题，现已提交 [issue](https://github.com/axios/axios/issues/4537)。
+![Promise 链](./promise-chain.jpg)
+
+> 您可能发现了，这里面**请求拦截器**的 `onRejected` 好像有些诡异。是的，笔者也是写到这里才发现这个问题，现已提交 [issue](https://github.com/axios/axios/issues/4537)。
 
 ```JavaScript
 // core/Axios.js
@@ -160,8 +137,8 @@ Promise 链中所有在主请求前的 Promise 传递修改 config，在主请�
 
 参考 MDN 中关于 `Promise.resolve()` 的描述，可以发现其作用就是返回一个新的 `Promise`。但根据入参的类型不同行为有一定区别。
 1. 如果是另一个 `Promise`，则返回这个 `Promise`
-2. 如果是一个含有 `then` 方法的对象，则会尝试执行该 `then` 方法，根据执行结果返回对应状态的 `Promise`。（类似于`new Promise(then)`）
-3. 其他情况则返回一个新的 `Promise` ，并且这个 `Promise` 将处于 `fulfilled` 状态。
+2. 如果是一个含有 `then` 方法的对象，则会尝试执行该 `then` 方法，根据执行结果返回对应状态的 `Promise`。（类似于`new Promise(then)`）**这里会递归执行所有嵌套的 `then`，直到 `fuilfilled` 或者 `rejected`**。
+3. 其他情况则返回一个新的 `Promise` ，并且这个 `Promise` 将处于 `fulfilled` 状态，`fulfilled` 值为入参。
 
 可以发现这个函数非常适合将一个对象包装成 Promise，并作为 Promise 链的开头使用。
 
@@ -172,8 +149,8 @@ Promise.resolve = function(value){
   if(value instanceof Promise){
     return value; // 情况1，入参为 Promise，则直接返回该 Promise
   }
-  if(value && Object.prototype.toString.call(null, value.then) === '[object Function]'){
-    return new Promise(then); // 情况2，入参对象含有 then 方法，则执行该 then 方法
+  if(value && typeof value.then === 'function'){
+    return new Promise(value.then); // 情况2，入参对象含有 then 方法，则执行该 then 方法
   }
   return new Promise(function(resolve){
     resolve(value); // 情况3，返回 fulfilled 的 Promise
@@ -181,31 +158,75 @@ Promise.resolve = function(value){
 }
 ```
 
-当然，可能还会有这样一个问题：如果这个含有 `then` 方法的对象，在 `then` 方法中传入 `resolve` 的还是一个含有 `then` 方法的对象，会发生什么？解决这个问题就需要先聊一下 `Promise.prototype.then()` 的工作方式了。
+对于这种含有 `then` 方法的对象，可以称之为 `thenable`。可以认为是一个 **弱化版** 的 `Promise`，但没有JavaScript解释器的 **微任务** 的保障。为了加深对 `thenable` 的印象，来看下面这个例子。
 
 ```JavaScript
-p = {
+var p_thenable = {
   then: function(resolve_outter){
     resolve_outter({
-      then: function(resolve_inner){
-        resolve_inner("Fulfilled in Inner thenalbe.");
+      then: function(resolve_middle){
+        resolve_middle({
+          then: function(resolve_inner){
+            // throw Error("Rejected in Inner thenable.");
+            resolve_inner("Fulfilled in Inner thenable.");
+          }
+        });
       }
     })
   }
 }
+var p_promise = Promise.resolve(p_thenable);
+p_promise.then(function onFulfilled(value) {
+  console.log("FULFILLED with:", value);
+}, function onRejected(err){
+  console.log("REJECTED with:", err);
+})
 ```
+
+在注释和取消注释 `throw` 语句之后，console 中分别输出以下内容。
+
+```
+FULFILLED with: Fulfilled in Inner thenable.
+REJECTED with: Error: Rejected in Inner thenable.
+```
+
+如果根据上文给出的 Polyfill 理解 `Promise.resolve()` 的话，输出应该都是 `FULFILLED with: {then: function ...}`，因为只调用了两次 `then`，第三个对象应该会作为 `fulfilled` 的值传给 `value`。这就说明 `Promise.resolve()` 会尝试解析 `thenable` 的最终结果，并把最终结果包装成 `Promise` 进行返回。
+
+因此如果使用 `thenable` 特性的时候，**不要将自身作为 `fulfilled` 的值**，否则解释器会死循环。（不过应该没有多人想用 `thenable` 吧。）
+
+```JavaScript
+let thenable = {
+  then: (resolve, reject) => {
+    resolve(thenable)
+  }
+}
+Promise.resolve(thenable)  // Will lead to infinite recursion.
+```
+
+> PS: 其实尝试执行的话，发现上面 `Promise.resolve()` 的 Polyfill 也是正确的。可能是因为 `Promise` 构造函数在入参（执行器）执行过程中调用的 `resolve()` 与 `Promise.resolve()` 的功能相同。
 
 ## Promise.prototype.then()
 
-如果使用过 Axios 的话，那对于 `Promise.prototype.then()` 应该不陌生了。其作为构建 `Promise` 链的胶水，传入两个函数分别处理前一个 `Promise` 处于 `fulfilled` 或者 `rejected` 状态下的执行内容。
+如果使用过 Axios 的话，那对于 `Promise.prototype.then()` 应该不陌生了。其作为构建 `Promise` 链的胶水，传入两个函数分别处理**前一个** `Promise` 处于 `fulfilled` 或者 `rejected` 状态下的执行内容。然而正因为`then` **返回值**的特性，才使得其可以作为构建 `Promise` 链的胶水使用。
+
+> 下文中的执行函数指的是 `onFulfilled` 或 `onRejected`。
+
+1. 当执行函数返回一个值，则 `then` 函数返回一个 `fulfilled` 状态的 `Promise`，`fulfilled` 值为执行函数的返回值
+2. 当执行函数不返回任何值，则 `then` 函数返回一个 `fulfilled` 状态的 `Promise`, `fulfilled` 值为 `undefined`
+3. 当执行函数抛出一个错误，则 `then` 函数返回一个 `rejected` 状态的 `Promise`，`rejected` 值为该错误。
+4. 当执行函数返回一个  `Promise`，则 `then` 函数返回该 `Promise`。
+
+可以发现 `Promise.prototype.then()` 也有包装非 `Promise` 的作用。那么 `Promise.prototype.then()` 会和 `Promise.resolve()` 一样尝试处理 `thenable` 么？答案是会尝试处理 `thenable`。就不在下文举例说明啦。 
 
 # Axios 中关于取消的实现
+
+
 
 # Axios 中的浏览器 adapter
 
 
 # Reference
 
-> 其实写这篇文章的时候主要参考的是[官方文档](https://axios-http.com/zh/docs/intro)与[MDN 文档](https://developer.mozilla.org/zh-CN/)。下面列出来的主要是学习 Axios 源码时所参考的文章。
+> 其实写这篇文章的时候主要参考的是 [官方文档](https://axios-http.com/zh/docs/intro) 与 [MDN 文档](https://developer.mozilla.org/zh-CN/) 。下面列出来的主要是学习 Axios 源码时所参考的文章。
 
 - [Axios 源码解析 - 掘金](https://juejin.cn/post/6844903824583294984)
