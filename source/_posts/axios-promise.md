@@ -28,7 +28,7 @@ mermaid: true
 - `axios.js` 入口文件。除了暴露 API 以外，还有一小部分逻辑用来实现非实例化直接使用的功能。
 - `utils.js` 一些小工具函数。感觉也有不少其实可以直接调用 JavaScript 的内置函数。主要还是减少工作环境的影响。
 
-Axios 既然被称之为**基于Promise的网络请求库**，其对于 JavaScript 中 `Promise` 的理解也应该是非常透彻的。本文主要针对笔者所认为两处对 `Promise` 特性运用较为充分的两部分进行介绍，最后会顺带介绍一下浏览器的 `XMLHttpRequests` 是如何包装成 `Promise` 的。
+Axios 既然被称之为**基于Promise的网络请求库**，其对于 JavaScript 中 `Promise` 的理解也应该是非常透彻的。本文主要针对笔者所认为两处对 `Promise` 特性运用较为充分的两部分进行介绍。
 
 在开始下文之前，还需要介绍一下 Axios 是通过 `config` 控制的。这个 `config` 除了 `url` 以外，还包含 `headers`、`proxy` 等其他配置。可以认为 Axios 实例如果传入相同的 `config`，就会执行完全一致的操作。
 
@@ -216,17 +216,133 @@ Promise.resolve(thenable)  // Will lead to infinite recursion.
 3. 当执行函数抛出一个错误，则 `then` 函数返回一个 `rejected` 状态的 `Promise`，`rejected` 值为该错误。
 4. 当执行函数返回一个  `Promise`，则 `then` 函数返回该 `Promise`。
 
-可以发现 `Promise.prototype.then()` 也有包装非 `Promise` 的作用。那么 `Promise.prototype.then()` 会和 `Promise.resolve()` 一样尝试处理 `thenable` 么？答案是会尝试处理 `thenable`。就不在下文举例说明啦。 
+可以发现 `Promise.prototype.then()` 也有包装非 `Promise` 的作用。那么 `Promise.prototype.then()` 会和 `Promise.resolve()` 一样尝试处理 `thenable` 么？答案是会的。就不在下文举例说明啦。 
 
 # Axios 中关于取消的实现
 
+## Axios 中的 CancelToken
 
+其实当本文撰写过程中，Axios 已经声明将 `CancelToken` 废弃（Deprecated）。不过源码中还包含这部分功能的实现，还是值得一看的。
 
-# Axios 中的浏览器 adapter
+先简单介绍一下怎么使用 CancelToken 取消一个正在执行的请求。使用 `CancelToken.source()` 工厂函数获得一个 token 操作对象 `source`。将 token 传入 config 中即可控制该请求是否需要取消。取消时执行 `source.cancel()` 即可。 
+
+```JavaScript
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
+axios.post('/user/12345', {
+  name: 'new name'
+}, {
+  cancelToken: source.token
+})
+
+// cancel the request (the message parameter is optional)
+source.cancel('Operation canceled by the user.');
+```
+
+不过，工厂函数方案其实是对 CancelToken 的一个封装。工厂函数如下：
+
+```JavaScript
+// lib/cancel/CancelToken.js
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+```
+
+发现 `cancel` 函数通过 `CancelToken` 构造函数执行入参函数的方式暴露的，~~可以说是非常扭曲了~~。不过概括起来，CancelToken 对象为用户提供了两个元素：`token` 与 `cancel` 函数。
+
+先观察 `cancel` 函数，执行该函数会给 `reason` 赋值，并传入 `resolvePromise` 函数。通过判断 `reason` 是否已经存在来判断 `cancel` 函数是否已经被执行。
+
+```JavaScript
+// lib/cancel/CancelToken.js
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+```
+
+这个 `resolvePromise` 是用来 resolve 一个 `Promise` 的。~~（和没说一样）~~ 具体而言，使用外部变量将 `Promise` 中的执行器入参暴露出来，从而实现在任意位置控制这个 Promise 的状态。后面会详细介绍 `Promise` 构造器的工作方式。
+
+```JavaScript
+// lib/cancel/CancelToken.js
+  var resolvePromise;
+
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+```
+
+有了这个“扳机”，怎样实现请求的取消呢？先看看这个“扳机”后面都链接了什么内容。可以发现 Axios 在这个“扳机”后面调用了 `Promise.prototype.then()` 函数。由于“扳机”一直处于 `pending` 状态，`then` 的入参函数也将不会执行。阅读后可以发现这个函数主要执行与该 `token` 绑定的每个函数。这属于设计模式中的 **观察者模式** 。
+
+```JavaScript
+// lib/cancel/CancelToken.js
+  this.promise.then(function(cancel) {
+    if (!token._listeners) return;
+
+    var i;
+    var l = token._listeners.length;
+
+    for (i = 0; i < l; i++) {
+      token._listeners[i](cancel);
+    }
+    token._listeners = null;
+  });
+```
+
+后面就不过多展示源码了，主要包含以下几部分内容：
+- 实现订阅函数与取消订阅函数
+- 在请求发送前、请求发送后判断是否已经执行取消操作
+- 与 `http` 或 `xhr` 联动，实现取消功能。
+
+不过还有一个额外的问题，在提交历史和其他介绍文章中也没有看到合适的解释：
+
+> 在 `lib/cancel/CancelToken.js` 中，`CancelToken` 构造函数内。在上述执行 `then` 函数的操作后，又新写了一个 `then` 方法。不知道这个 `then` 方法是用来做什么的。
+
+如果有了解的同学希望不吝赐教。
+
+## Promise() 构造器
+
+这部分在 MDN 上的中文文档有我参与翻译的部分。当时也主要是因为原始版本与英文版本相距甚远，于是按照英文版本的文档进行了完善。笔者认为阅读过该文档，应该会对 [Promise() 构造器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise) 及其入参函数有进一步的理解。
+
+```JavaScript
+new Promise(executor)
+```
+
+入参函数 `executor` 决定了这个新 Promise 的行为是怎样的。`executor` 有两个参数构成，当然这两个参数传不传都不会报错，但如果连 `onFulfilled` 都不传的话，这个新 Promise 将会永久处于 `pendding` 状态。
+
+> 这里使用与 MDN 文档上不同的入参命名方式，主要是考虑到与上文的一致性。
+
+```JavaScript
+function executor(onFulfilled, onRejected){
+  // 通常是一些异步操作，同步操作也可以
+}
+```
+
+如何改变这个 Promise 的状态呢？有以下三种情况：
+- 调用 `onFulfilled(value)`，新 Promise 为 `fulfilled`，`fulfilled` 值为 `value`。
+- 调用 `onRejected(reason)`，新 Promise 为 `rejected`，`rejected` 值为 `reason`。
+- `onFulfilled` 函数出现异常，新 Promise 为 `rejected`，`rejected` 值为该异常。
+
+此外 `executor` 自身的返回值将会被忽略。所以 `Promise()` 构造器的主要作用是将一个异步操作包装成 Promise。
+
+# 结语
+
 
 
 # Reference
 
-> 其实写这篇文章的时候主要参考的是 [官方文档](https://axios-http.com/zh/docs/intro) 与 [MDN 文档](https://developer.mozilla.org/zh-CN/) 。下面列出来的主要是学习 Axios 源码时所参考的文章。
+> - 其实写这篇文章的时候主要参考的是 [官方文档](https://axios-http.com/zh/docs/intro) 与 [MDN 文档](https://developer.mozilla.org/zh-CN/) 。下面列出来的主要是学习 Axios 源码时所参考的文章。
+> - 另外，还有一些关于用语的内容，也写在这里了。针对 “fulfilled/rejected with ...” 这种表达，笔者采用了 fulfilled/rejected 的值为 ... 。都指该 Promise 后接 then 的两个入参函数（onFulfilled/onRejected）的入参。（感觉不太好翻译这个概念。）
 
 - [Axios 源码解析 - 掘金](https://juejin.cn/post/6844903824583294984)
