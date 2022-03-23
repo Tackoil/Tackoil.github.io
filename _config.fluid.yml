@@ -362,6 +362,12 @@ scroll_down_arrow:
 scroll_top_arrow:
   enable: true
 
+# Open Graph metadata
+# See: https://hexo.io/docs/helpers.html#open-graph
+open_graph:
+  enable: true
+  image: /img/bg/natsumi23.jpg
+
 
 #---------------------------
 # 页脚
@@ -599,7 +605,7 @@ post:
     enable: true
     # 脚注的节标题，也可以在 front-matter 中通过 `footnote: <h2>Reference</h2>` 这种形式修改单独页面的 header
     # The section title of the footnote, you can also modify the header of a single page in the form of `footnote: <h2>Reference</h2>` in front-matter
-    header: ''
+    header: 'Footnote'
 
   # 数学公式，开启之前需要更换 Markdown 渲染器，否则复杂公式会有兼容问题，具体请见：https://hexo.fluid-dev.com/docs/guide/##latex-数学公式
   # Mathematical formula. If enable, you need to change the Markdown renderer, see: https://hexo.fluid-dev.com/docs/en/guide/#math
@@ -853,7 +859,7 @@ about:
   banner_img_height: 60
   banner_mask_alpha: 0.3
   banner_info: 
-    text: "编辑：Tackoil | 原图来自《Charlotte》的 ED"
+    text: "编辑：Tackoil | 原图来自《Charlotte》的ED"
   indent: true
   subtitle:
   avatar: /img/avatar.png
