@@ -928,6 +928,18 @@ links:
       link: "https://sprinter1999.github.io/",
       avatar: "https://sprinter1999.github.io/images/header.png"
     }
+    - {
+      title: "废纸篓",
+      intro: "祝愿我远走高飞",
+      link: "https://poriahcorvus.github.io/",
+      avatar: "https://poriahcorvus.github.io/img/avatar.jpg"
+    }
+    - {
+      title: "chino",
+      intro: "唯有爱与猫猫不可辜负",
+      link: "https://kafudolly-github-io.vercel.app/",
+      avatar: "https://cdn.jsdelivr.net/gh/kafudolly/cdn/img/custom/avater.jpg"
+    }
     # - {
     #   title: "Fluid Blog",
     #   intro: "主题博客",
