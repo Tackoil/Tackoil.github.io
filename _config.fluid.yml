@@ -940,6 +940,24 @@ links:
       link: "https://kafudolly-github-io.vercel.app/",
       avatar: "https://cdn.jsdelivr.net/gh/kafudolly/cdn/img/custom/avater.jpg"
     }
+    - {
+      title: "妄想录 | Sherroe's Blog",
+      intro: "",
+      link: "https://sherroe.github.io/",
+      avatar: "https://sherroe.top/img/head.png"
+    }
+    - {
+      title: "RuaYiii's Blog",
+      intro: "",
+      link: "https://ruayiii.github.io/",
+      avatar: "https://ruayii.github.io/img/avatar.png"
+    }
+    - {
+      title: "banned's blog",
+      intro: "",
+      link: "https://blog.banned.top/",
+      avatar: "https://avatar.dawnlab.me/qq/1801089325?s=0"
+    }
     # - {
     #   title: "Fluid Blog",
     #   intro: "主题博客",
