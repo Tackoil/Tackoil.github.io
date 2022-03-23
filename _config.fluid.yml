@@ -894,9 +894,11 @@ page:
 #---------------------------
 page404:
   enable: true
-  banner_img: /img/default.png
+  banner_img: /img/bg/Ceobe.png
   banner_img_height: 85
   banner_mask_alpha: 0.3
+  banner_info: 
+    text: "明日方舟 | 刻俄柏的灰蕈迷境"
   subtitle: "Four Hundred and Four"
 
 
