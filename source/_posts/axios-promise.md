@@ -2,7 +2,6 @@
 title: Axios 中关于 Promise 的使用与理解
 date: 2022-03-19 14:37:05
 categories: [学习, JavaScript]
-mermaid: true
 ---
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
