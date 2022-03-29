@@ -83,9 +83,9 @@ categories: [学习, CSS]
     <div class="show">
         <div class="result">
             <div style="height: 300px" :style="hgContainer">
-                <div style="background-color: #F5FAF0DD; height: 150px; text-align: center; z-index: 999;" :style="hgCenter"></div>
+                <div style="background-color: #F5FAF0DD; height: 150px; text-align: center; " :style="hgCenter"></div>
                 <div style="background-color: #6DAFA4DD; height: 80px; width: 50px; text-align: center;" :style="hgLeft"></div>
-                <div style="background-color: #276562DD; height: 80px; width: 100px; text-align: center; z-index: 999;" :style="hgRight"></div>
+                <div style="background-color: #276562DD; height: 80px; width: 100px; text-align: center; " :style="hgRight"></div>
             </div>
         </div>
         {% raw %}
