@@ -2,8 +2,8 @@
 title: Repeater - 分析与设计
 date: 2022-05-04 15:28:33
 categories: [吐槽]
-banner_img: /img/bg/illust_91767918_20210810_192545
-index_img: /img/bg/illust_91767918_20210810_192545
+banner_img: /img/bg/illust_91767918_20210810_192545.jpg
+index_img: /img/bg/illust_91767918_20210810_192545.jpg
 banner_info: 
     text: 封面画师：寺田てら
     link: "https://www.pixiv.net/artworks/91767918"
