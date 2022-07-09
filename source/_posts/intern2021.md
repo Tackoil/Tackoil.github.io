@@ -4,6 +4,7 @@ date: 2021-07-26 10:53:56
 categories: 吐槽
 banner_img: /img/bg/20210614_233550.jpg
 index_img: /img/bg/20210614_233550.jpg
+hide: true
 banner_info: 
     text: 封面画师：いちご飴
     link: "https://www.pixiv.net/artworks/90559009"
