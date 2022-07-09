@@ -6,7 +6,7 @@ categories: [学习, CSS]
 
 <script src="https://unpkg.com/vue@next"></script>
 <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
- <script src="https://unpkg.com/element-plus"></script>
+<script src="https://unpkg.com/element-plus"></script>
 
 <style>
     :root {
