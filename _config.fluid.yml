@@ -966,6 +966,12 @@ links:
       link: "https://blog.banned.top/",
       avatar: "https://avatar.dawnlab.me/qq/1801089325?s=0"
     }
+    - {
+      title: "Ayamir's Blog",
+      intro: "Until to the End of Interest...",
+      link: "https://ayamir.github.io/",
+      avatar: "https://avatars.githubusercontent.com/u/61657399?s=400&u=7a71222b05d3e29bae8c36647b078d8aad923bfe&v=4"
+    }
     # - {
     #   title: "Fluid Blog",
     #   intro: "主题博客",
