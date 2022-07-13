@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/rabbit.png">
+  <link rel="icon" href="/img/rabbit.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#3EA09E">
+  <meta name="author" content="Tackoil">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="仅记录道听途说的笑话，以及联想。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从核酸检测开始">
+<meta property="og:url" content="http://tackoil.github.io/posts/pcrtest/index.html">
+<meta property="og:site_name" content="Tackoil&#39;s WebSite">
+<meta property="og:description" content="仅记录道听途说的笑话，以及联想。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+<meta property="article:published_time" content="2021-09-08T15:37:21.000Z">
+<meta property="article:modified_time" content="2022-07-13T12:19:32.726Z">
+<meta property="article:author" content="Tackoil">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+  
+  
+  
+  <title>从核酸检测开始 - Tackoil&#39;s WebSite</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tackoil.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tackoil&#39;s WebSite</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/79306176_p0.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从核酸检测开始"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-09-08 15:37" pubdate>
+          2021年9月8日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+    
+        <a class="page-header banner-info" target="_blank" href=https://www.pixiv.net/artworks/79306176 >
+            封面画师：Xeph＇s Artworks
+        </a>
+    
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从核酸检测开始</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2022年7月13日 中午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body markdown-indent">
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>仅记录道听途说的笑话，以及联想。</p>
+<span id="more"></span>
+<h1 id="管中窥豹"><a href="#管中窥豹" class="headerlink" title="管中窥豹"></a>管中窥豹</h1><p>实验室开会，可能是抨击我们的时候突然想到了前一天给新研一开会的事情。老师突然抓一个人问了几个问题。</p>
+<blockquote>
+<p>老师：你从哪里回的学校？从 XX 市？<br>同学：是的。<br>老师：<strong>怎么做的核酸？</strong><br>同学：携带48小时内的报告上车，然后……</p>
+</blockquote>
+<p>老师：你看，这才是正常的回答。你们知道昨天开会的那个新生怎么回答的么？</p>
+<blockquote>
+<p>老师：你从哪里来的学校？<br>同学：XX 市。<br>老师：<strong>怎么做的核酸？</strong><br>同学：张开嘴，然后……</p>
+</blockquote>
+<p>老师：昨天我还在想，是我们有代沟么，还是我问的有问题。今天看你这么一回答，就放心多了。</p>
+<p>老师讲完这件事后，实验室传来快活的气息。不过出于个人兴趣，所以我就陷入了这样的一个思考。为什么会有这样的回答？</p>
+<h1 id="盲人摸象"><a href="#盲人摸象" class="headerlink" title="盲人摸象"></a>盲人摸象</h1><p>首先，可以判断一下，这样的对话成立么？如果把第一组问答和第二组问答分开看的话，显然是成立的。这显然涉及到了“<strong>怎么做的核酸？</strong>”这个问题中的“怎么”到底在询问什么。在第一个回答中，回答了返校的疫情防控规定；在第二个回答中，回答了如何进行核酸检测。如果独立来看，显然后者的回答更加准确。</p>
+<p>可以通过根据答案提问题的方式得出上面的推论。</p>
+<blockquote>
+<p>回答：携带48小时内的核酸检测阴性报告上车，……<br>提问：</p>
+<ul>
+<li>疫情期间，返校的流程是什么？</li>
+<li>返校的核酸检测应该怎么做？</li>
+<li>返校的时候，核酸检测的流程是什么？</li>
+</ul>
+</blockquote>
+<p>显然，上面的问题都需要<strong>返校</strong>这个条件。</p>
+<blockquote>
+<p>回答：张开嘴，发出“啊”的声音，……<br>提问：</p>
+<ul>
+<li>如何进行核酸检测？</li>
+<li>核酸检测的流程是什么？</li>
+<li>怎样配合医生进行核酸检测？</li>
+</ul>
+</blockquote>
+<p>而这里的问题就更加符合原始问题。可见在不考虑上下文的情况下，后者的回答更加准确。</p>
+<p>但读完这个故事，大部分人（包括我）的反应也是后者的回答过于荒唐。以普遍理性而论，是因为第一组问答包含了一定的信息，才导致第二组问答的问题的含义发生了变化。但我个人认为，除了第一组问答外，背景知识则是更加重要的原因。</p>
+<h1 id="按图索骥"><a href="#按图索骥" class="headerlink" title="按图索骥"></a>按图索骥</h1><p>在自然语言处理领域中，背景知识是导致模型性能不尽如人意的重要原因。近来很多模型通过大量的训练数据和模型参数，也可以认为其学习了不少背景知识，从而使模型有一定的提高。但人们在平时的对话聊天中，背景知识很可能会自然而然的忽略掉。</p>
+<p>我们可以分析一下这组问答，看看合理回答这简单的两个问题需要哪些背景知识。</p>
+<h2 id="问题：你从哪里来的学校？"><a href="#问题：你从哪里来的学校？" class="headerlink" title="问题：你从哪里来的学校？"></a>问题：你从哪里来的学校？</h2><p>“来学校”，一般说明是第一次在学校，或者说很少在学校。在提问者的理解中，对于答者而言，学校是个新地方，或者不属于自己的地方。</p>
+<p>“从哪里”，显然是表示地点，但并没有明确限定是哪种粒度的地点。本着提供最大信息量的想法，首先排除包含学校的地点：例如太阳系、地球、……、北京、海淀。所以在北京的话，可能会回答在西直门、在望京或者在学校附近。而不在北京就可能会回答所在省或者所在市。</p>
+<p>问题的提问时间：“九月份”。在中国九月是开学的月份。再结合前两点可知，在提问者的角度，回答者应该是从放暑假的状态进入开学状态，可以简单称作：返校或者开学。所以回答“哪里”的时候，一般指的是家乡。这也就有了提问者可以根据自己对答者的理解，给出猜测的答案。</p>
+<h2 id="问题：怎么做的核酸？"><a href="#问题：怎么做的核酸？" class="headerlink" title="问题：怎么做的核酸？"></a>问题：怎么做的核酸？</h2><p>首先，缺失的主语肯定是“你”，也就是答者。</p>
+<p>其次，显然“核酸”是“核酸检测”的简写。可以通过“做核酸检测”这一常用词汇推知。</p>
+<p>“怎么做”，这个就是问题歧义的源头。所以首先想到的就是借用上个问题包含的信息：返校或者开学、还有答者回学校路途的起点，我们假设为 XX 市。把这两条信息加入，问题就变成了“<strong>从 XX 市返校时的核酸检测时怎么做的呢？</strong>”既然带上了这两个修饰词，说明这里的怎么做核酸检测与 XX 市这一地点和返校这一时间点有关。在这两条信息的约束下，与其他不同的核酸检测，就应该是返校疫情防控规定中不同地区进行的不同有效时间的核酸检测了。</p>
+<p>综上可以发现，在人类的日常对话中实际上使用了大量的背景知识。这些背景知识不仅是时间、地点、说话人的身份。甚至还包含时事政策、说话人的家庭环境等等。</p>
+<h1 id="虚构推理"><a href="#虚构推理" class="headerlink" title="虚构推理"></a>虚构推理</h1><blockquote>
+<p>怎么突然不是成语了？</p>
+</blockquote>
+<p>在这部分做一段有意思的思考：</p>
+<ol>
+<li>在已有条件下不变的情况下，如何添加其他的条件，使回答者可以合理地给出这个答案。</li>
+<li>不考虑现有条件，对于同一个问句，通过改变背景条件，可以给出怎样不同的答案？</li>
+</ol>
+<div class="note note-warning">
+            <p>以下推理仅为猜想，与任何真实事件无关。文章作者不对以下内容的真实性负责。</p>
+          </div>
+<h2 id="添加新条件"><a href="#添加新条件" class="headerlink" title="添加新条件"></a>添加新条件</h2><p>首先，做一个假设：<strong>回答者总之本着提供更多信息的想法回答问题。</strong>通常来讲，只有满足上述条件的回答才是礼貌、积极的回答。可以举一个例子来解释这个现象。如果一个人问：“你住在哪里？”而回答是“家里”，那么对于提问的人而言这就是几乎没有信息的回答，那么提问者就会觉得被敷衍。</p>
+<p>现在我们明确一下已有条件都有哪些。可能还会有一些其他的已有条件。不过可能干扰不大，就先不列举在这里了。</p>
+<ul>
+<li>时间：9月初</li>
+<li>地点：实验室内</li>
+<li>人物：老师（提问者）、研究生新生（回答者）</li>
+<li>社会背景：刚刚结束一段疫情。导致学校需要根据学生所在地调整返校政策。该政策主要通过控制学生的核酸检测有效时间的方式实现。核酸检测是人类检测新型冠状病毒的无症状感染者与患者的有力手段。通常包含咽拭子采样与鼻拭子采样两种方式。</li>
+</ul>
+<p>好了，下面可以开始了。</p>
+<h3 id="回答者的家庭背景"><a href="#回答者的家庭背景" class="headerlink" title="回答者的家庭背景"></a>回答者的家庭背景</h3><p>这也是我当时想到的第一个方案。首先，为什么一个人会在这样的对话中回答核酸检测的流程？这说明这个人认为核酸检测是比较少见的东西，可能认为大部分人都没有做过核酸检测。因此猜测提问者想知道核酸检测的流程（并且提问句的本意就应该是这样），所以给出了如此回答。</p>
+<p>这里引入的第一个条件就是：<strong>回答者及其所认识的人没有经历过核酸检测</strong>。但这个条件非常苛刻，还是需要添加其他条件对其进行解释。回答者是一名研究生，那么ta一定读过大学。这样ta认识的人就应该包括家人、朋友、同学和网友了。从人的常住地角度分析，家人、朋友大概率在同一常住地，网友虽然分布更广但一般不会聊这一话题，那么这里的同学就要被限定在“没做过核酸检测”这一范围内了。</p>
+<p>如果一个学校里的所有人都没做过核酸检测，说明<strong>ta所在大学的生源大部分都是本地的</strong>，所以这也就是第二个条件。简单查一下，ta可能是来自西藏、青海或者宁夏的同学。</p>
+<p>那么这个故事就完整了。ta从大学以来一直在家附近，考研到学校是第一次做核酸检测。因此ta对这个问题给出了如此回答。（可喜可贺）</p>
+<h3 id="核酸检测的类型"><a href="#核酸检测的类型" class="headerlink" title="核酸检测的类型"></a>核酸检测的类型</h3><p>还有一种可能性就是，答者所强调的是这种核酸检测的流程，即咽拭子采样的核酸检测流程。那么为什么会需要强调这一点呢？说明<strong>回答者至少两种核酸检测方式都做过</strong>，甚至可以说ta可能两种方式都做过很多次。这一点可以作为引入的条件。</p>
+<p>但仅仅引入上面的条件应该是不够的，需要为回答者找到一个使用前一问题中信息的方式。那么还是从家乡的角度入手，如果一个人经常进行核酸检测，要么是因为从事高危行业（航空运输、冷链运输等），要么是因为所在地曾经是中高风险地区。答者作为一名学生，显然是因为其所在学校或者家乡曾经是中高风险地区。更细化一点，<strong>答主的家乡应该是一个做过多轮全民核酸检测筛查的地区。</strong></p>
+<p>这样就有比较完善的动机了。因为回答者家乡是一个经常做核酸检测的地区，所以结合前面提问者询问作者的家乡情况，因此回答者认为提问者知道自己的家乡是经常做核酸检测的地区，所以给出了咽拭子核酸检测的流程作为回答。</p>
+<h2 id="设立新背景"><a href="#设立新背景" class="headerlink" title="设立新背景"></a>设立新背景</h2><p>这部分就是比较天马行空的联想了。下面会给出“怎么做的核酸？”这一问题的答案，然后再解释这些答案的背景条件是什么。</p>
+<h3 id="先手消毒然后……"><a href="#先手消毒然后……" class="headerlink" title="先手消毒然后……"></a>先手消毒然后……</h3><blockquote>
+<p>提问：怎么做的核酸？<br>回答：先手消毒，然后将拭子放入无菌生理盐水中湿润，将拭子越过舌根，在被采集者两侧咽扁桃体稍微用力来回擦拭至少3次，然后再在咽后壁上下擦拭至少3次，将拭子头放入保存液，尾部扔掉，旋紧管盖，手消毒。</p>
+</blockquote>
+<p>以上回答参考自《医疗机构新型冠状病毒核酸检测工作手册》。显然这个回答不是被检测者所需要关心的，说明是<strong>回答者是医务人员</strong>。但问题中包含“做”这一动词，所以回答者不是简单地背诵工作手册，而是在描述自己进行核酸检测时的操作步骤。但如果操作步骤与手册完全一致的话，这个提问就没有动机了，因此这里的操作步骤有自己的特殊性。但显然，和手册不同的操作是不规范或者错误的。不被发现的错误通常不会被作为话题，因此<strong>该核酸检测点可能发生了事故</strong>。</p>
+<h3 id="得网上预约挂号才能做……"><a href="#得网上预约挂号才能做……" class="headerlink" title="得网上预约挂号才能做……"></a>得网上预约挂号才能做……</h3><blockquote>
+<p>提问：怎么做的核酸？<br>回答：得网上预约挂号才能做。挂好号当天去医院就可以了。</p>
+</blockquote>
+<p>可以发现这组问答中的提问者和回答者的身份又有了些不同。首先对于回答者而言，他知道提问者最近一段时间没有做过核酸检测，或者医院的通知并不明确，所以给出了如何去医院进行核酸检测的流程。因此可以猜测两人所处环境应该是非中高风险地区，提问者是一位不怎么流动的居民，但最近需要出门了。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>当然，这篇文章的出发点就是那个被老师调侃的对话了。然后出于个人兴趣开始分析这段话可能的原因。毕竟人类即使注意力再分散，这种程度的对话也应该不会出问题。所以就自然想到了会不会是实验室内的大家有一个默认共识，而这个共识再那位学生身上并没有。</p>
+<p>不过这些推理都是猜测，或者说是一次思维游戏吧。也是第一次尝试把自己突然蹦出来的想法以有条理的方式写出来，希望有兴趣读完的读者能看懂吧。在推理可能原因的时候，使用了《虚构推理》这一名字，也是突然想到了现在做的事情也有一种虚构推理的感觉。总之写下这堆东西还挺有趣的，以后有什么奇怪的思路也可以记录下来。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%90%E6%A7%BD/" class="category-chain-item">吐槽</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>从核酸检测开始</div>
+      <div>http://tackoil.github.io/posts/pcrtest/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Tackoil</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年9月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/oped-view2/" title="动画OP与ED手法观察2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">动画OP与ED手法观察2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/js-destructuring-assignment/" title="JavaScript 的列表解构赋值执行顺序">
+                        <span class="hidden-mobile">JavaScript 的列表解构赋值执行顺序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Base <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> by <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i> <span> Tackoil </span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

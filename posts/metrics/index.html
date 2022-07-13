@@ -1,0 +1,847 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/rabbit.png">
+  <link rel="icon" href="/img/rabbit.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#3EA09E">
+  <meta name="author" content="Tackoil">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="距离整理笔记">
+<meta property="og:url" content="http://tackoil.github.io/posts/metrics/index.html">
+<meta property="og:site_name" content="Tackoil&#39;s WebSite">
+<meta property="og:description" content="本篇是在日常看论文的时候所整理的关于距离或者度量的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+<meta property="article:published_time" content="2019-11-06T16:26:29.000Z">
+<meta property="article:modified_time" content="2022-07-13T12:19:32.678Z">
+<meta property="article:author" content="Tackoil">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+  
+  
+  
+  <title>距离整理笔记 - Tackoil&#39;s WebSite</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tackoil.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tackoil&#39;s WebSite</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/natsumi23.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="距离整理笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-11-06 16:26" pubdate>
+          2019年11月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          6.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          55 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+    
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">距离整理笔记</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2022年7月13日 中午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body markdown-indent">
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本篇是在日常看论文的时候所整理的关于<strong>距离</strong>或者<strong>度量</strong>的内容。主要会记录一些度量的方法，和这种度量方法所适用的范围。</p>
+<span id="more"></span>
+<h1 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h1><ul>
+<li>ver0.1 2019/11/6 创建文档</li>
+</ul>
+<h1 id="编辑距离"><a href="#编辑距离" class="headerlink" title="编辑距离"></a>编辑距离</h1><h2 id="汉明距离"><a href="#汉明距离" class="headerlink" title="汉明距离"></a>汉明距离</h2><p>设$x$，$y$为两个长度为$n$的二进制向量，则汉明距离为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+d(x, y) = \sum_{i=1}^n I(x_i, y_i) \\
+I(a, b) = \begin{cases}
+1, & a = b \\
+0, & \text{else} \\
+\end{cases}
+\end{aligned}</script><p>汉明距离满足<strong>距离公理</strong>：非负性、对称性、三角不等式。</p>
+<h2 id="Levenshtein距离"><a href="#Levenshtein距离" class="headerlink" title="Levenshtein距离"></a>Levenshtein距离</h2><p>设$x$，$y$是两个字符串。那么Levenshtein距离定义为：将$s_1$转换成$s_2$的最小<strong>编辑操作</strong>数。通常，这样的编辑操作包括：</p>
+<ol>
+<li>将一个字符插入字符串</li>
+<li>从字符串中删除一个字符</li>
+<li>将字符串中的一个字符替换成另外一个字符</li>
+</ol>
+<p>关于该编辑距离是否可以满足距离的三定义（非负性，对称性，三角不等式）只查到已被证明，但没有查询到相关的证明过程。在维基百科的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Edit_distance">编辑距离</a> 词条中，简单的说明了该编辑距离满足距离定义。简略翻译如下：</p>
+<blockquote>
+<p>具有非负成本(non-negative cost)的编辑距离满足距离公理(the axioms of a metric)。当满足以下条件时，该编辑距离生成一个距离空间(metric space)：</p>
+<ul>
+<li>每一个编辑操作都具有正成本。</li>
+<li>对于每一个编辑操作，都有相同成本的逆操作(inverse operation)。</li>
+</ul>
+<p>具有以上这些属性，将满足如下的距离公理：</p>
+<ul>
+<li>$d(a,b) = 0$当且仅当$a = b$，因为每一个字符串都可以通过0个操作转换成自身。</li>
+<li>$d(a,b) &gt; 0$当$a \neq b$，因为这将至少需要一个操作。</li>
+<li>$d(a,b) = d(b,a)$，每一个操作的成本与其逆操作的成本是相同的。</li>
+<li>$d(a,c) \leq d(a,b) + d(b,c)$，三角不等式。</li>
+</ul>
+<p>Levenshtein distance 和 LCS distance 具有单元成本并满足以上条件，因此满足距离公理。一些编辑距离的变体即使不是真正的(proper)距离，也被在一些文献中使用。</p>
+</blockquote>
+<p>该距离由递推式定义：</p>
+<script type="math/tex; mode=display">
+d(x[0:i], y[0:j]) = \begin{cases}
+\max (i, j) & \text{if} \min(i, j) = 0
+\min \begin{cases} d(x[0:i-1], y[0:j]) +1 \\
+d(x[0:i],y[0:j-1]) +1 \\
+d(x[0:i-1], y[0:j-1]) + 1 _{(x_i \neq y_j)}  
+\end{cases}
+& \text{otherwise}
+\end{cases}</script><h2 id="Max-Match-M-2-Evaluation"><a href="#Max-Match-M-2-Evaluation" class="headerlink" title="Max-Match($M^2$) Evaluation"></a>Max-Match($M^2$) Evaluation</h2><p><a target="_blank" rel="noopener" href="https://www.aclweb.org/anthology/N12-1067/">Paper: Better Evaluation for Grammatical Error Correction</a></p>
+<p>我们这里提到的评估，有以下的限制与使用环境。</p>
+<ul>
+<li>我们对两个句子$C$，$S$进行评估，并使用“黄金标准”$G$决定性评价句子。</li>
+<li>评估的最小粒度为单词（词条）。</li>
+<li>我们希望这个评估可以对包含$G$的$C$给予<strong>较高</strong>的分数，对接近$S$的$C$给予<strong>较低</strong>的分数。</li>
+</ul>
+<p>文章中使用了一种称之为<strong>编辑晶格（Edit lattice）</strong>的方法辅助计算该调整过的距离。首先，我们计算$C$和$S$在单词（词条）粒度上的编辑距离。在计算编辑距离时会使用表格进行动态规划。之后将这个表格转化成一个有向无环图。便于理解，我们按照下面的步骤进行生成。</p>
+<ol>
+<li>首先我们将表格中的最优编辑（编辑距离最小的编辑方式）画成如图所示的有向无环图。</li>
+<li>我们定义了合并过程中的不变单词的最大数量$u$，这里我们让$u=2$，这也是文章中的默认配置。</li>
+<li>我们开始对编辑操作进行合并：对任意两个结点进行连线，并满足第二条的<strong>不变单词的最大数量</strong>的限制，从而得到完整的有向无环图。</li>
+<li>我们对所有的单位操作赋予权值$1$，对于合并的操作赋予被合并的权值之和。此外，我们将黄金标准中的编辑操作赋予权值$-(u+1) \times |E|$，其中$|E|$是这张图中的边的总数。也就是含有黄金标准的路径将<strong>一定</strong>会获得一个负数的权值。这样，我们就得到了一个<strong>编辑晶格</strong>。</li>
+</ol>
+<p>之后计算$M^2$距离时，仅需要先计算$C$，$S$的最小权值路径所对应的编辑操作$e$。对于所有的测试句子的编辑操作组成一个集合$\lbrace e_1, \cdots, e_n \rbrace$，与其对应的黄金标准集合为$\lbrace g_1, \cdots , g_n \rbrace$。之后计算两个集合的准确率、召回率和$F_1$分数即可。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P &= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n | e_i | } \\
+R &= \frac{\sum_{i=1}^n | e_i \cap g_i |}{\sum_{i=1}^n |g_i|} \\
+F_1 &=  2 \times \frac{P \times R}{P + R}
+\end{aligned}</script><p>这里的$|e_i \cap g_i |$表示的是$e_i$操作是否与$g_i$操作match。</p>
+<script type="math/tex; mode=display">
+\mathrm{match}(e,g) \Leftrightarrow (e.a = g.a) \land (e.b = g,b) \land (e.C \in g.C)</script><h1 id="二元素度量"><a href="#二元素度量" class="headerlink" title="二元素度量"></a>二元素度量</h1><h2 id="BLEU"><a href="#BLEU" class="headerlink" title="BLEU"></a>BLEU</h2><p><a target="_blank" rel="noopener" href="https://www.aclweb.org/anthology/P02-1040.pdf">Paper: BLEU: a Method for Automatic Evaluation of Machine Translation</a></p>
+<p>BLEU是为<strong>机器翻译</strong>准备的评估方法。以单词（词条）为单位，计算候选句$C$与参考句$R$的距离。原论文可以计算多个候选句与多个参考句之间的距离，这里我们将其简化为一个候选句与多个参考句的距离（当然也可以一对一）。</p>
+<p>公式直接列举在下面了，感觉下面的定义足够的详细。</p>
+<script type="math/tex; mode=display">
+\mathrm{BLEU}(c;R) = \mathrm{BP}(c;R) \cdot \exp \left( \sum_{n=1}^{N} w_N \log p_n\right)</script><script type="math/tex; mode=display">
+\mathrm{BP}(c;R) = \begin{cases}
+1 \quad &\text{if}\ \mathrm{len}(c) > \mathrm{len}(r^\star)\\
+\exp(1-\frac{\mathrm{len}(r^\star)}{\mathrm{len}(c)}) &\text{if}\  \mathrm{len}(c) \leq \mathrm{len}(r^\star)
+\end{cases}</script><script type="math/tex; mode=display">
+r^\star = \arg \min_{r \in R} \left| \mathrm{len}(r) - \mathrm{len}(c)\right|</script><script type="math/tex; mode=display">
+w_N = \frac{1}{N}</script><script type="math/tex; mode=display">
+p_n = \frac{\sum_{n\text{-gram} \in c} \mathrm{Count_{clip}}(n\text{-gram})}{\sum_{n\text{-gram}' \in c} \mathrm{Count}(n\text{-gram}')}</script><script type="math/tex; mode=display">
+\mathrm{Count_{clip}}(n\text{-gram}) = \min(\mathrm{Count}(n\text{-gram},c),\max_{r \in R}(\mathrm{Count(n\text{-gram},r)}))</script><script type="math/tex; mode=display">
+\mathrm{Count}(n\text{-gram}, w) = \sum_{n\text{-gram}' \in w} I(n\text{-gram}, n\text{-gram}')</script><script type="math/tex; mode=display">
+I(a,b) = \begin{cases}
+1 & \text{if}\ a = b \\
+0 & \text{else}
+\end{cases}</script><p>简单概括下，主要分为以下步骤。</p>
+<ul>
+<li>计算截断数量$\mathrm{Count}_\mathrm{clip}$</li>
+<li>计算准确度$p_n$</li>
+<li>计算长度惩罚系数$\mathrm{BP}(c;R)$</li>
+<li>最终得出$\mathrm{BLEU}(c;R)$</li>
+</ul>
+<h1 id="三元素度量"><a href="#三元素度量" class="headerlink" title="三元素度量"></a>三元素度量</h1><h2 id="I-measure-Evaluation"><a href="#I-measure-Evaluation" class="headerlink" title="I-measure Evaluation"></a>I-measure Evaluation</h2><p><a target="_blank" rel="noopener" href="https://www.aclweb.org/anthology/N15-1060/">Paper: Towards a standard evaluation method for grammatical error detection and correction</a></p>
+<p>我们这里提到的评估，有以下的限制与使用环境。</p>
+<ul>
+<li>我们对三个句子$C$，$S$，$R$进行评估。</li>
+<li>评估的最小粒度为单词（词条）。</li>
+<li>我们希望这个评估可以对接近$R$的$C$给予<strong>较高</strong>的分数，对接近$S$的$C$给予<strong>较低</strong>的分数。</li>
+</ul>
+<p>文章的核心在于使用了<strong>SP对齐（the Sum of Pairs alignment）的方式</strong>，将三个句子同时对齐。同样是基于Levenshtein距离的方法，我们对插入删除操作（gap）和替换操作（mismatch）分别赋予不同的代价（cost），分别为$c<em>\text{gap}$，$c</em>\text{mis}$，得到一种总代价最小的对齐方案。</p>
+<p><em>该算法该天再补。</em></p>
+<p>之后的部分是计算PRF1。首先，我们使用改进版的<em>WAS</em>方法定义TP、TN、FP、FN。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">Written（Source）</th>
+<th style="text-align:center">Annotated（Reference）</th>
+<th style="text-align:center">System（Candidate）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">TN</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+</tr>
+<tr>
+<td style="text-align:center">FP</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">FN</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">X</td>
+</tr>
+<tr>
+<td style="text-align:center">TP</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">FPN</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Z</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>简单解释，我们将W与A是否匹配分成两类：不匹配（即需要更改）【P】、匹配（即不需要更改）【N】。由此我们可以将S的预测分为TP、TN、FP、FN四类。因为在本次计算中，我们还会遇到最后一种情况，此时我们将其定义为FPN类。这样，我们得出加权准确性指标。</p>
+<script type="math/tex; mode=display">
+\mathrm{WAcc} = \frac{w \cdot \mathrm{TP} + \mathrm{TN}}{w \cdot \mathrm{TP} + \mathrm{TN} + w \cdot (\mathrm{FP} - \frac{\mathrm{FPN}}{2}) + (\mathrm{FN} - \frac{\mathrm{FPN}}{2})}</script><p>我们希望给予$\mathrm{TP}$多于$\mathrm{TN}$的奖励（即正确的更改好于不更改）；我们希望基于$\mathrm{FP}$多于$\mathrm{FN}$的惩罚（即错误的更改不如不更改），因此这里$w \geq 1$。通常$w = 2$。</p>
+<p>最后为了对比在不同数据集下的模型情况，我们构建了每个数据集格子的基线标准，即：将Reference直接作为Candidate，计算加权准确性指标$\mathrm{WAcc}_{\text{base}}$，然后我们得到I-measure</p>
+<script type="math/tex; mode=display">
+I = \begin{cases}
+\lfloor \mathrm{WAcc}_{\text{sys}} \rfloor & \text{if}\  \mathrm{WAcc}_{\text{sys}} = \mathrm{WAcc}_{\text{base}} \\
+\frac{\mathrm{WAcc}_{\text{sys}} - \mathrm{WAcc}_{\text{base}}}{1 - \mathrm{WAcc}_{\text{base}}} & \text{if}\ \mathrm{WAcc}_{\text{sys}} > \mathrm{WAcc}_{\text{base}} \\
+\frac{\mathrm{WAcc}_\text{sys}}{\mathrm{WAcc}_\text{base}} - 1 & \text{otherwise}
+\end{cases}</script><h2 id="GLEU"><a href="#GLEU" class="headerlink" title="GLEU"></a>GLEU</h2><p><a target="_blank" rel="noopener" href="https://www.aclweb.org/anthology/P15-2097/">Paper: Ground Truth for Grammatical Error Correction Metrics</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1605.02592">Paper: GLEU Without Tuning</a></p>
+<p>本文将主要介绍升级版的GLEU，他们称之为$\mathrm{GLEU^+}$。更新版的GLEU+相对于原始版本的GLEU，不仅去掉了一个需要特殊训练的参数$\lambda$，计算公式也更加合理易懂，所以我们将主要介绍这个。</p>
+<p>我们这里提到的评估，有以下的限制与使用环境。</p>
+<ul>
+<li>我们对三个句子$C$，$S$，$R$进行评估。</li>
+<li>评估的最小粒度为单词（词条）。</li>
+<li>我们希望这个评估可以对接近$R$的$C$给予<strong>较高</strong>的分数，对接近$S$的$C$给予<strong>较低</strong>的分数。</li>
+</ul>
+<p>该算法大体与BLEU一致，为了适应语法错误更正这个任务(GEC)，我们要修改截断计数。这里我们大体沿用BLEU部分的式子，只对$p_n$进行修改：</p>
+<script type="math/tex; mode=display">
+\mathrm{GLEU}(c,r,s) = \mathrm{BP}(c; r) \cdot \exp \left( \sum_{n=1}^N w_N \log p^\star_n\right)</script><script type="math/tex; mode=display">
+p^\star_n = \frac{\sum_{n\text{-gram} \in c \cap r } \mathrm{Count}_{c, r} (n\text{-gram}) - \sum_{n\text{-gram} \in c \cap s} \max \left[ 0, \mathrm{Count}_{c, s}(n\text{-gram}) - \mathrm{Count}_{c, r}(n\text{-gram}) \right]  }{\sum_{n\text{-gram}' \in c} \mathrm{Count}_c (n\text{-gram}')}</script><script type="math/tex; mode=display">
+\mathrm{Count}_{A,B}(n\text{-gram}) = \min \left[ \mathrm{Count}_A (n \text{-gram}), \mathrm{Count}_B (n \text{-gram}) \right]</script><script type="math/tex; mode=display">
+\mathrm{Count}_A (n\text{-gram}) = \sum_{n\text{-gram}' \in A} I(n\text{-gram}, n\text{-gram}')</script><h1 id="向量度量"><a href="#向量度量" class="headerlink" title="向量度量"></a>向量度量</h1><h2 id="p-范数"><a href="#p-范数" class="headerlink" title="$p$-范数"></a>$p$-范数</h2><p>各个领域都很常用的范数，用来度量向量应该是比较成熟的理论了。</p>
+<script type="math/tex; mode=display">
+\Vert x \Vert_p = \left( \vert x_1 \vert^p + \vert x_2 \vert^p + \cdots + \vert x_n \vert^p \right)^{1/p}</script><h3 id="1-范数"><a href="#1-范数" class="headerlink" title="$1$-范数"></a>$1$-范数</h3><script type="math/tex; mode=display">
+\Vert x \Vert_1 = \vert x_1 \vert + \vert x_2 \vert + \cdots + \vert x_n \vert</script><p>1-范数有比较好的鲁棒性，根据罚函数的理论，其在大的$x_i$上，罚函数上升较慢。</p>
+<h3 id="2-范数"><a href="#2-范数" class="headerlink" title="$2$-范数"></a>$2$-范数</h3><script type="math/tex; mode=display">
+\Vert x \Vert_2 = \left( \vert x_1 \vert^2 + \vert x_2 \vert^2 + \cdots + \vert x_n \vert^2 \right)^{1/2}</script><p>这个就是大家都很常用的欧氏距离了。也是最小二乘法所使用的范数。</p>
+<h3 id="infty-范数"><a href="#infty-范数" class="headerlink" title="$\infty$-范数"></a>$\infty$-范数</h3><script type="math/tex; mode=display">
+\Vert x \Vert_\infty = \max \left( \vert x_1 \vert , \vert x_2 \vert , \cdots , \vert x_n \vert \right)</script><p> 总之也能有用的上的地方吧。（比如说对数据的上下界有极为严格的定义，之类的。）</p>
+<h1 id="概率分布度量"><a href="#概率分布度量" class="headerlink" title="概率分布度量"></a>概率分布度量</h1><p>如果要认为这个也是向量度量的话，也不是不可以。这里就将对概率化的向量的度量单独列出来了。</p>
+<h2 id="相对熵（Kullback-Leibler散度）"><a href="#相对熵（Kullback-Leibler散度）" class="headerlink" title="相对熵（Kullback-Leibler散度）"></a>相对熵（Kullback-Leibler散度）</h2><p>源自信息论理论中的一个度量。用来度量两个概率分布的差异。</p>
+<p><strong>注意：这是一个非对称的度量，换句话说，这个度量不符合标准的距离定义。</strong></p>
+<script type="math/tex; mode=display">
+\mathrm{KL}(p \Vert q) = \sum p(x) \log \frac{p(x)}{q(x)}</script><h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><p>很不幸的是，交叉熵也不具有对称性。通常我们认为某一个分布是已知的，我们用q去逼近p，在这种情况下，相对熵可以表示为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathrm{KL}(p \Vert q ) &= \sum p(x) \log p(x) - \sum p(x) \log q(x) \\
+&= -H(p) + H(p \Vert q)
+\end{aligned}</script><p>我们称$H(p \Vert q)$为交叉熵，定义为：</p>
+<script type="math/tex; mode=display">
+H(p \Vert q) = - \sum p(x) \log q(x)</script><p>这里使用了可能和大多数博客不一样的符号。为了区别联合熵$H(p,q)$，因此没有使用逗号。为了区别条件熵$H(p \vert q)$，因此没有使用单竖线。为了看起来保持了相对熵不对称的性质，因此使用了双竖线。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>距离整理笔记</div>
+      <div>http://tackoil.github.io/posts/metrics/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Tackoil</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年11月6日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/CG4MulRCaS/" title="Note of CG4MulRCaS">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Note of CG4MulRCaS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/oped-view/" title="动画OP与ED手法观察">
+                        <span class="hidden-mobile">动画OP与ED手法观察</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Base <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> by <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i> <span> Tackoil </span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

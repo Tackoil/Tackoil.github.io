@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/rabbit.png">
+  <link rel="icon" href="/img/rabbit.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#3EA09E">
+  <meta name="author" content="Tackoil">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="（把每双周周报在BLOG上整理一下，以防止自己做的PPT最后都想不起来是在说什么。）  词向量的评估是个人比较感兴趣的方向，好像也是比较冷门的方向。虽然这一领域目前没有公认方案，但实际上由于大规模语言模型的迅速发展，可以将上下文进行融合进词的动态词表征被广泛的使用，静态词表征的相关研究一直处在冷门状态。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021a10-静态词向量的评估">
+<meta property="og:url" content="http://tackoil.github.io/posts/2021a10/index.html">
+<meta property="og:site_name" content="Tackoil&#39;s WebSite">
+<meta property="og:description" content="（把每双周周报在BLOG上整理一下，以防止自己做的PPT最后都想不起来是在说什么。）  词向量的评估是个人比较感兴趣的方向，好像也是比较冷门的方向。虽然这一领域目前没有公认方案，但实际上由于大规模语言模型的迅速发展，可以将上下文进行融合进词的动态词表征被广泛的使用，静态词表征的相关研究一直处在冷门状态。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+<meta property="article:published_time" content="2021-10-31T16:40:49.000Z">
+<meta property="article:modified_time" content="2022-07-13T12:19:32.666Z">
+<meta property="article:author" content="Tackoil">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+  
+  
+  
+  <title>2021a10-静态词向量的评估 - Tackoil&#39;s WebSite</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tackoil.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tackoil&#39;s WebSite</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/illust_78275414_20211011_235948.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2021a10-静态词向量的评估"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-31 16:40" pubdate>
+          2021年10月31日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+    
+        <a class="page-header banner-info" target="_blank" href=https://www.pixiv.net/artworks/78275414 >
+            封面画师：九六胡椒
+        </a>
+    
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">2021a10-静态词向量的评估</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2022年7月13日 中午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body markdown-indent">
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote>
+<p>（把每双周周报在BLOG上整理一下，以防止自己做的PPT最后都想不起来是在说什么。）</p>
+</blockquote>
+<p>词向量的评估是个人比较感兴趣的方向，好像也是比较冷门的方向。虽然这一领域目前没有公认方案，但实际上由于大规模语言模型的迅速发展，可以将上下文进行融合进词的动态词表征被广泛的使用，静态词表征的相关研究一直处在冷门状态。</p>
+<span id="more"></span>
+<h1 id="词向量及其评估"><a href="#词向量及其评估" class="headerlink" title="词向量及其评估"></a>词向量及其评估</h1><h2 id="词向量"><a href="#词向量" class="headerlink" title="词向量"></a>词向量</h2><p>词向量（Word Embedding/Vector）又或者翻译成词嵌入，对于大部分从事相关工作的人来说应该不是一个陌生的概念。其主要作用是将自然语言中的词用一个向量表示，并且希望这个向量的维数可以小一点，还能再包含一些语义信息的话就更好了。比如这个经典的例子：</p>
+<script type="math/tex; mode=display">
+\text{king} - \text{man} + \text{women} \approx \text{queen}</script><p>我们希望训练出来的词向量就可以包含上述的信息，如果词向量能携带更多这种信息的话，那应该对后续的模型有更大帮助。</p>
+<p>当然，随着 BERT/GPT 等语言模型的高速发展，它们可以生成包含上下文信息的词向量。由于在预训练语言模型是使用了大量的数据，这些基于 BERTology 的语言模型有着非常好的性能，现已作为很多后续任务的特征提取部分。</p>
+<p>文本主要讨论的是前者，也就是<strong>静态词向量</strong>。它不随词汇所在句子而改变其表征。</p>
+<h2 id="词向量的评估"><a href="#词向量的评估" class="headerlink" title="词向量的评估"></a>词向量的评估</h2><p>词向量的评估一直是一个比较棘手的问题，因为词向量没有黄金标准，无法通过简单的分类或者回归任务对其进行建模，从而无法给出一个公认评估方式。但换种角度，一个好的词向量应该可以在多种任务上都能取得不错的表现。由此，评价一个词向量的方法主要分为两种：外在评估（Extrinsic Evaluation）与内在评估（Intrinsic Evaluation）。</p>
+<h3 id="外在评估"><a href="#外在评估" class="headerlink" title="外在评估"></a>外在评估</h3><p>外在评估就是将词向量在多种下游任务中进行实验，通过与其他词向量的实验结果进行比较，从而得出哪个模型的性能更好。这个思路是相对更加直接的。</p>
+<p><img src="./exval.png" srcset="/img/loading.gif" lazyload alt="外在评估流程简图"></p>
+<p>但其显然存在很多问题：</p>
+<ul>
+<li>实验步骤繁琐，需要大量实验才能证明某一词向量的优越性。</li>
+<li>需要基线进行对比，无法为单一词向量给出评价。</li>
+<li>干扰变量过多，在实验中控制变量会非常困难。</li>
+</ul>
+<p>因此，内在评估就显得格外重要。</p>
+<h3 id="内在评估"><a href="#内在评估" class="headerlink" title="内在评估"></a>内在评估</h3><p>内在评估就是直接测试词向量之间的句法和语义联系。概念倒是很直接，但如何测试句法联系和语义联系就变得非常困难。目前内在评估主要分为：相关度比较与类比推理两种。</p>
+<h4 id="相关度比较"><a href="#相关度比较" class="headerlink" title="相关度比较"></a>相关度比较</h4><p>相关度比较是指给出一组包含若干个词语对的测试集合，每个词语对有若干个人类评分作为标准答案。在评价某一词向量方案时，计算两向量的相似度与人类评分的相关性即可。</p>
+<p>但显然，相关度比较方案最大的问题就是，该方案需要大量的人力资源，想获得大量的标注数据成本过高。另外，评价两个词是否相似存在严重的主观性，两个词的相似性在不同的语言环境中也有不同。</p>
+<h4 id="类比推理"><a href="#类比推理" class="headerlink" title="类比推理"></a>类比推理</h4><p>类比推理是指让模型进行类比推理，比较模型给出的答案与人类标准答案，从而判断模型的性能。我们再用前面的例子进行解释：通过让模型计算 $\text{man}:\text{king}::\text{women}:?$ 。如果模型给出的向量计算结果与 $\text{queen}$ 这个向量相近的话，那么就认为词向量是正确的。通过若干道这种题目，判断词向量质量。</p>
+<p><img src="./inval.png" srcset="/img/loading.gif" lazyload alt="内在评估的简要对比"></p>
+<h1 id="部分词向量评估方案"><a href="#部分词向量评估方案" class="headerlink" title="部分词向量评估方案"></a>部分词向量评估方案</h1><h2 id="类比推理评估"><a href="#类比推理评估" class="headerlink" title="类比推理评估"></a>类比推理评估</h2><p>论文原文：Efficient Estimation of Word Representations in Vector Space<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Mikolov T ,  Chen K ,  Corrado G , et al. Efficient Estimation of Word Representations in Vector Space[J]. Computer Science, 2013.
+">[1]</span></a></sup></p>
+<p>该方案与 Word2Vector 在同一篇文章中被提出，用以评估 Word2Vector 的性能。该方案中的题目大概分为两部分，一部分是世界知识：国家与首都、城市与州、男性与女性等等；而另一部分则是英文语法，例如过去时态、名词单复数等等。</p>
+<p><img src="./ca.png" srcset="/img/loading.gif" lazyload alt="类比推理"></p>
+<p>但该数据集中的词汇过于局限于英文环境，因此在其他语言中需要另外设计题目，迁移性较差。</p>
+<h2 id="引入词形学的类比推理评估"><a href="#引入词形学的类比推理评估" class="headerlink" title="引入词形学的类比推理评估"></a>引入词形学的类比推理评估</h2><p>论文原文：Analogical Reasoning on Chinese Morphological and Semantic Relations<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Li S ,  Zhao Z ,  Hu R , et al. Analogical Reasoning on Chinese Morphological and Semantic Relations[C]// Meeting of the Association for Computational Linguistics. 2018.
+">[2]</span></a></sup></p>
+<p>这是一个针对中文词向量数据集研究，针对中文中的叠词等词形学变化，在上文类比推理的基础上加入了这部分测试内容，构成如下测试集合。可以发现这种测试数据更为符合中文的词向量情况。</p>
+<p><img src="./ca8.png" srcset="/img/loading.gif" lazyload alt="引入词形学的类比推理"></p>
+<p>该方法和其他类比推理的方法一样，其局限性在于仅针对中文环境，在其他语言中需要另外设计题目，迁移性较差。</p>
+<h2 id="分类模块度"><a href="#分类模块度" class="headerlink" title="分类模块度"></a>分类模块度</h2><p>论文原文：Evaluating Word Embeddings with Categorical Modularity<sup id="fnref:3"><a href="#fn:3" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Casacuberta S ,  Halevy K ,  Blasi D E . Evaluating Word Embeddings with Categorical Modularity[C]// Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. 2021.
+">[3]</span></a></sup></p>
+<p>该方法为静态词向量的内在评估提出一种新的方法。该方法首先选定若干类别，每个类别内有若干单词。从词向量中获取这些单词对应的向量，将单词相连构成网络。最后根据类别将网络划分成多个社区，计算其模块度。</p>
+<p>这篇文章中的另一个亮点是使用了神经生物学的相关研究，这篇文章中所选的类别来自Binder Categories<sup id="fnref:4"><a href="#fn:4" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Binder J R ,  Conant L L ,  Humphries C J , et al. Toward a brain-based componential semantic representation[J]. Cognitive Neuropsychology, 2016:1-45.
+">[4]</span></a></sup>。该分类方法根据分析人脑对不同词汇的反应进行分类，本文使用这种该方法与无监督的社区划分做对比，得出该方法的效果更好。</p>
+<p><img src="./binder_categories.png" srcset="/img/loading.gif" lazyload alt="Binder Categories"></p>
+<p>该方法虽然用实验展示了一种非常新颖的词向量评估方法，但仍存在一部分问题，或者说研究不充分的地方。</p>
+<ol>
+<li><strong>未考虑一词多义的情况：</strong>在大部分语言中，一个词通常包含多个意思。即使在Binder Categories中，部分词汇仍然有其他含义，使得该词汇从一个类别跳到另一个类别。</li>
+<li><strong>无法扩展至其他语言：</strong>虽然文中通过机器翻译的方法将模块度评估方法扩展至其他语言，但经过本人阅读词表后发现，该词表中包含与文化关系密切的词汇。这些词汇在部分国家中可能无法翻译成非常恰当合适的词汇。</li>
+<li><strong>实验未考虑深度学习模型：</strong>文中针对词向量评估方法的验证仅停留在SVM等传统方法上。针对深度学习模型，尤其是大规模预训练语言模型的验证则更加实际。</li>
+</ol>
+<h1 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h1><h2 id="针对类比推理方案的质疑"><a href="#针对类比推理方案的质疑" class="headerlink" title="针对类比推理方案的质疑"></a>针对类比推理方案的质疑</h2><p>论文原文：The (too Many) Problems of Analogical Reasoning with Word Vectors<sup id="fnref:5"><a href="#fn:5" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Rogers A ,  Drozd A ,  Li B . The (too Many) Problems of Analogical Reasoning with Word Vectors[C]// Proceedings of the 6th Joint Conference on Lexical and Computational Semantics (*SEM 2017). 2017.
+">[5]</span></a></sup></p>
+<p>近来这篇文章质疑类比推理方法评价词向量存在一些问题，而这些问题被有意无意忽略了，导致类比推理评价方法的说服力大大减弱。类比推理方法相当于找到下式中最接近 $b’$ 的向量所表示的词汇。</p>
+<script type="math/tex; mode=display">
+a - a' + b \approx b'</script><p>这篇文章通过大量实验，发现如下几个问题。</p>
+<ol>
+<li>$a-a’$ 无法对 $b$ 形成足够的偏移。导致事实上最接近 $a - a’ + b$ 的向量应该是 $b$ 而不是 $b’$。这其实是与我们的期望相违背的。</li>
+<li>$a,a’,b,b’$ 间的相似度会影响预测准确率。当这四个向量越接近，预测的准确率越高。这一说明类比推理其实并没有起到作用。</li>
+<li>在候选集合里排除 $a,a’,b$ 会导致错误。例如下面的表达式，答案应该为$\text{white}$，但该向量已经被排除，所以永远无法得到正确的答案。</li>
+</ol>
+<script type="math/tex; mode=display">
+\text{snow} : \text{white} = \text{sugar} : ?</script><p>由此说明类比推理方法虽然看起来很合理，但实际上仍然存在巨大缺陷。这也导致了静态词向量的内在评价陷入了瓶颈。</p>
+<p>END</p>
+<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Mikolov T ,  Chen K ,  Corrado G , et al. Efficient Estimation of Word Representations in Vector Space[J]. Computer Science, 2013.<a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Li S ,  Zhao Z ,  Hu R , et al. Analogical Reasoning on Chinese Morphological and Semantic Relations[C]// Meeting of the Association for Computational Linguistics. 2018.<a href="#fnref:2" rev="footnote"> ↩</a></span></li><li id="fn:3"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">3.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Casacuberta S ,  Halevy K ,  Blasi D E . Evaluating Word Embeddings with Categorical Modularity[C]// Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. 2021.<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">4.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Binder J R ,  Conant L L ,  Humphries C J , et al. Toward a brain-based componential semantic representation[J]. Cognitive Neuropsychology, 2016:1-45.<a href="#fnref:4" rev="footnote"> ↩</a></span></li><li id="fn:5"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">5.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Rogers A ,  Drozd A ,  Li B . The (too Many) Problems of Analogical Reasoning with Word Vectors[C]// Proceedings of the 6th Joint Conference on Lexical and Computational Semantics (*SEM 2017). 2017.<a href="#fnref:5" rev="footnote"> ↩</a></span></li></ol></div></div>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E5%91%A8%E6%8A%A5/" class="category-chain-item">周报</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2021a10-静态词向量的评估</div>
+      <div>http://tackoil.github.io/posts/2021a10/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Tackoil</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月31日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/2021-winter-solstice/" title="2021年12月21日-冬至">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2021年12月21日-冬至</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/oped-view2/" title="动画OP与ED手法观察2">
+                        <span class="hidden-mobile">动画OP与ED手法观察2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Base <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> by <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i> <span> Tackoil </span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

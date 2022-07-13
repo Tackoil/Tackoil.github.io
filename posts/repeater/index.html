@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/rabbit.png">
+  <link rel="icon" href="/img/rabbit.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#3EA09E">
+  <meta name="author" content="Tackoil">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从最开始想写一个群机器人，到现在也有陆续一个月了。现在这个bot的最好记录是在一个非常水的群里复读了一周后才被发现。至于为什么想要写这样一个bot，可能也是突然意识到自己经常在群里聊天也只是复读其他的话。  其实 Repeater 本身翻译过来是 中继器 的意思。  群聊消息分析复读定义             🔁 由多人或单人连续发送相同内容的行为             发送者：可能是同一人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Repeater - 分析与设计">
+<meta property="og:url" content="http://tackoil.github.io/posts/repeater/index.html">
+<meta property="og:site_name" content="Tackoil&#39;s WebSite">
+<meta property="og:description" content="从最开始想写一个群机器人，到现在也有陆续一个月了。现在这个bot的最好记录是在一个非常水的群里复读了一周后才被发现。至于为什么想要写这样一个bot，可能也是突然意识到自己经常在群里聊天也只是复读其他的话。  其实 Repeater 本身翻译过来是 中继器 的意思。  群聊消息分析复读定义             🔁 由多人或单人连续发送相同内容的行为             发送者：可能是同一人">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+<meta property="article:published_time" content="2022-05-04T15:28:33.000Z">
+<meta property="article:modified_time" content="2022-07-13T12:19:32.726Z">
+<meta property="article:author" content="Tackoil">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://tackoil.github.io/img/bg/natsumi23.jpg">
+  
+  
+  
+  <title>Repeater - 分析与设计 - Tackoil&#39;s WebSite</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tackoil.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tackoil&#39;s WebSite</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/illust_91767918_20210810_192545.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Repeater - 分析与设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-04 15:28" pubdate>
+          2022年5月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+    
+        <a class="page-header banner-info" target="_blank" href=https://www.pixiv.net/artworks/91767918 >
+            封面画师：寺田てら
+        </a>
+    
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Repeater - 分析与设计</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2022年7月13日 中午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body markdown-indent">
+                
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>从最开始想写一个群机器人，到现在也有陆续一个月了。现在这个bot的最好记录是在一个非常水的群里复读了一周后才被发现。至于为什么想要写这样一个bot，可能也是突然意识到自己经常在群里聊天也只是复读其他的话。</p>
+<blockquote>
+<p>其实 Repeater 本身翻译过来是 <strong>中继器</strong> 的意思。</p>
+</blockquote>
+<h1 id="群聊消息分析"><a href="#群聊消息分析" class="headerlink" title="群聊消息分析"></a>群聊消息分析</h1><h2 id="复读定义"><a href="#复读定义" class="headerlink" title="复读定义"></a>复读定义</h2><div class="note note-info">
+            <p>🔁 由多人或单人连续发送相同内容的行为</p>
+          </div>
+<ul>
+<li>发送者：可能是同一人，也可能是多个人</li>
+<li>发送时间：连续发送，小概率不连续发送</li>
+<li>发送内容：完全相同的消息（<del>暂时不考虑劣质复读的情况</del>）</li>
+</ul>
+<h3 id="可复读消息"><a href="#可复读消息" class="headerlink" title="可复读消息"></a>可复读消息</h3><div class="note note-info">
+            <p>🔁 重复该消息不会被认为是“不合常理的（unreasonable）”，被认为是人类能做出的行为。</p>
+          </div>
+<p>例如：？、好、yyds、😰、不亏、草、哈哈哈、笑死、开摆！、呜呜</p>
+<p>或者更长的例子：</p>
+<ul>
+<li>居然不复读</li>
+<li>一睁眼怎么又周一了</li>
+<li>i hope🙏</li>
+<li>群友能不能学会然后合宿做给我吃</li>
+<li>我有[Face: 流泪][Face: 流泪][Face: 流泪][Face: 流泪][Face: 流泪]</li>
+<li>……</li>
+</ul>
+<h2 id="基础数据分析"><a href="#基础数据分析" class="headerlink" title="基础数据分析"></a>基础数据分析</h2><h3 id="群消息统计"><a href="#群消息统计" class="headerlink" title="群消息统计"></a>群消息统计</h3><h4 id="群消息中连续重复的消息数量的统计"><a href="#群消息中连续重复的消息数量的统计" class="headerlink" title="群消息中连续重复的消息数量的统计"></a>群消息中连续重复的消息数量的统计</h4><p><img src="length_distribution.png" srcset="/img/loading.gif" lazyload alt="群消息中连续重复的消息数量的统计"></p>
+<h4 id="群消息的时间分布统计"><a href="#群消息的时间分布统计" class="headerlink" title="群消息的时间分布统计"></a>群消息的时间分布统计</h4><blockquote>
+<p>时间单位是分钟，以北京时间（GMT+8）为标准</p>
+</blockquote>
+<p><img src="tf.png" srcset="/img/loading.gif" lazyload alt="群消息的时间分布统计.png"></p>
+<h3 id="可复读消息统计"><a href="#可复读消息统计" class="headerlink" title="可复读消息统计"></a>可复读消息统计</h3><ul>
+<li>当前进入可复读消息集合的规则：100条消息的滑动窗口中出现不少于3次</li>
+<li>所有进入过可复读消息集合的消息：758条</li>
+<li>标注后的有价值的复读消息：<ul>
+<li>Golden（在多个群出现过）10条：确实、😄、？、乐、好似喵、呜呜、好、听不懂，说人话、草、[图片]</li>
+<li>Silver（只在一个群出现过，但成功引发过<strong>连续</strong>的复读事件）116条</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>以下特征的评价标准将以上述<em>10+116=</em>126条作为分类任务的正例。</p>
+</blockquote>
+<h2 id="可复读消息的特征"><a href="#可复读消息的特征" class="headerlink" title="可复读消息的特征"></a>可复读消息的特征</h2><h3 id="时间滑动窗口中的频次（TF模式）"><a href="#时间滑动窗口中的频次（TF模式）" class="headerlink" title="时间滑动窗口中的频次（TF模式）"></a>时间滑动窗口中的频次（TF模式）</h3><p>使用 <strong>时间滑动窗口中的频次</strong> 对可复读消息的分布进行建模，包含以下参数：</p>
+<ul>
+<li>滑动窗口的时间大小：$T$</li>
+<li>滑动窗口中的最小命中频次：$F$</li>
+</ul>
+<blockquote>
+<p>由不知道哪个时间单位更好，所以分为“秒级别”与“分钟级别”</p>
+<p>一票否决方案 表示模型如果不能召回所有的 Golden消息，则该模型的 F1 分数为0。没有该限制则称为 标准方案</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>方案</th>
+<th>T</th>
+<th>F</th>
+<th>F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>秒级别</td>
+<td>一票否决</td>
+<td>140秒</td>
+<td>3次</td>
+<td>0.2550</td>
+</tr>
+<tr>
+<td>秒级别</td>
+<td>标准</td>
+<td>10秒</td>
+<td>3次</td>
+<td>0.3333</td>
+</tr>
+<tr>
+<td>分钟级别</td>
+<td>一票否决</td>
+<td>600秒（10分钟）</td>
+<td>3次</td>
+<td>0.2214</td>
+</tr>
+<tr>
+<td>分钟级别</td>
+<td>标准</td>
+<td>600秒（10分钟）</td>
+<td>4次</td>
+<td>0.2673</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>TF模式一票否决方案下较难预测的Golden消息（8）：确实、呜呜、乐、好、😄、 听不懂，说人话、好似喵、[图片]</p>
+<h3 id="消息滑动窗口中的频次（WF模式）"><a href="#消息滑动窗口中的频次（WF模式）" class="headerlink" title="消息滑动窗口中的频次（WF模式）"></a>消息滑动窗口中的频次（WF模式）</h3><p>不考虑消息的发送时间，使用 <strong>基于消息数量的滑动窗口中的频次</strong> 对可复读消息的分布进行建模，包含以下参数：</p>
+<ul>
+<li>滑动窗口的消息数量：$W$</li>
+<li>滑动窗口中的最小命中频次：$F$</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>W</th>
+<th>F</th>
+<th>F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一票否决</td>
+<td>80</td>
+<td>4</td>
+<td>0.1114</td>
+</tr>
+<tr>
+<td>标准</td>
+<td>40</td>
+<td>23</td>
+<td>0.2126</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>WF模式一票否决方案下较难预测的Golden消息（2）：听不懂，说人话、好似喵</li>
+</ul>
+<h3 id="被连续发送的次数（F模式）"><a href="#被连续发送的次数（F模式）" class="headerlink" title="被连续发送的次数（F模式）"></a>被连续发送的次数（F模式）</h3><p>使用 <strong>连续的相同消息的次数</strong> 对可复读消息的分布进行建模，包含以下参数：</p>
+<ul>
+<li>连续发送的最小次数：$F$</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>F</th>
+<th>F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一票否决</td>
+<td>-</td>
+<td>0</td>
+</tr>
+<tr>
+<td>标准</td>
+<td>3</td>
+<td>0.5508</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="repeat_send_heat_map_f1.png" srcset="/img/loading.gif" lazyload alt="连续发送次数"></p>
+<h3 id="消息文字长度"><a href="#消息文字长度" class="headerlink" title="消息文字长度"></a>消息文字长度</h3><p>把图片、转发、at等特殊消息视为长度为1的消息。统计可复读消息中占所有消息的比例。</p>
+<p><img src="message_length_prob.png" srcset="/img/loading.gif" lazyload alt="消息文字长度分布"></p>
+<p>可以发现好像并没有什么严格的规律，概率都不到0.5%</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ol>
+<li>绝大部分可复读消息都在所有消息中连续多次出现。</li>
+<li>基于时间的滑动窗口方案（TF模式）比基于数量的滑动窗口方案（WF模式）性能更高，但两方案相比连续发送次数方案（F模式）存在 <em>准确率</em> 较低的情况。</li>
+<li>无法通过消息文字长度预测是否为可复读消息。</li>
+</ol>
+<h2 id="复读行为的特征"><a href="#复读行为的特征" class="headerlink" title="复读行为的特征"></a>复读行为的特征</h2><h3 id="复读是否发生的概率"><a href="#复读是否发生的概率" class="headerlink" title="复读是否发生的概率"></a>复读是否发生的概率</h3><h4 id="基础概率复读（p模式）"><a href="#基础概率复读（p模式）" class="headerlink" title="基础概率复读（p模式）"></a>基础概率复读（p模式）</h4><p>设消息列表中 一个可复读消息 后的消息是 与前一个相同的消息 的概率为 $p=0.1198$ </p>
+<p>随机执行测试（10000次）结果如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>最小值</th>
+<th>最大值</th>
+<th>平均值</th>
+<th>中位数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.7105</td>
+<td>0.7443</td>
+<td>0.7281</td>
+<td>0.7281</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="指数累进概率复读（pd模式）"><a href="#指数累进概率复读（pd模式）" class="headerlink" title="指数累进概率复读（pd模式）"></a>指数累进概率复读（pd模式）</h4><p>设消息列表中 一个可复读消息 后的第一个消息是同一个可复读消息的概率为 $p$。前$k-1$个消息都是同一个可复读消息的情况下，第$k$个消息是同一个可复读消息的概率为$p \cdot d^{k-1}$。先统计在不同的$k$ 下的概率情况。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>条件概率</th>
+<th>k</th>
+<th>条件概率</th>
+<th>k</th>
+<th>条件概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.0737</td>
+<td>5</td>
+<td>0.5965</td>
+<td>9</td>
+<td>0.5556</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.4276</td>
+<td>6</td>
+<td>0.4706</td>
+<td>10</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.4436</td>
+<td>7</td>
+<td>0.6875</td>
+<td>11</td>
+<td>0.6667</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.5</td>
+<td>8</td>
+<td>0.8182</td>
+<td>12</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>用指数函数拟合这一概率，得到</p>
+<script type="math/tex; mode=display">
+p=0.3430,\ d=1.0888</script><p>随机执行测试（10000次）结果如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>最小值</th>
+<th>0.6021</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最大值</td>
+<td>0.6397</td>
+</tr>
+<tr>
+<td>平均值</td>
+<td>0.6195</td>
+</tr>
+<tr>
+<td>中位数</td>
+<td>0.6195</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="opti.png" srcset="/img/loading.gif" lazyload alt="指数累进概率拟合"></p>
+<h4 id="负指数累进复读模式（q模式）"><a href="#负指数累进复读模式（q模式）" class="headerlink" title="负指数累进复读模式（q模式）"></a>负指数累进复读模式（q模式）</h4><p>设消息列表中 一个可复读消息 后的第一个消息是同一个可复读消息的概率为 $1-q$。前$k-1$个消息都是同一个可复读消息的情况下，第$k$个消息是同一个可复读消息的概率为$1-q^k$。拟合这一概率，得到</p>
+<script type="math/tex; mode=display">
+q=0.8624</script><p>随机执行测试（10000次）结果如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>最小值</th>
+<th>0.7595</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最大值</td>
+<td>0.7904</td>
+</tr>
+<tr>
+<td>平均值</td>
+<td>0.7751</td>
+</tr>
+<tr>
+<td>中位数</td>
+<td>0.7751</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="opti_p.png" srcset="/img/loading.gif" lazyload alt="负指数累进概率拟合"></p>
+<h3 id="复读间隔时间的分布"><a href="#复读间隔时间的分布" class="headerlink" title="复读间隔时间的分布"></a>复读间隔时间的分布</h3><p>TBD</p>
+<h3 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h3><ol>
+<li>负指数累进复读模式（q模式）可能更加符合实际复读行为</li>
+<li>不同的累进复读模式的效果差距很大，可能存在更好的累进复读方案。</li>
+<li>基础概率复读的阈值应较低</li>
+</ol>
+<h2 id="进一步分析计划"><a href="#进一步分析计划" class="headerlink" title="进一步分析计划"></a>进一步分析计划</h2><ol>
+<li>目前的分析都是从实验的角度进行的。不知是否可以进一步使用统计学知识从建模的角度进行分析。</li>
+<li>现有方案对可复读消息的判断性能较低。</li>
+</ol>
+<h1 id="Roadmap"><a href="#Roadmap" class="headerlink" title="Roadmap"></a>Roadmap</h1><ul>
+<li>[x]  基础概率复读</li>
+<li>[x]  冷却时间</li>
+<li>[x]  引入Mongo</li>
+<li>[x]  配置支持</li>
+<li>[x]  多群支持（可发布）</li>
+<li>[x]  支持图片复读</li>
+<li>[x]  关键词排除</li>
+<li>[x]  累进复读概率</li>
+<li>[ ]  随机丢弃已保存消息（idea by 719）</li>
+<li>[ ]  多人复读判断引入</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%90%E6%A7%BD/" class="category-chain-item">吐槽</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Repeater - 分析与设计</div>
+      <div>http://tackoil.github.io/posts/repeater/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Tackoil</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年5月4日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/css-hacky/" title="一些奇怪的CSS方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一些奇怪的CSS方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/three-columns/" title="负外边距与非语义三栏布局">
+                        <span class="hidden-mobile">负外边距与非语义三栏布局</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Base <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> by <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i> <span> Tackoil </span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
