@@ -44,7 +44,7 @@ console.log(findRepeatNumber([2, 3, 1, 0, 2, 5, 3]))
 
 发现第一行输出就与期望值严重不符。从输出实在看不出来原因，就调试了一下。
 
-![调试中](nn0/jsdebug.png "调试中")
+![调试中](./js-destructuring-assignment/jsdebug.png "调试中")
 
 可以发现调试步骤可以停在左侧列表中的第二项。意味着 JavaScript 会先对左侧第一项`nums[i]`进行赋值并存储，然后再对第二项`nums[nums[i]]`进行赋值。可以发现在赋值左侧第二项时，索引`nums[i]`已经发生了修改，也就导致无法正常工作了。
 
