@@ -1,7 +1,9 @@
+import { defineUserConfig } from 'vuepress'
+
 import { anemosTheme } from "../../theme";
 
 
-module.exports = {
+export default defineUserConfig({
     title: "Tackoil's WebSite",
     theme: anemosTheme({
         navs: [
@@ -12,4 +14,4 @@ module.exports = {
         ],
         subtitle: "We're here."
     }),
-}
+})
