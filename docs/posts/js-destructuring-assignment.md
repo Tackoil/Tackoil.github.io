@@ -1,7 +1,7 @@
 ---
 title: JavaScript 的列表解构赋值执行顺序
 date: 2021-07-27 09:35:13
-desp: 这篇文章将简单解释一下 JavaScript 中列表的解构赋值的细节和执行顺序。新特性还是要谨慎使用。
+description: 这篇文章将简单解释一下 JavaScript 中列表的解构赋值的细节和执行顺序。新特性还是要谨慎使用。
 categories: [学习, JavaScript]
 ---
 
@@ -13,7 +13,7 @@ categories: [学习, JavaScript]
 
 在有次 leetcode 中的经典题目 [剑指 Offer 03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/) 中遇到一个小问题。简单概括，这道题需要从左往右依次将数字放到对应下标上，直到发现两个相同的数字为止。一个很直观的想法就是使用解构赋值以避免使用程序员搬家。完整的程序就大概是长下面这个样子。
 
-```JavaScript
+```javascript
 var findRepeatNumber = function(nums){
     for(let i=0; i<nums.length; i++){
         while(nums[i] !== i){

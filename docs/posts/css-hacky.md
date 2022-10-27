@@ -3,7 +3,7 @@ title: 一些奇怪的CSS方法
 date: 2022-07-09 16:47:02
 categories: [学习]
 headpic: /headpics/komisan-anime.png
-desp: 实习期间遇到了一些页面上的需求，虽然这些需求可能也没有那么重要，但还是希望越接近设计稿越好。毕竟设计稿的效果看着真不错，还是由衷希望这些效果也能在页面上呈现出来。计划在这里整理一些不太好实现的样式，以做记录，~~也希望以后回来看看的时候能吐槽下这实现的是什么鬼东西~~。
+description: 实习期间遇到了一些页面上的需求，虽然这些需求可能也没有那么重要，但还是希望越接近设计稿越好。毕竟设计稿的效果看着真不错，还是由衷希望这些效果也能在页面上呈现出来。计划在这里整理一些不太好实现的样式，以做记录，~~也希望以后回来看看的时候能吐槽下这实现的是什么鬼东西~~。
 index_img: /img/bg/komisan-anime.png
 ---
 
@@ -17,7 +17,7 @@ index_img: /img/bg/komisan-anime.png
 
 实现也很简单（或者说过于简单）。只需要在右侧同时加上`margin`和`padding`就可以了。可以发现，在盒模型中，scrollbar是出现在border里面的。
 
-```CSS
+```css
 .scroller-demo__container {
     margin-right: 4px;
     padding-right: 4px;
@@ -82,7 +82,7 @@ index_img: /img/bg/komisan-anime.png
 
 https://developer.mozilla.org/zh-CN/docs/Web/CSS/backdrop-filter
 
-```CSS
+```css
 .filter-demo {
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
@@ -107,7 +107,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/backdrop-filter
 }
 
 .filter-demo__background {
-    background-image: url("https://tackoil.github.io/img/bg/natsumi23.jpg");
+    background-image: url("https://tackoil.github.io/headpics/natsumi2.3.jpg");
     background-size: cover;
     height: 200px;
     display: flex;

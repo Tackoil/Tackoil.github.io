@@ -1,7 +1,7 @@
 ---
 title: Axios 中关于 Promise 的使用与理解
 date: 2022-03-19 14:37:05
-desp: 最近在看了 Axios 的源码。在已有 XMLHttpRequest 的情况下，Axios 做了哪些改进吸引大家使用？抱着这样的想法尝试理解与阅读 Axios 仓库。
+description: 最近在看了 Axios 的源码。在已有 XMLHttpRequest 的情况下，Axios 做了哪些改进吸引大家使用？抱着这样的想法尝试理解与阅读 Axios 仓库。
 categories: [学习, JavaScript]
 ---
 
@@ -36,7 +36,7 @@ Axios 既然被称之为**基于Promise的网络请求库**，其对于 JavaScri
 
 拦截器的作用是在**发送请求前**与**收到响应后**分别对请求与响应进行处理，从而实现一些便捷操作。例如 JWT 权限验证、响应数据的分析等。拦截器使用如下方式定义：
 
-```JavaScript
+```javascript
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
@@ -60,7 +60,7 @@ axios.interceptors.response.use(function (response) {
 
 对照 `core/InterceptorManager.js`，可以发现还包含了一个 `options` 选项，为拦截器提供特殊功能。
 
-```JavaScript
+```javascript
 InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
   this.handlers.push({ // 存放拦截器的数组
     fulfilled: fulfilled,
@@ -78,7 +78,7 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
 
 拦截器列表由偶数个函数构成，每**两个函数**一组。分别表示一个拦截器的执行函数与错误处理函数。类似于 [`Promise.prototype.then()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) 的入参。
 
-```JavaScript
+```javascript
 // core/Axios.js
   // filter out skipped interceptors
   var requestInterceptorChain = [];
@@ -112,7 +112,7 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
 
 > 您可能发现了，这里面**请求拦截器**的 `onRejected` 好像有些诡异。是的，笔者也是写到这里才发现这个问题，现已提交 [issue](https://github.com/axios/axios/issues/4537)。
 
-```JavaScript
+```javascript
 // core/Axios.js
   if (!synchronousRequestInterceptors) {
     var chain = [dispatchRequest, undefined];
@@ -142,7 +142,7 @@ Promise 链中所有在主请求前的 Promise 传递修改 config，在主请�
 
 如果对上述描述还有困惑的话，可以参考下面的简易 Polyfill。~~（不过都有 `Promise` 了，还能没有 `Promise.resolve()` 么）~~
 
-```JavaScript
+```javascript
 Promise.resolve = function(value){
   if(value instanceof Promise){
     return value; // 情况1，入参为 Promise，则直接返回该 Promise
@@ -158,7 +158,7 @@ Promise.resolve = function(value){
 
 对于这种含有 `then` 方法的对象，可以称之为 `thenable`。可以认为是一个 **弱化版** 的 `Promise`，但没有JavaScript解释器的 **微任务** 的保障。为了加深对 `thenable` 的印象，来看下面这个例子。
 
-```JavaScript
+```javascript
 var p_thenable = {
   then: function(resolve_outter){
     resolve_outter({
@@ -192,7 +192,7 @@ REJECTED with: Error: Rejected in Inner thenable.
 
 因此如果使用 `thenable` 特性的时候，**不要将自身作为 `fulfilled` 的值**，否则解释器会死循环。（不过应该没有多人想用 `thenable` 吧。）
 
-```JavaScript
+```javascript
 let thenable = {
   then: (resolve, reject) => {
     resolve(thenable)
@@ -224,7 +224,7 @@ Promise.resolve(thenable)  // Will lead to infinite recursion.
 
 先简单介绍一下怎么使用 CancelToken 取消一个正在执行的请求。使用 `CancelToken.source()` 工厂函数获得一个 token 操作对象 `source`。将 token 传入 config 中即可控制该请求是否需要取消。取消时执行 `source.cancel()` 即可。 
 
-```JavaScript
+```javascript
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
 axios.post('/user/12345', {
@@ -239,7 +239,7 @@ source.cancel('Operation canceled by the user.');
 
 不过，工厂函数方案其实是对 CancelToken 的一个封装。工厂函数如下：
 
-```JavaScript
+```javascript
 // lib/cancel/CancelToken.js
 CancelToken.source = function source() {
   var cancel;
@@ -257,7 +257,7 @@ CancelToken.source = function source() {
 
 先观察 `cancel` 函数，执行该函数会给 `reason` 赋值，并传入 `resolvePromise` 函数。通过判断 `reason` 是否已经存在来判断 `cancel` 函数是否已经被执行。
 
-```JavaScript
+```javascript
 // lib/cancel/CancelToken.js
   executor(function cancel(message) {
     if (token.reason) {
@@ -272,7 +272,7 @@ CancelToken.source = function source() {
 
 这个 `resolvePromise` 是用来 resolve 一个 `Promise` 的。~~（和没说一样）~~ 具体而言，使用外部变量将 `Promise` 中的执行器入参暴露出来，从而实现在任意位置控制这个 Promise 的状态。后面会详细介绍 `Promise` 构造器的工作方式。
 
-```JavaScript
+```javascript
 // lib/cancel/CancelToken.js
   var resolvePromise;
 
@@ -283,7 +283,7 @@ CancelToken.source = function source() {
 
 有了这个“扳机”，怎样实现请求的取消呢？先看看这个“扳机”后面都链接了什么内容。可以发现 Axios 在这个“扳机”后面调用了 `Promise.prototype.then()` 函数。由于“扳机”一直处于 `pending` 状态，`then` 的入参函数也将不会执行。阅读后可以发现这个函数主要执行与该 `token` 绑定的每个函数。这属于设计模式中的 **观察者模式** 。
 
-```JavaScript
+```javascript
 // lib/cancel/CancelToken.js
   this.promise.then(function(cancel) {
     if (!token._listeners) return;
@@ -313,7 +313,7 @@ CancelToken.source = function source() {
 
 这部分在 MDN 上的中文文档有我参与翻译的部分。当时也主要是因为原始版本与英文版本相距甚远，于是按照英文版本的文档进行了完善。笔者认为阅读过该文档，应该会对 [Promise() 构造器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise) 及其入参函数有进一步的理解。
 
-```JavaScript
+```javascript
 new Promise(executor)
 ```
 
@@ -321,7 +321,7 @@ new Promise(executor)
 
 > 这里使用与 MDN 文档上不同的入参命名方式，主要是考虑到与上文的一致性。
 
-```JavaScript
+```javascript
 function executor(onFulfilled, onRejected){
   // 通常是一些异步操作，同步操作也可以
 }

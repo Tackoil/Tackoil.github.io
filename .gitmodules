@@ -1,4 +1,0 @@
-[submodule "anemos"]
-    path = theme
-    url = git@github.com:Tackoil/vuepress-theme-anemos.git
-    branch = dev
