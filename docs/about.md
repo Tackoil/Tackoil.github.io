@@ -1,7 +1,7 @@
 ---
 title: 关于
 date: 2020-06-14 20:14:50
-headpic: "/headpics/bupt_mann.png"
+headpic: "/headpics/bupt_mcdonalds.png"
 ---
 
 这是一个关于页面。虽然说这样翻译 about 很怪异，不过我觉得用“简介”，“个人介绍”这样的词有些过于正式，所以就用这个词代替了。
