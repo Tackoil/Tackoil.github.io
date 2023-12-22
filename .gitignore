@@ -3,3 +3,5 @@ node_modules
 .cache
 .idea
 docs/.vuepress/dist
+
+.DS_Store
