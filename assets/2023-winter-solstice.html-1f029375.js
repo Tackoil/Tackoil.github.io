@@ -1,0 +1,1 @@
+const t=JSON.parse('{"key":"v-344fcdd0","path":"/posts/2023-winter-solstice.html","title":"2023年12月22日-冬至","lang":"en-US","frontmatter":{"title":"2023年12月22日-冬至","date":"2023-12-20T13:48:00.000Z","categories":"吐槽","headpic":"/headpics/illust_66580408_20211221_104036.png","description":"从学生时代走出来也有半年了，感觉工作之后的状态和学生时代的差距还是挺大的。想想也快，已经工作快半年了。"},"headers":[]}');export{t as data};
