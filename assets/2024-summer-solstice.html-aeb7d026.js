@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-71d8604e","path":"/posts/2024-summer-solstice.html","title":"2024年6月21日-夏至","lang":"en-US","frontmatter":{"title":"2024年6月21日-夏至","date":"2024-06-21T04:50:00.000Z","categories":"吐槽","headpic":"/headpics/illust_91269619_20210718_230514.png","description":"回看去年冬至的总结，发现有些问题已经有了一些新的看法。看来经常做这种总结还是挺有必要的。"},"headers":[]}');export{e as data};
