@@ -8,12 +8,12 @@ banner_info:
     text: 封面：《小林さんちのメイドラゴンS》- OP
 ---
 
-{% note secondary %}
+::: info
 **发布于**：檐枫动漫社
 **作者**：Santoin
 **日期**：2021年10月5日
 **原文链接**：[【投稿】动画OP与ED手法观察 - 二 - 檐枫动漫社](https://mp.weixin.qq.com/s/hSSzfYa2Vwdcr7KRp1GiTA)
-{% endnote %}
+:::
 
 みなさんこんばんは。
 

@@ -8,12 +8,12 @@ banner_info:
     text: 封面：《さらざんまい》- ED
 ---
 
-{% note secondary %}
+::: info
 **发布于**：檐枫动漫社
 **作者**：Santoin
 **日期**：2019年10月26日
 **原文链接**：[【投稿】动画OP与ED手法观察 - 檐枫动漫社](https://mp.weixin.qq.com/s/lvbCVQXobIQ8t6hfp5LIhw)
-{% endnote %}
+:::
 
 みなさんこんばんは。
 
