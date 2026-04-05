@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as a}from"./chunks/framework.TAIzFNF6.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{"headpic":"/headpics/natsumi2.3.jpg"},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),n={name:"index.md"};function r(s,c,i,o,d,p){return t(),a("div")}const f=e(n,[["render",r]]);export{m as __pageData,f as default};
